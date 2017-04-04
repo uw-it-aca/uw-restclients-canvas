@@ -81,7 +81,8 @@ class Canvas(object):
     def _params(self, params):
         if params and len(params):
             p = []
-            for key, val in params.iteritems():
+            for key in params:
+                val = params[key]
                 if isinstance(val, list):
                     p.extend([key + '[]=' + str(v) for v in val])
                 else:
