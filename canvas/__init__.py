@@ -81,14 +81,14 @@ class Canvas(object):
     def _params(self, params):
         if params and len(params):
             p = []
-            for key, val in params.iteritems():
+            for key in sorted(params.keys()):
+                val = params[key]
                 if isinstance(val, list):
                     p.extend([key + '[]=' + str(v) for v in val])
                 else:
                     p.append(key + '=' + str(val))
 
             return "?%s" % ('&'.join(p))
-
         return ""
 
     def _next_page(self, response):
