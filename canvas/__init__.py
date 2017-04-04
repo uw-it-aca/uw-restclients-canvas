@@ -81,7 +81,7 @@ class Canvas(object):
     def _params(self, params):
         if params and len(params):
             p = []
-            for key in params:
+            for key in sorted(params.keys()):
                 val = params[key]
                 if isinstance(val, list):
                     p.extend([key + '[]=' + str(v) for v in val])
@@ -89,7 +89,6 @@ class Canvas(object):
                     p.append(key + '=' + str(val))
 
             return "?%s" % ('&'.join(p))
-
         return ""
 
     def _next_page(self, response):
