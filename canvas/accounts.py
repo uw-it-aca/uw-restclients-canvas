@@ -20,7 +20,8 @@ class Accounts(Canvas):
 
     def get_sub_accounts(self, account_id, params={}):
         """
-        Return list of subaccounts within the account with the passed canvas id.
+        Return list of subaccounts within the account with the passed
+        canvas id.
 
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.sub_accounts
         """
@@ -82,7 +83,7 @@ class Accounts(Canvas):
         Update the authentication settings for the passed account_id.
 
         https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.update_sso_settings
-        """ 
+        """
         url = '/api/v1/accounts/%s/sso_settings' % account_id
 
         data = self._put_resource(url, auth_settings.json_data())
@@ -91,7 +92,7 @@ class Accounts(Canvas):
     def _auth_settings_from_json(self, data):
         sso_data = data['sso_settings']
         auth_settings = CanvasSSOSettings()
-        auth_settings.change_password_url = sso_data['change_password_url'] 
+        auth_settings.change_password_url = sso_data['change_password_url']
         auth_settings.login_handle_name = sso_data['login_handle_name']
         auth_settings.unknown_user_url = sso_data['unknown_user_url']
         auth_settings.auth_discovery_url = sso_data['auth_discovery_url']

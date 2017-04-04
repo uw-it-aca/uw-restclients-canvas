@@ -74,7 +74,8 @@ class Users(Canvas):
         """
         Returns user login data for the passed user sis id.
         """
-        return self.get_user_logins(self._sis_id(sis_user_id, sis_field="user"))
+        return self.get_user_logins(self._sis_id(sis_user_id,
+                                                 sis_field="user"))
 
     def update_user_login(self, login, account_id=None):
         """
@@ -95,9 +96,11 @@ class Users(Canvas):
         user.user_id = data["id"]
         user.name = data["name"]
         user.short_name = data["short_name"] if "short_name" in data else None
-        user.sortable_name = data["sortable_name"] if "sortable_name" in data else None
+        user.sortable_name = data["sortable_name"] if (
+            "sortable_name" in data) else None
         user.login_id = data["login_id"] if "login_id" in data else None
-        user.sis_user_id = data["sis_user_id"] if "sis_user_id" in data else None
+        user.sis_user_id = data["sis_user_id"] if (
+            "sis_user_id" in data) else None
         user.email = data["email"] if "email" in data else None
         user.time_zone = data["time_zone"] if "time_zone" in data else None
         user.locale = data["locale"] if "locale" in data else None
@@ -106,14 +109,16 @@ class Users(Canvas):
             enrollments = Enrollments()
             user.enrollments = []
             for enr_datum in data["enrollments"]:
-                user.enrollments.append(enrollments._enrollment_from_json(enr_datum))
+                user.enrollments.append(
+                    enrollments._enrollment_from_json(enr_datum))
         return user
 
     def _login_from_json(self, data):
         login = Login()
         login.login_id = data["id"]
         login.account_id = data["account_id"]
-        login.sis_user_id = data["sis_user_id"] if "sis_user_id" in data else None
+        login.sis_user_id = data["sis_user_id"] if (
+            "sis_user_id" in data) else None
         login.unique_id = data["unique_id"]
         login.user_id = data["user_id"]
         return login

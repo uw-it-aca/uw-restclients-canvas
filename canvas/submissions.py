@@ -7,25 +7,25 @@ class Submissions(Canvas):
     def get_submissions_multiple_assignments_by_sis_id(
             self, is_section, sis_id, students=None, assignments=None):
         """
-        List submissions for multiple assignments by course/section sis id and optionally student
+        List submissions for multiple assignments by course/section sis id and
+        optionally student
 
         https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.for_students
         """
         if is_section:
-            return self.get_submissions_multiple_assignments(is_section,
-                                                 self._sis_id(sis_id, "section"),
-                                                 students,
-                                                 assignments)
+            return self.get_submissions_multiple_assignments(
+                is_section, self._sis_id(sis_id, "section"), students,
+                assignments)
         else:
-            return self.get_submissions_multiple_assignments(is_section,
-                                                 self._sis_id(sis_id, "course"),
-                                                 students,
-                                                 assignments)
+            return self.get_submissions_multiple_assignments(
+                is_section, self._sis_id(sis_id, "course"), students,
+                assignments)
 
     def get_submissions_multiple_assignments(
             self, is_section, course_id, students=None, assignments=None):
         """
-        List submissions for multiple assignments by course/section id and optionally student
+        List submissions for multiple assignments by course/section id and
+        optionally student
 
         https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.for_students
         """
@@ -58,7 +58,8 @@ class Submissions(Canvas):
         submission.late = data['late']
         submission.grade = data['grade']
         submission.score = data['score']
-        submission.grade_matches_current_submission = data['grade_matches_current_submission']
+        submission.grade_matches_current_submission = (
+            data['grade_matches_current_submission'])
         submission.url = data['url']
         submission.grader_id = data['grader_id']
         submission.graded_at = dateutil.parser.parse(data['graded_at'])

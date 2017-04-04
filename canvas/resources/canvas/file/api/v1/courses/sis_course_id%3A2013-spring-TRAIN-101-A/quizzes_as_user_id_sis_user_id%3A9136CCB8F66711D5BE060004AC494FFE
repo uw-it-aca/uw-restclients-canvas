@@ -1,0 +1,29 @@
+[
+    {
+        "access_code": null,
+        "allowed_attempts": 1,
+        "assignment_group_id": 579085,
+        "cant_go_back": false,
+        "description": "",
+        "due_at": "2014-01-01T07:59:59Z",
+        "hide_results": null,
+        "id": 762037,
+        "ip_filter": null,
+        "lock_at": null,
+        "one_question_at_a_time": false,
+        "points_possible": 1,
+        "quiz_type": "assignment",
+        "scoring_policy": "keep_highest",
+        "show_correct_answers": true,
+        "shuffle_answers": false,
+        "time_limit": null,
+        "title": "Test Quiz",
+        "unlock_at": null,
+        "html_url": "https://uw.test.instructure.com/courses/862539/quizzes/762037",
+        "mobile_url": "https://uw.test.instructure.com/courses/862539/quizzes/762037?force_user=1&persist_headless=1",
+        "question_count": 1,
+        "published": true,
+        "unpublishable": true,
+        "locked_for_user": false
+    }
+]

@@ -1,0 +1,105 @@
+[
+    {
+        "assignment_group_id": 579085,
+        "automatic_peer_reviews": false,
+        "description": "",
+        "due_at": "2014-01-01T07:59:00Z",
+        "grade_group_students_individually": false,
+        "grading_standard_id": null,
+        "grading_type": "points",
+        "group_category_id": null,
+        "id": 2367793,
+        "lock_at": "2014-03-08T07:59:00Z",
+        "peer_reviews": false,
+        "points_possible": 1000000000,
+        "position": 1,
+        "unlock_at": "2013-12-01T08:00:00Z",
+        "course_id": 862539,
+        "name": "Assignment 1",
+        "submission_types": [
+            "online_text_entry",
+            "online_url"
+        ],
+        "turnitin_enabled": false,
+        "turnitin_settings": {
+            "originality_report_visibility": "immediate",
+            "s_paper_check": true,
+            "internet_check": true,
+            "journal_check": true,
+            "exclude_biblio": true,
+            "exclude_quoted": true,
+            "exclude_small_matches_type": null,
+            "exclude_small_matches_value": null
+        },
+        "muted": false,
+        "html_url": "https://uw.test.instructure.com/courses/862539/assignments/2367793",
+        "needs_grading_count": 0,
+        "use_rubric_for_grading": false,
+        "free_form_criterion_comments": false,
+        "rubric": [
+            {
+                "id": "124694_724",
+                "points": 5,
+                "description": "Description of criterion",
+                "long_description": "",
+                "ratings": [
+                    {
+                        "id": "blank",
+                        "points": 5,
+                        "description": "Full Marks"
+                    },
+                    {
+                        "id": "blank_2",
+                        "points": 0,
+                        "description": "No Marks"
+                    }
+                ]
+            }
+        ],
+        "rubric_settings": {
+            "points_possible": 5,
+            "free_form_criterion_comments": false
+        },
+        "integration_id": "",
+        "integration_data": "",
+        "locked_for_user": false
+    },
+    {
+        "assignment_group_id": 579085,
+        "automatic_peer_reviews": false,
+        "description": "",
+        "due_at": "2014-01-01T07:59:00Z",
+        "grade_group_students_individually": false,
+        "grading_standard_id": null,
+        "grading_type": "points",
+        "group_category_id": null,
+        "id": 2367794,
+        "lock_at": null,
+        "peer_reviews": false,
+        "points_possible": 123,
+        "position": 2,
+        "unlock_at": null,
+        "course_id": 862539,
+        "name": "Assignment 2",
+        "submission_types": [
+            "online_text_entry"
+        ],
+        "turnitin_enabled": false,
+        "turnitin_settings": {
+            "originality_report_visibility": "immediate",
+            "s_paper_check": true,
+            "internet_check": true,
+            "journal_check": true,
+            "exclude_biblio": true,
+            "exclude_quoted": true,
+            "exclude_small_matches_type": null,
+            "exclude_small_matches_value": null
+        },
+        "muted": false,
+        "html_url": "https://uw.test.instructure.com/courses/862539/assignments/2367794",
+        "needs_grading_count": 0,
+        "integration_id": "",
+        "integration_data": "",
+        "locked_for_user": false
+    }
+]

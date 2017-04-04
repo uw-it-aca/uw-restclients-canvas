@@ -12,7 +12,6 @@ class Quizzes(Canvas):
         """
         return self.get_quizzes(self._sis_id(sis_id, "course"))
 
-
     def get_quizzes(self, course_id):
         """
         List quizzes for a given course
@@ -42,8 +41,10 @@ class Quizzes(Canvas):
 
         return quiz
 
-    def get_submissions_for_sis_course_id_and_quiz_id(self, sis_course_id, quiz_id):
-        url = "/api/v1/courses/%s/quizzes/%s/submissions" % (self._sis_id(sis_course_id, sis_field="course"), quiz_id)
+    def get_submissions_for_sis_course_id_and_quiz_id(
+            self, sis_course_id, quiz_id):
+        url = "/api/v1/courses/%s/quizzes/%s/submissions" % (
+            self._sis_id(sis_course_id, sis_field="course"), quiz_id)
         submissions = Canvas()._get_resource(url, data_key="quiz_submissions")
 
         return submissions

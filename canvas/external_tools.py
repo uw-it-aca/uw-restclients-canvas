@@ -122,7 +122,8 @@ class ExternalTools(Canvas):
 
         https://canvas.instructure.com/doc/api/external_tools.html#method.external_tools.generate_sessionless_launch
         """
-        url = "/api/v1/%ss/%s/external_tools/sessionless_launch" % (context, context_id)
+        url = "/api/v1/%ss/%s/external_tools/sessionless_launch" % (
+            context, context_id)
         params = {
             "id": tool_id
         }
@@ -137,7 +138,8 @@ class ExternalTools(Canvas):
         """
         return self._get_sessionless_launch_url(tool_id, "account", account_id)
 
-    def get_sessionless_launch_url_from_account_sis_id(self, tool_id, account_sis_id):
+    def get_sessionless_launch_url_from_account_sis_id(
+            self, tool_id, account_sis_id):
         """
         Get a sessionless launch url for an external tool.
 
@@ -154,7 +156,8 @@ class ExternalTools(Canvas):
         """
         return self._get_sessionless_launch_url(tool_id, "course", course_id)
 
-    def get_sessionless_launch_url_from_course_sis_id(self, tool_id, course_sis_id):
+    def get_sessionless_launch_url_from_course_sis_id(
+            self, tool_id, course_sis_id):
         """
         Get a sessionless launch url for an external tool.
 

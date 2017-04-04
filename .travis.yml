@@ -1,0 +1,22 @@
+sudo: false
+language: python
+python:
+- '2.7'
+- '3.4'
+- '3.5'
+- '3.6'
+before_script:
+- pip install -e .
+- pip install pep8
+- pip install nose2
+- pip install coverage
+- pip install commonconf
+- pip install python-coveralls
+script:
+- pep8 --exclude=canvas/tests canvas
+- coverage run canvas/test.py -v
+after_script:
+- coveralls
+before_deploy:
+- find canvas/ -name \*.pyc -exec rm {} \;
+- echo $TRAVIS_TAG > canvas/VERSION

@@ -1,5 +1,5 @@
-from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasCourse, CanvasTerm
+from canvas import Canvas
+from canvas.models import CanvasCourse, CanvasTerm
 import re
 
 
