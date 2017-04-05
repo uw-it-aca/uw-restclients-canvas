@@ -33,6 +33,7 @@ class CanvasFileDownloadLiveDAO(LiveDAO):
 
         return pool_manager.request(method, url, headers=headers)
 
+
 class CanvasFileDownload_DAO(Canvas_DAO):
     def _get_live_implementation(self):
         return CanvasFileDownloadLiveDAO(self.service_name(), self)
