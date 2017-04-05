@@ -10,6 +10,6 @@ class TestCanvasFileDownloadLiveDAO(TestCase):
     @mock.patch.object(PoolManager, 'request')
     def test_file_download_dao(self, mock_pool):
         dao = CanvasFileDownload_DAO()
-	r = dao.getURL('https://example.com/some/path')
+        r = dao.getURL('https://example.com/some/path')
         mock_pool.assert_called_with(
             'GET', 'https://canvas.test.edu/some/path', headers={})
