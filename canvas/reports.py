@@ -1,8 +1,7 @@
 from canvas import Canvas
+from canvas.dao import CanvasFileDownload_DAO
 from canvas.models import Report, ReportType, Attachment
 from restclients_core.exceptions import DataFailureException
-from commonconf import settings
-from urllib3 import PoolManager
 from time import sleep
 import re
 
@@ -178,18 +177,7 @@ class Reports(Canvas):
         return True
 
     def _get_report_file(self, url):
-        # Ensure file url matches the hostname in settings,
-        # workaround for Canvas bug help.instructure.com/tickets/362386
-        url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
-        timeout = getattr(settings, "RESTCLIENTS_CANVAS_SOCKET_TIMEOUT", 15)
-        cafile = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
-                         "/etc/ssl/certs/ca-bundle.crt")
-        pool_manager = PoolManager(cert_reqs="CERT_REQUIRED",
-                                   ca_certs=cafile,
-                                   timeout=timeout,
-                                   retries=5)
-
-        response = pool_manager.request("GET", url)
+        response = CanvasFileDownload_DAO().getURL(url)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
