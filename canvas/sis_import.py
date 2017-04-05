@@ -23,15 +23,11 @@ class SISImport(Canvas):
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
         url = "/api/v1/accounts/%s/sis_imports.json%s" % (
             settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, self._params(params))
-        headers = {"Accept": "application/json",
-                   "Content-Type": "text/csv"}
+        headers = {"Content-Type": "text/csv"}
 
-        response = Canvas_DAO().postURL(url, headers, csv)
+        data = self._post_resource(url, headers, csv)
 
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._sis_import_from_json(json.loads(response.data))
+        return self._sis_import_from_json(data)
 
     def import_dir(self, dir_path, params={}):
         """
@@ -39,26 +35,15 @@ class SISImport(Canvas):
 
         https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.create
         """
-        archive = self._build_archive(dir_path)
-
-        f = open(archive, "r")
-        try:
-            body = f.read()
-        finally:
-            f.close()
-
+        body = self._build_archive(dir_path)
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
         url = "/api/v1/accounts/%s/sis_imports.json%s" % (
             settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, self._params(params))
-        headers = {"Accept": "application/json",
-                   "Content-Type": "application/zip"}
+        headers = {"Content-Type": "application/zip"}
 
-        response = Canvas_DAO().postURL(url, headers, body)
+        data = self._post_resource(url, headers, body)
 
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._sis_import_from_json(json.loads(response.data))
+        return self._sis_import_from_json(data)
 
     def get_import_status(self, sis_import):
         """
@@ -70,6 +55,16 @@ class SISImport(Canvas):
             settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, sis_import.import_id)
 
         return self._sis_import_from_json(self._get_resource(url))
+
+    def _post_resource(self, url, headers, body):
+        headers.update({"Accept": "application/json",
+                        "Connection": "keep-alive"})
+        response = Canvas_DAO().postURL(url, headers, body)
+
+        if not (response.status == 200 or response.status == 204):
+            raise DataFailureException(url, response.status, response.data)
+
+        return json.loads(response.data)
 
     def _build_archive(self, dir_path):
         """
@@ -86,7 +81,10 @@ class SISImport(Canvas):
 
         archive.close()
 
-        return zip_path
+        with open(zip_path, "r") as f:
+            body = f.read()
+
+        return body
 
     def _sis_import_from_json(self, data):
         sis_import = SISImportModel()
