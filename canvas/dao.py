@@ -14,8 +14,7 @@ class Canvas_DAO(DAO):
         return "canvas"
 
     def service_mock_paths(self):
-        path = [abspath(os.path.join(dirname(__file__), "resources"))]
-        return path
+        return [abspath(os.path.join(dirname(__file__), "resources"))]
 
 
 class CanvasFileDownloadLiveDAO(LiveDAO):
