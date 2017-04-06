@@ -16,6 +16,10 @@ class Canvas_DAO(DAO):
     def service_mock_paths(self):
         return [abspath(os.path.join(dirname(__file__), "resources"))]
 
+    def _custom_headers(self, method, url, headers, body):
+        bearer_key = self.get_service_setting("OAUTH_BEARER", "")
+        return {"Authorization": "Bearer %s" % bearer_key}
+
 
 class CanvasFileDownloadLiveDAO(LiveDAO):
     def load(self, method, url, headers, body):

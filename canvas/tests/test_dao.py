@@ -12,4 +12,5 @@ class TestCanvasFileDownloadLiveDAO(TestCase):
         dao = CanvasFileDownload_DAO()
         r = dao.getURL('https://example.com/some/path')
         mock_pool.assert_called_with(
-            'GET', 'https://canvas.test.edu/some/path', headers={})
+            'GET', 'https://canvas.test.edu/some/path',
+            headers={'Authorization': 'Bearer 00000'})
