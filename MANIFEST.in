@@ -1,2 +1,2 @@
-include canvas/VERSION
-recursive-include canvas *
+include uw_canvas/VERSION
+recursive-include uw_canvas *
