@@ -8,9 +8,6 @@ class CanvasAccount(models.Model):
     parent_account_id = models.CharField(max_length=30)
     root_account_id = models.CharField(max_length=30)
 
-    class Meta:
-        db_table = "restclients_canvas_account"
-
 
 class CanvasSSOSettings(models.Model):
     login_handle_name = models.CharField(max_length=100, null=True)
@@ -26,18 +23,12 @@ class CanvasSSOSettings(models.Model):
             'unknown_user_url': self.unknown_user_url
         }}
 
-    class Meta:
-        db_table = "restclients_canvas_sso_settings"
-
 
 class CanvasRole(models.Model):
     role_id = models.IntegerField()
     label = models.CharField(max_length=200)
     base_role_type = models.CharField(max_length=200)
     workflow_state = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = "restclients_canvas_role"
 
 
 class CanvasTerm(models.Model):
@@ -47,9 +38,6 @@ class CanvasTerm(models.Model):
     workflow_state = models.CharField(max_length=50)
     start_at = models.DateTimeField(null=True)
     end_at = models.DateTimeField(null=True)
-
-    class Meta:
-        db_table = "restclients_canvas_term"
 
 
 class CanvasCourse(models.Model):
@@ -80,9 +68,6 @@ class CanvasCourse(models.Model):
 
         return sws_id
 
-    class Meta:
-        db_table = "restclients_canvas_course"
-
 
 class CanvasSection(models.Model):
     section_id = models.IntegerField()
@@ -90,9 +75,6 @@ class CanvasSection(models.Model):
     name = models.CharField(max_length=200)
     course_id = models.IntegerField()
     nonxlist_course_id = models.IntegerField()
-
-    class Meta:
-        db_table = "restclients_canvas_section"
 
 
 class CanvasEnrollment(models.Model):
@@ -180,9 +162,6 @@ class CanvasEnrollment(models.Model):
                 "current_grade": self.current_grade,
                 "final_grade": self.final_grade}
 
-    class Meta:
-        db_table = "restclients_canvas_enrollment"
-
 
 class Attachment(models.Model):
     attachment_id = models.IntegerField()
@@ -191,9 +170,6 @@ class Attachment(models.Model):
     content_type = models.CharField(max_length=50)
     size = models.IntegerField()
     url = models.CharField(max_length=500)
-
-    class Meta:
-        db_table = "restclients_canvas_attachment"
 
 
 class Report(models.Model):
@@ -204,9 +180,6 @@ class Report(models.Model):
     status = models.CharField(max_length=50)
     progress = models.SmallIntegerField(max_length=3, default=0)
     attachment = models.ForeignKey(Attachment, null=True)
-
-    class Meta:
-        db_table = "restclients_canvas_report"
 
 
 class ReportType(models.Model):
@@ -223,9 +196,6 @@ class ReportType(models.Model):
     name = models.CharField(max_length=500, choices=NAME_CHOICES)
     title = models.CharField(max_length=500)
 
-    class Meta:
-        db_table = "restclients_canvas_reporttype"
-
 
 class SISImport(models.Model):
     CSV_IMPORT_TYPE = "instructure_csv"
@@ -233,9 +203,6 @@ class SISImport(models.Model):
     import_id = models.IntegerField()
     workflow_state = models.CharField(max_length=100)
     progress = models.CharField(max_length=3)
-
-    class Meta:
-        db_table = "restclients_canvas_sisimport"
 
 
 class CanvasUser(models.Model):
@@ -263,9 +230,6 @@ class CanvasUser(models.Model):
                                           "address": self.email,
                                           "skip_confirmation": True}}
 
-    class Meta:
-        db_table = "restclients_canvas_user"
-
 
 class Login(models.Model):
     login_id = models.IntegerField()
@@ -278,17 +242,11 @@ class Login(models.Model):
         return {"login": {"unique_id": self.unique_id,
                           "sis_user_id": self.sis_user_id}}
 
-    class Meta:
-        db_table = "restclients_canvas_login"
-
 
 class CanvasAdmin(models.Model):
     admin_id = models.IntegerField()
     role = models.CharField(max_length=100)
     user = models.ForeignKey(CanvasUser)
-
-    class Meta:
-        db_table = "restclients_canvas_admin"
 
 
 class Submission(models.Model):
@@ -307,9 +265,6 @@ class Submission(models.Model):
     grader_id = models.IntegerField()
     graded_at = models.DateTimeField(null=True)
     submission_type = models.CharField(max_length=100, null=True)
-
-    class Meta:
-        db_table = "restclients_canvas_submission"
 
 
 class Assignment(models.Model):
@@ -331,9 +286,6 @@ class Assignment(models.Model):
                 "integration_id": self.integration_id,
                 "integration_data": self.integration_data}}
 
-    class Meta:
-        db_table = "restclients_canvas_assignment"
-
 
 class Quiz(models.Model):
     quiz_id = models.IntegerField()
@@ -341,9 +293,6 @@ class Quiz(models.Model):
     title = models.CharField(max_length=500)
     html_url = models.CharField(max_length=500, null=True)
     published = models.NullBooleanField()
-
-    class Meta:
-        db_table = "restclients_canvas_quiz"
 
 
 class GradingStandard(models.Model):
