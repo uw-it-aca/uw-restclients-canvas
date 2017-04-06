@@ -1,4 +1,4 @@
 [run]
 branch = True
-source = canvas
-include = canvas/*
+source = uw_canvas
+include = uw_canvas/*
