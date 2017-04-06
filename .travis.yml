@@ -13,13 +13,13 @@ before_script:
 - pip install commonconf
 - pip install python-coveralls
 script:
-- pep8 --exclude=canvas/tests canvas
-- coverage run canvas/test.py -v
+- pep8 --exclude=uw_canvas/tests uw_canvas
+- coverage run uw_canvas/test.py -v
 after_script:
 - coveralls
 before_deploy:
-- find canvas/ -name \*.pyc -exec rm {} \;
-- echo $TRAVIS_TAG > canvas/VERSION
+- find uw_canvas/ -name \*.pyc -exec rm {} \;
+- echo $TRAVIS_TAG > uw_canvas/VERSION
 deploy:
   provider: pypi
   server: https://pypi.python.org/pypi
