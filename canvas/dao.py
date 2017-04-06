@@ -17,7 +17,7 @@ class Canvas_DAO(DAO):
         return [abspath(os.path.join(dirname(__file__), "resources"))]
 
     def _custom_headers(self, method, url, headers, body):
-        bearer_key = self.get_service_setting("OAUTH_BEARER")
+        bearer_key = self.get_service_setting("OAUTH_BEARER", "")
         return {"Authorization": "Bearer %s" % bearer_key}
 
 
