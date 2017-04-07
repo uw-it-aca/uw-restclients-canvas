@@ -20,6 +20,21 @@ class Canvas_DAO(DAO):
         bearer_key = self.get_service_setting("OAUTH_BEARER", "")
         return {"Authorization": "Bearer %s" % bearer_key}
 
+    def _edit_mock_response(self, method, url, headers, body, response):
+        if "POST" == method or "PUT" == method:
+            if response.status != 400:
+                path = "%s/resources/canvas/file%s.%s" % (
+                    abspath(dirname(__file__)), url, method)
+
+                try:
+                    handle = open(path)
+                    response.data = handle.read()
+                    response.status = 200
+                except IOError:
+                    response.status = 404
+        elif "DELETE" == method:
+            response.status = 200
+
 
 class CanvasFileDownloadLiveDAO(LiveDAO):
     def load(self, method, url, headers, body):
