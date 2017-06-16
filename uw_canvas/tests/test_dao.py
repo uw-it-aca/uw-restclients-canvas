@@ -7,10 +7,9 @@ import mock
 
 @ldao_canvas_override
 class TestCanvasFileDownloadLiveDAO(TestCase):
-    @mock.patch.object(PoolManager, 'request')
+    @mock.patch.object(PoolManager, 'urlopen')
     def test_file_download_dao(self, mock_pool):
         dao = CanvasFileDownload_DAO()
         r = dao.getURL('https://example.com/some/path')
         mock_pool.assert_called_with(
-            'GET', 'https://canvas.test.edu/some/path',
-            headers={'Authorization': 'Bearer 00000'})
+            'GET', 'https://canvas.test.edu/some/path', headers={})
