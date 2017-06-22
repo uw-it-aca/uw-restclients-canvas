@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "report": "sis_export_csv",
+  "file_url": "https://example.com/some/path",
+  "status": "complete",
+  "parameters": {"course_id":2,"start_at":"2015-07-13T10:55:20-06:00","end_at":"2015-07-13T10:55:20-06:00"},
+  "progress": "100"
+}
