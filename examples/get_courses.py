@@ -13,7 +13,7 @@ def get_courses():
 
     canvas = Courses()
     for course in canvas.get_courses_in_account(account_id):
-        print course.name
+        print(course.name)
 
 
 if __name__ == '__main__':
