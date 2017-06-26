@@ -10,7 +10,7 @@ def get_all_terms():
 
     canvas = Terms()
     for term in canvas.get_all_terms():
-        print term.name
+        print(term.name)
 
 
 if __name__ == '__main__':
