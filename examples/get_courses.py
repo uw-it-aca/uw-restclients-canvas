@@ -12,7 +12,7 @@ def get_courses():
     account_id = getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID')
 
     canvas = Courses()
-    for term in canvas.get_courses_in_account(account_id):
+    for course in canvas.get_courses_in_account(account_id):
         print course.name
 
 
