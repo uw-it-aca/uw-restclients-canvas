@@ -4,9 +4,9 @@ This is the interface for interacting with Instructure's Canvas web services.
 from restclients_core.exceptions import DataFailureException
 from uw_canvas.dao import Canvas_DAO
 try:
-    from urllib.parse import quote, unquote
+    from urllib.parse import quote_plus
 except ImportError:
-    from urllib import quote, unquote
+    from urllib import quote_plus
 import warnings
 import json
 import re
@@ -32,26 +32,23 @@ class Canvas(object):
         Prepares for paginated responses
         """
         self._per_page = per_page
+        self._as_user = as_user
         self._re_canvas_id = re.compile(r'^\d{2,12}$')
 
-        if as_user:
-            self._as_user = as_user if (
-                self.valid_canvas_id(as_user)) else self.sis_user_id(as_user)
-
     def get_courses_for_regid(self, regid):
-        deprecation("Use restclients.canvas.courses.get_courses_for_regid")
-        from restclients.canvas.courses import Courses
+        deprecation("Use uw_canvas.courses.get_courses_for_regid")
+        from uw_canvas.courses import Courses
         return Courses().get_courses_for_regid(regid)
 
     def get_enrollments_for_regid(self, regid):
         deprecation(
-            "Use restclients.canvas.enrollments.get_enrollments_for_regid")
-        from restclients.canvas.enrollments import Enrollments
+            "Use uw_canvas.enrollments.get_enrollments_for_regid")
+        from uw_canvas.enrollments import Enrollments
         return Enrollments().get_enrollments_for_regid(regid)
 
     def get_term_by_sis_id(self, sis_term_id):
-        deprecation("Use restclients.canvas.terms.get_term_by_sis_id")
-        from restclients.canvas.terms import Terms
+        deprecation("Use uw_canvas.terms.get_term_by_sis_id")
+        from uw_canvas.terms import Terms
         return Terms().get_term_by_sis_id(sis_term_id)
 
     def valid_canvas_id(self, canvas_id):
@@ -76,7 +73,7 @@ class Canvas(object):
         """
         generate sis_id object reference
         """
-        return quote('sis_%s_id:%s' % (sis_field, sis_id))
+        return quote_plus('sis_%s_id:%s' % (sis_field, sis_id))
 
     def _params(self, params):
         if params and len(params):
@@ -84,9 +81,9 @@ class Canvas(object):
             for key in sorted(params.keys()):
                 val = params[key]
                 if isinstance(val, list):
-                    p.extend([key + '[]=' + str(v) for v in val])
+                    p.extend([key + '[]=' + quote_plus(str(v)) for v in val])
                 else:
-                    p.append(key + '=' + str(val))
+                    p.append(key + '=' + quote_plus(str(val)))
 
             return "?%s" % ('&'.join(p))
         return ""
@@ -130,8 +127,12 @@ class Canvas(object):
         return data
 
     def _set_as_user(self, params):
-        if 'as_user_id' not in params and hasattr(self, '_as_user'):
-            params['as_user_id'] = self._as_user
+        if ('as_user_id' not in params and self._as_user is not None):
+            if self.valid_canvas_id(self._as_user):
+                as_user = self._as_user
+            else:
+                as_user = 'sis_user_id:%s' % self._as_user
+            params['as_user_id'] = as_user
 
     def _get_paged_resource(self, url, params=None, data_key=None):
         """

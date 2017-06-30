@@ -10,9 +10,10 @@ def get_courses():
     use_configparser_backend(settings_path, 'Canvas')
 
     account_id = getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID')
+    params = {'per_page': 100}
 
     canvas = Courses()
-    for course in canvas.get_courses_in_account(account_id):
+    for course in canvas.get_courses_in_account(account_id, params):
         print(course.name)
 
 
