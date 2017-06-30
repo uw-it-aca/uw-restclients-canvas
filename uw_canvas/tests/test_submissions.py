@@ -8,7 +8,7 @@ class CanvasTestSubmissions(TestCase):
     def test_submissions_by_course_id(self):
         canvas = Submissions()
         submissions = canvas.get_submissions_multiple_assignments(False, "862539", "all")
-        self.assertEquals(len(submissions), 3, "Submission Count")
+        self.assertEquals(len(submissions), 4, "Submission Count")
 
         sub = submissions[0]
         self.assertEquals(sub.submission_id, 12687216, "Has correct submission id")

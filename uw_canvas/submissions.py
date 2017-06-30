@@ -51,7 +51,9 @@ class Submissions(Canvas):
         submission.submission_id = data['id']
         submission.body = data['body']
         submission.attempt = data['attempt']
-        submission.submitted_at = dateutil.parser.parse(data['submitted_at'])
+        if data['submitted_at'] is not None:
+            submitted_date_str = data['submitted_at']
+            submission.submitted_at = dateutil.parser.parse(submitted_date_str)
         submission.assignment_id = data['assignment_id']
         submission.workflow_state = data['workflow_state']
         submission.preview_url = data['preview_url']
@@ -62,6 +64,8 @@ class Submissions(Canvas):
             data['grade_matches_current_submission'])
         submission.url = data['url']
         submission.grader_id = data['grader_id']
-        submission.graded_at = dateutil.parser.parse(data['graded_at'])
+        if data['graded_at'] is not None:
+            graded_date_str = data['graded_at']
+            submission.graded_at = dateutil.parser.parse(graded_date_str)
         submission.submission_type = data['submission_type']
         return submission
