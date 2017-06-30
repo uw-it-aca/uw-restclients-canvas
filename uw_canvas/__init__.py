@@ -83,7 +83,6 @@ class Canvas(object):
                 if isinstance(val, list):
                     p.extend([key + '[]=' + quote_plus(str(v)) for v in val])
                 else:
-                    print(val)
                     p.append(key + '=' + quote_plus(str(val)))
 
             return "?%s" % ('&'.join(p))
