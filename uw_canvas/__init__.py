@@ -39,19 +39,19 @@ class Canvas(object):
                 self.valid_canvas_id(as_user)) else self.sis_user_id(as_user)
 
     def get_courses_for_regid(self, regid):
-        deprecation("Use restclients.canvas.courses.get_courses_for_regid")
-        from restclients.canvas.courses import Courses
+        deprecation("Use uw_canvas.courses.get_courses_for_regid")
+        from uw_canvas.courses import Courses
         return Courses().get_courses_for_regid(regid)
 
     def get_enrollments_for_regid(self, regid):
         deprecation(
-            "Use restclients.canvas.enrollments.get_enrollments_for_regid")
-        from restclients.canvas.enrollments import Enrollments
+            "Use uw_canvas.enrollments.get_enrollments_for_regid")
+        from uw_canvas.enrollments import Enrollments
         return Enrollments().get_enrollments_for_regid(regid)
 
     def get_term_by_sis_id(self, sis_term_id):
-        deprecation("Use restclients.canvas.terms.get_term_by_sis_id")
-        from restclients.canvas.terms import Terms
+        deprecation("Use uw_canvas.terms.get_term_by_sis_id")
+        from uw_canvas.terms import Terms
         return Terms().get_term_by_sis_id(sis_term_id)
 
     def valid_canvas_id(self, canvas_id):
