@@ -280,6 +280,8 @@ class Assignment(models.Model):
     name = models.CharField(max_length=500)
     muted = models.NullBooleanField()
     html_url = models.CharField(max_length=500, null=True)
+    turnitin_enabled = models.NullBooleanField()
+    vericite_enabled = models.NullBooleanField()
 
     def json_data(self):
         return {"assignment": {

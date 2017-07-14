@@ -14,6 +14,8 @@ class CanvasTestAssignments(TestCase):
         self.assertEquals(assignment.due_at.day, 1, "Due date")
         self.assertEquals(assignment.grading_type, "points", "Grading type")
         self.assertEquals(assignment.grading_standard_id, None, "Grading Standard ID")
+        self.assertEquals(assignment.turnitin_enabled, False, "turnitin enabled")
+        self.assertEquals(assignment.vericite_enabled, True, "vericite enabled")
 
     def test_assignment_by_course_sis_id(self):
         canvas = Assignments()

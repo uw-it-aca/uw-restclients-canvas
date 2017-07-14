@@ -53,4 +53,6 @@ class Assignments(Canvas):
         assignment.name = data['name']
         assignment.muted = data['muted']
         assignment.html_url = data['html_url']
+        assignment.turnitin_enabled = data.get('turnitin_enabled', False)
+        assignment.vericite_enabled = data.get('vericite_enabled', False)
         return assignment
