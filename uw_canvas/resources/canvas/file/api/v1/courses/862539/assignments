@@ -21,6 +21,7 @@
             "online_url"
         ],
         "turnitin_enabled": false,
+        "vericite_enabled": true,
         "turnitin_settings": {
             "originality_report_visibility": "immediate",
             "s_paper_check": true,
@@ -85,6 +86,7 @@
             "online_text_entry"
         ],
         "turnitin_enabled": false,
+        "vericite_enabled": false,
         "turnitin_settings": {
             "originality_report_visibility": "immediate",
             "s_paper_check": true,
