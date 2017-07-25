@@ -282,11 +282,20 @@ class Assignment(models.Model):
     html_url = models.CharField(max_length=500, null=True)
     turnitin_enabled = models.NullBooleanField()
     vericite_enabled = models.NullBooleanField()
+    submission_types = []
+    external_tool_tag_attributes = {}
 
     def json_data(self):
-        return {"assignment": {
-                "integration_id": self.integration_id,
-                "integration_data": self.integration_data}}
+        data = {
+            "integration_id": self.integration_id,
+            "integration_data": self.integration_data,
+        }
+
+        if "external_tool" in self.submission_types:
+            data["external_tool_tag_attributes"] = (
+                self.external_tool_tag_attributes)
+
+        return {"assignment": data}
 
 
 class Quiz(models.Model):
