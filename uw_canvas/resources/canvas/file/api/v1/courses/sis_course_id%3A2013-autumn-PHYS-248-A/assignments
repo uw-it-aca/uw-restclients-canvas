@@ -82,7 +82,7 @@
         "course_id": 862539,
         "name": "Assignment 2",
         "submission_types": [
-            "online_text_entry"
+            "external_tool"
         ],
         "turnitin_enabled": false,
         "turnitin_settings": {
