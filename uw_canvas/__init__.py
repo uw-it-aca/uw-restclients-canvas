@@ -4,9 +4,9 @@ This is the interface for interacting with Instructure's Canvas web services.
 from restclients_core.exceptions import DataFailureException
 from uw_canvas.dao import Canvas_DAO
 try:
-    from urllib.parse import quote_plus
+    from urllib.parse import quote_plus, quote
 except ImportError:
-    from urllib import quote_plus
+    from urllib import quote_plus, quote
 import warnings
 import json
 import re
@@ -73,7 +73,7 @@ class Canvas(object):
         """
         generate sis_id object reference
         """
-        return quote_plus('sis_%s_id:%s' % (sis_field, sis_id))
+        return quote('sis_%s_id:%s' % (sis_field, sis_id))
 
     def _params(self, params):
         if params and len(params):
