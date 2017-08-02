@@ -56,4 +56,4 @@ class CanvasTestCanvas(TestCase):
         params = {'per_page': 100, 'search_term': '19th Century Poets'}
         self.assertEquals(
             canvas._params(params),
-            '?per_page=100&search_term=19th+Century+Poets')
+            '?per_page=100&search_term=19th%20Century%20Poets')
