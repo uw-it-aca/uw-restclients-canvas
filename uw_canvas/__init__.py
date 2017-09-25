@@ -170,9 +170,12 @@ class Canvas(object):
         """
         Canvas PUT method.
         """
+        params = {}
+        self._set_as_user(params)
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
+        url = '%s%s' % (url, self._params(params))
         response = Canvas_DAO().putURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 201 or
@@ -185,9 +188,12 @@ class Canvas(object):
         """
         Canvas POST method.
         """
+        params = {}
+        self._set_as_user(params)
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
+        url = '%s%s' % (url, self._params(params))
         response = Canvas_DAO().postURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 204):
@@ -199,8 +205,11 @@ class Canvas(object):
         """
         Canvas DELETE method.
         """
+        params = {}
+        self._set_as_user(params)
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
+        url = '%s%s' % (url, self._params(params))
         response = Canvas_DAO().deleteURL(url, headers)
 
         if not (response.status == 200 or response.status == 204):
