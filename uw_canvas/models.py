@@ -282,8 +282,11 @@ class Assignment(models.Model):
     html_url = models.CharField(max_length=500, null=True)
     turnitin_enabled = models.NullBooleanField()
     vericite_enabled = models.NullBooleanField()
-    submission_types = []
-    external_tool_tag_attributes = {}
+
+    def __init__(self, *args, **kwargs):
+        super(Assignment, self).__init__(*args, **kwargs)
+        self.submission_types = []
+        self.external_tool_tag_attributes = {}
 
     def json_data(self):
         data = {
