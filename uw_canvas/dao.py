@@ -33,8 +33,6 @@ class Canvas_DAO(DAO):
                     response.status = 200
                 except IOError:
                     response.status = 404
-        elif "DELETE" == method:
-            response.status = 200
 
 
 class CanvasFileDownload_DAO(DAO):
