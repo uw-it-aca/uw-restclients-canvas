@@ -21,7 +21,7 @@ setup(
     author="UW-IT AXDD",
     author_email="aca-it@uw.edu",
     include_package_data=True,
-    install_requires=['UW-RestClients-Core==0.9.1,<1.0',
+    install_requires=['UW-RestClients-Core==0.9.1',
                       'python-dateutil',
                       'mock',
                      ],
@@ -35,6 +35,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.6',
     ],
 )
