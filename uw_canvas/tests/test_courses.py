@@ -1,6 +1,7 @@
 from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.courses import Courses
+from uw_canvas.models import CanvasCourse
 import mock
 
 
@@ -15,6 +16,8 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
         self.assertEquals(course.sis_course_id, "2013-spring-PHYS-121-A")
         self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEquals(course.sws_instructor_regid(), None)
+        self.assertEquals(course.is_academic_sis_id(), True)
         self.assertEquals(course.account_id, 84378, "Has proper account id")
         self.assertEquals(course.term.sis_term_id, "2013-spring", "SIS term id")
         self.assertEquals(course.term.term_id, 810, "Term id")
@@ -83,6 +86,27 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(course.sis_course_id, "2013-spring-PHYS-121-A", "Course doesnt contain SIS ID")
         self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A", "Course doesnt contain SIS ID")
         self.assertEquals(course.account_id, 84378, "Has proper account id")
+
+    def test_sis_id(self):
+        course = CanvasCourse()
+        self.assertEquals(course.sws_course_id(), None)
+        self.assertEquals(course.sws_instructor_regid(), None)
+        self.assertEquals(course.is_academic_sis_id(), False)
+
+        course = CanvasCourse(sis_course_id="2013-spring-PHYS-121-A")
+        self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEquals(course.sws_instructor_regid(), None)
+        self.assertEquals(course.is_academic_sis_id(), True)
+
+        course = CanvasCourse(sis_course_id="2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE")
+        self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,599/A")
+        self.assertEquals(course.sws_instructor_regid(), "9136CCB8F66711D5BE060004AC494FFE")
+        self.assertEquals(course.is_academic_sis_id(), True)
+
+        course = CanvasCourse(sis_course_id="course_123456")
+        self.assertEquals(course.sws_course_id(), None)
+        self.assertEquals(course.sws_instructor_regid(), None)
+        self.assertEquals(course.is_academic_sis_id(), False)
 
     @mock.patch.object(Courses, '_course_from_json')
     @mock.patch.object(Courses, '_post_resource')
