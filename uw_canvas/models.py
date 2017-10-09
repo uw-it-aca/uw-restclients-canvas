@@ -1,4 +1,5 @@
 from restclients_core import models
+import re
 
 
 class CanvasAccount(models.Model):
@@ -41,6 +42,15 @@ class CanvasTerm(models.Model):
 
 
 class CanvasCourse(models.Model):
+    RE_COURSE_SIS_ID = re.compile(
+    	"^\d{4}-"                           # year
+    	"(?:winter|spring|summer|autumn)-"  # quarter
+    	"[\w& ]+-"                          # curriculum
+    	"\d{3}-"                            # course number
+    	"[A-Z][A-Z0-9]?"                    # section id
+    	"(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
+    	re.VERBOSE)
+
     course_id = models.IntegerField()
     sis_course_id = models.CharField(max_length=100, null=True)
     account_id = models.IntegerField()
@@ -56,25 +66,86 @@ class CanvasCourse(models.Model):
         return self.workflow_state.lower() == "unpublished"
 
     def sws_course_id(self):
-        if self.sis_course_id is None:
-            return None
+        if not self.is_academic_sis_id():
+            return
 
-        parts = self.sis_course_id.split("-")
-        if len(parts) != 5:
-            return None
+        try:
+            (year, quarter, curr_abbr, course_num,
+                section_id, reg_id) = self.sis_course_id.split('-', 5)
+        except ValueError:
+            (year, quarter, curr_abbr, course_num,
+                section_id) = self.sis_course_id.split('-', 4)
 
-        sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
-                                     parts[4])
+        return '%s,%s,%s,%s/%s' % (
+            year, quarter.lower(), curr_abbr.upper(), course_num, section_id)
 
-        return sws_id
+    def sws_instructor_regid(self):
+        if not self.is_academic_sis_id():
+            return
+
+        try:
+            (year, quarter, curr_abbr, course_num,
+                section_id, reg_id) = self.sis_course_id.split('-', 5)
+        except ValueError:
+            reg_id = None
+
+        return reg_id
+
+    def is_academic_sis_id(self):
+        if (self.sis_course_id is None or
+                self.RE_COURSE_SIS_ID.match(self.sis_course_id) is None):
+            return False
+        return True
 
 
 class CanvasSection(models.Model):
+    RE_SECTION_SIS_ID = re.compile(
+    	"^\d{4}-"                                  # year
+    	"(?:winter|spring|summer|autumn)-"         # quarter
+    	"[\w& ]+-"                                 # curriculum
+    	"\d{3}-"                                   # course number
+    	"[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
+    	re.VERBOSE)
+
     section_id = models.IntegerField()
     sis_section_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=200)
     course_id = models.IntegerField()
     nonxlist_course_id = models.IntegerField()
+
+    def sws_section_id(self):
+	if not self.is_academic_sis_id():
+            return
+
+        sis_section_id = re.sub(r'--$', '', self.sis_section_id)
+        try:
+            (year, quarter, curr_abbr, course_num,
+                section_id, reg_id) = sis_section_id.split('-', 5)
+        except ValueError:
+            (year, quarter, curr_abbr, course_num,
+                section_id) = sis_section_id.split('-', 4)
+
+        return '%s,%s,%s,%s/%s' % (
+            year, quarter.lower(), curr_abbr.upper(), course_num, section_id)
+
+    def sws_instructor_regid(self):
+        if not self.is_academic_sis_id():
+            return
+
+        section_id = re.sub(r'--$', '', self.sis_section_id)
+        try:
+            (year, quarter, curr_abbr, course_num,
+                section_id, reg_id) = section_id.split('-', 5)
+        except ValueError:
+            reg_id = None
+
+        return reg_id
+
+    def is_academic_sis_id(self):
+        if (self.sis_section_id is None or
+                self.RE_SECTION_SIS_ID.match(self.sis_section_id) is None):
+            return False
+        return True
 
 
 class CanvasEnrollment(models.Model):
