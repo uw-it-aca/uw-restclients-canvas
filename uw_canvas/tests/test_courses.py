@@ -88,7 +88,7 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(course.account_id, 84378, "Has proper account id")
 
     def test_sis_id(self):
-	course = CanvasCourse()
+        course = CanvasCourse()
         self.assertEquals(course.sws_course_id(), None)
         self.assertEquals(course.sws_instructor_regid(), None)
         self.assertEquals(course.is_academic_sis_id(), False)
