@@ -43,13 +43,13 @@ class CanvasTerm(models.Model):
 
 class CanvasCourse(models.Model):
     RE_COURSE_SIS_ID = re.compile(
-    	"^\d{4}-"                           # year
-    	"(?:winter|spring|summer|autumn)-"  # quarter
-    	"[\w& ]+-"                          # curriculum
-    	"\d{3}-"                            # course number
-    	"[A-Z][A-Z0-9]?"                    # section id
-    	"(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
-    	re.VERBOSE)
+        "^\d{4}-"                           # year
+        "(?:winter|spring|summer|autumn)-"  # quarter
+        "[\w& ]+-"                          # curriculum
+        "\d{3}-"                            # course number
+        "[A-Z][A-Z0-9]?"                    # section id
+        "(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
+        re.VERBOSE)
 
     course_id = models.IntegerField()
     sis_course_id = models.CharField(max_length=100, null=True)
@@ -100,12 +100,12 @@ class CanvasCourse(models.Model):
 
 class CanvasSection(models.Model):
     RE_SECTION_SIS_ID = re.compile(
-    	"^\d{4}-"                                  # year
-    	"(?:winter|spring|summer|autumn)-"         # quarter
-    	"[\w& ]+-"                                 # curriculum
-    	"\d{3}-"                                   # course number
-    	"[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
-    	re.VERBOSE)
+        "^\d{4}-"                                  # year
+        "(?:winter|spring|summer|autumn)-"         # quarter
+        "[\w& ]+-"                                 # curriculum
+        "\d{3}-"                                   # course number
+        "[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
+        re.VERBOSE)
 
     section_id = models.IntegerField()
     sis_section_id = models.CharField(max_length=100, null=True)
@@ -114,7 +114,7 @@ class CanvasSection(models.Model):
     nonxlist_course_id = models.IntegerField()
 
     def sws_section_id(self):
-	if not self.is_academic_sis_id():
+        if not self.is_academic_sis_id():
             return
 
         sis_section_id = re.sub(r'--$', '', self.sis_section_id)
