@@ -98,7 +98,7 @@ class Canvas(object):
                 (url, rel) = link.split(";")
                 if "next" in rel:
                     return url.lstrip("<").rstrip(">")
-            except:
+            except Exception:
                 return
 
     def _get_resource_url(self, url, auto_page, data_key):
