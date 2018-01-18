@@ -7,13 +7,13 @@ python:
 - '3.6'
 before_script:
 - pip install -e .
-- pip install pep8
+- pip install pycodestyle
 - pip install nose2
 - pip install coverage
 - pip install commonconf
 - pip install python-coveralls
 script:
-- pep8 --exclude=uw_canvas/tests uw_canvas
+- pycodestyle --exclude=uw_canvas/tests uw_canvas
 - coverage run uw_canvas/test.py -v
 after_script:
 - coveralls
