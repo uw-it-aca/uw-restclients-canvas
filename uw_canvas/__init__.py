@@ -14,6 +14,7 @@ import re
 
 DEFAULT_PAGINATION = 0
 MASQUERADING_USER = None
+DAO = Canvas_DAO()
 
 
 def deprecation(message):
@@ -97,7 +98,7 @@ class Canvas(object):
                 (url, rel) = link.split(";")
                 if "next" in rel:
                     return url.lstrip("<").rstrip(">")
-            except:
+            except Exception:
                 return
 
     def _get_resource_url(self, url, auto_page, data_key):
@@ -108,7 +109,7 @@ class Canvas(object):
         """
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
-        response = Canvas_DAO().getURL(url, headers)
+        response = DAO.getURL(url, headers)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -176,7 +177,7 @@ class Canvas(object):
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
         url = '%s%s' % (url, self._params(params))
-        response = Canvas_DAO().putURL(url, headers, json.dumps(body))
+        response = DAO.putURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 201 or
                 response.status == 204):
@@ -194,7 +195,7 @@ class Canvas(object):
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
         url = '%s%s' % (url, self._params(params))
-        response = Canvas_DAO().postURL(url, headers, json.dumps(body))
+        response = DAO.postURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 204):
             raise DataFailureException(url, response.status, response.data)
@@ -210,7 +211,7 @@ class Canvas(object):
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
         url = '%s%s' % (url, self._params(params))
-        response = Canvas_DAO().deleteURL(url, headers)
+        response = DAO.deleteURL(url, headers)
 
         if not (response.status == 200 or response.status == 204):
             raise DataFailureException(url, response.status, response.data)
