@@ -44,11 +44,15 @@ class CanvasFileDownload_DAO(DAO):
 
 
 class CanvasFileDownloadLiveDAO(LiveDAO):
-    def load(self, method, url, headers, body):
+    def _fix_url_host(self, url):
         # Ensure file url matches the hostname in settings,
         # to avoid mixing Canvas prod/test/beta hosts
         host = self.dao.get_service_setting("HOST")
         url = re.sub(r'^https://[^/]+', host, url)
+        return url
+
+    def load(self, method, url, headers, body):
+        url = self._fix_url_host(url)
         pool = self.get_pool()
         return pool.urlopen(method, url, headers=headers)
 

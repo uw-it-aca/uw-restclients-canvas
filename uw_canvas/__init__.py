@@ -3,6 +3,7 @@ This is the interface for interacting with Instructure's Canvas web services.
 """
 from restclients_core.exceptions import DataFailureException
 from uw_canvas.dao import Canvas_DAO
+from commonconf import settings
 try:
     from urllib.parse import quote
 except ImportError:
@@ -35,6 +36,7 @@ class Canvas(object):
         self._per_page = per_page
         self._as_user = as_user
         self._re_canvas_id = re.compile(r'^\d{2,12}$')
+        self._canvas_account_id = getattr(settings, 'CANVAS_ACCOUNT_ID')
 
     def get_courses_for_regid(self, regid):
         deprecation("Use uw_canvas.courses.get_courses_for_regid")
