@@ -70,10 +70,9 @@ class Courses(Canvas):
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.index
         """
-        params["as_user_id"] = self._sis_id(regid, sis_field="user")
-
+        self._as_user = regid
         data = self._get_resource("/api/v1/courses", params=params)
-        del params["as_user_id"]
+        self._as_user = None
 
         courses = []
         for datum in data:
