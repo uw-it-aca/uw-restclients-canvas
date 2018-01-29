@@ -1,6 +1,5 @@
 from uw_canvas import Canvas
 from uw_canvas.models import CanvasTerm
-from commonconf import settings
 import dateutil.parser
 
 
@@ -11,8 +10,7 @@ class Terms(Canvas):
         https://canvas.instructure.com/doc/api/enrollment_terms.html#method.terms_api.index
         """
         params = {"workflow_state": 'all', 'per_page': 500}
-        account_id = getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID')
-        url = '/api/v1/accounts/%s/terms' % account_id
+        url = '/api/v1/accounts/%s/terms' % self._canvas_account_id
         data_key = 'enrollment_terms'
 
         terms = []
@@ -34,9 +32,9 @@ class Terms(Canvas):
         Update an existing enrollment term for the passed SIS ID.
         https://canvas.instructure.com/doc/api/enrollment_terms.html#method.terms.update
         """
-        account_id = getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID')
         url = '/api/v1/accounts/%s/terms/%s' % (
-            account_id, self._sis_id(sis_term_id, sis_field='term'))
+            self._canvas_account_id,
+            self._sis_id(sis_term_id, sis_field='term'))
         body = {'enrollment_term': {'overrides': overrides}}
         return self._term_from_json(self._put_resource(url, body))
 

@@ -1,7 +1,6 @@
 from uw_canvas import Canvas
 from uw_canvas.enrollments import Enrollments
 from uw_canvas.models import CanvasUser, Login
-from commonconf import settings
 
 
 class Users(Canvas):
@@ -47,7 +46,7 @@ class Users(Canvas):
         https://canvas.instructure.com/doc/api/users.html#method.users.create
         """
         if account_id is None:
-            account_id = settings.RESTCLIENTS_CANVAS_ACCOUNT_ID
+            account_id = self._canvas_account_id
 
         url = "/api/v1/accounts/%s/users" % account_id
 
@@ -84,7 +83,7 @@ class Users(Canvas):
         https://canvas.instructure.com/doc/api/logins.html#method.pseudonyms.update
         """
         if account_id is None:
-            account_id = settings.RESTCLIENTS_CANVAS_ACCOUNT_ID
+            account_id = self._canvas_account_id
 
         url = "/api/v1/accounts/%s/logins/%s" % (account_id, login.login_id)
 
