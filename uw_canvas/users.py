@@ -1,4 +1,4 @@
-from uw_canvas import Canvas
+from uw_canvas import Canvas, MissingAccountID
 from uw_canvas.enrollments import Enrollments
 from uw_canvas.models import CanvasUser, Login
 
@@ -47,6 +47,8 @@ class Users(Canvas):
         """
         if account_id is None:
             account_id = self._canvas_account_id
+            if account_id is None:
+                raise MissingAccountID()
 
         url = "/api/v1/accounts/%s/users" % account_id
 
@@ -84,6 +86,8 @@ class Users(Canvas):
         """
         if account_id is None:
             account_id = self._canvas_account_id
+            if account_id is None:
+                raise MissingAccountID
 
         url = "/api/v1/accounts/%s/logins/%s" % (account_id, login.login_id)
 

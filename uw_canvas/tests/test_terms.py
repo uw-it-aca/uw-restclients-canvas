@@ -1,8 +1,15 @@
 from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.terms import Terms
+from uw_canvas import MissingAccountID
 
 
+class CanvasTestTermsMissingAccount(TestCase):
+    def test_get_all_terms(self):
+        canvas = Terms()
+        self.assertRaises(MissingAccountID, canvas.get_all_terms)
+
+@fdao_canvas_override
 class CanvasTestTerms(TestCase):
     def test_get_all_terms(self):
         canvas = Terms()
