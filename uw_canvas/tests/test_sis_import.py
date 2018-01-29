@@ -2,7 +2,18 @@ from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.sis_import import SISImport
 from uw_canvas.models import SISImport as SISImportModel
+from uw_canvas import MissingAccountID
 import mock
+
+
+class CanvasTestSISImportMissingAccount(TestCase):
+    def test_import_str(self):
+        canvas = SISImport()
+        self.assertRaises(MissingAccountID, canvas.import_str, 'a,b,c,d,e,f')
+
+    def test_import_dir(self):
+        canvas = SISImport()
+        self.assertRaises(MissingAccountID, canvas.import_dir, '/path/to/csv')
 
 
 @fdao_canvas_override

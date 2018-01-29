@@ -2,7 +2,21 @@ from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.users import Users
 from uw_canvas.models import CanvasUser
+from uw_canvas import MissingAccountID
 import mock
+
+
+class CanvasTestUsersMissingAccount(TestCase):
+    def test_create_user(self):
+        canvas = Users()
+
+        new_user = CanvasUser(name="J AVG USR",
+            login_id="testid99",
+            sis_user_id="DEB35E0A465242CF9C5CDBC108050EC0",
+            email="testid99@foo.com",
+            locale="en")
+
+        self.assertRaises(MissingAccountID, canvas.create_user, new_user)
 
 
 @fdao_canvas_override
