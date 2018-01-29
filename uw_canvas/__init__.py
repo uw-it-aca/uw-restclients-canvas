@@ -22,6 +22,11 @@ def deprecation(message):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 
+class MissingAccountID(Exception):
+    def __str__(self):
+        return "This API requires CANVAS_ACCOUNT_ID in settings."
+
+
 class Canvas(object):
     """
     The Canvas object has methods for getting information
@@ -36,7 +41,7 @@ class Canvas(object):
         self._per_page = per_page
         self._as_user = as_user
         self._re_canvas_id = re.compile(r'^\d{2,12}$')
-        self._canvas_account_id = getattr(settings, 'CANVAS_ACCOUNT_ID')
+        self._canvas_account_id = getattr(settings, 'CANVAS_ACCOUNT_ID', None)
 
     def get_courses_for_regid(self, regid):
         deprecation("Use uw_canvas.courses.get_courses_for_regid")

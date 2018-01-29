@@ -1,4 +1,4 @@
-from uw_canvas import Canvas
+from uw_canvas import Canvas, MissingAccountID
 from uw_canvas.models import SISImport as SISImportModel
 from uw_canvas.dao import Canvas_DAO
 from restclients_core.exceptions import DataFailureException
@@ -19,6 +19,9 @@ class SISImport(Canvas):
 
         https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.create
         """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
         url = "/api/v1/accounts/%s/sis_imports.json%s" % (
             self._canvas_account_id, self._params(params))
@@ -34,6 +37,9 @@ class SISImport(Canvas):
 
         https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.create
         """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
         body = self._build_archive(dir_path)
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
         url = "/api/v1/accounts/%s/sis_imports.json%s" % (
@@ -50,6 +56,9 @@ class SISImport(Canvas):
 
         https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.show
         """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
         url = "/api/v1/accounts/%s/sis_imports/%s.json" % (
             self._canvas_account_id, sis_import.import_id)
 

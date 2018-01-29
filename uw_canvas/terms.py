@@ -1,4 +1,4 @@
-from uw_canvas import Canvas
+from uw_canvas import Canvas, MissingAccountID
 from uw_canvas.models import CanvasTerm
 import dateutil.parser
 
@@ -9,6 +9,9 @@ class Terms(Canvas):
         Return all of the terms in the account.
         https://canvas.instructure.com/doc/api/enrollment_terms.html#method.terms_api.index
         """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
         params = {"workflow_state": 'all', 'per_page': 500}
         url = '/api/v1/accounts/%s/terms' % self._canvas_account_id
         data_key = 'enrollment_terms'
@@ -32,6 +35,9 @@ class Terms(Canvas):
         Update an existing enrollment term for the passed SIS ID.
         https://canvas.instructure.com/doc/api/enrollment_terms.html#method.terms.update
         """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
         url = '/api/v1/accounts/%s/terms/%s' % (
             self._canvas_account_id,
             self._sis_id(sis_term_id, sis_field='term'))
