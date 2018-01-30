@@ -21,7 +21,7 @@ setup(
     author="UW-IT AXDD",
     author_email="aca-it@uw.edu",
     include_package_data=True,
-    install_requires=['UW-RestClients-Core==0.9.5',
+    install_requires=['UW-RestClients-Core==0.9.6',
                       'python-dateutil',
                       'mock',
                      ],

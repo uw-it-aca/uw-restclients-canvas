@@ -41,7 +41,8 @@ class Canvas(object):
         self._per_page = per_page
         self._as_user = as_user
         self._re_canvas_id = re.compile(r'^\d{2,12}$')
-        self._canvas_account_id = getattr(settings, 'CANVAS_ACCOUNT_ID', None)
+        self._canvas_account_id = getattr(
+            settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID', None)
 
     def get_courses_for_regid(self, regid):
         deprecation("Use uw_canvas.courses.get_courses_for_regid")
