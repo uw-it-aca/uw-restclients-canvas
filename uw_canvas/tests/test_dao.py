@@ -3,7 +3,7 @@ from uw_canvas.dao import CanvasFileDownload_DAO
 from commonconf import override_settings
 
 
-@override_settings(CANVAS_HOST='https://canvas.test.edu')
+@override_settings(RESTCLIENTS_CANVAS_HOST='https://canvas.test.edu')
 class TestCanvasFileDownloadLiveDAO(TestCase):
     def test_fix_url_host(self):
         dao = CanvasFileDownload_DAO()._get_live_implementation()
