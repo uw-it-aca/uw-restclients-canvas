@@ -5,6 +5,19 @@ from uw_canvas.submissions import Submissions
 
 @fdao_canvas_override
 class CanvasTestSubmissions(TestCase):
+    def test_submissions_by_course_and_assignment(self):
+        canvas = Submissions()
+        submissions = canvas.get_submissions_by_course_and_assignment(
+            862539, 2367793)
+        self.assertEquals(len(submissions), 4, "Submission Count")
+
+        submission = submissions[2]
+        self.assertEquals(len(submission.attachments), 1, "Attachment Count")
+        self.assertEquals(
+            submission.attachments[0].url,
+            "https://test.instructure.com/files/12345/download",
+            "Attachment URL")
+
     def test_submissions_by_course_id(self):
         canvas = Submissions()
         submissions = canvas.get_submissions_multiple_assignments(False, "862539", "all")

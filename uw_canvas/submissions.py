@@ -1,9 +1,22 @@
 from uw_canvas import Canvas
-from uw_canvas.models import Submission
+from uw_canvas.models import Submission, Attachment
 import dateutil.parser
 
 
 class Submissions(Canvas):
+    def get_submissions_by_course_and_assignment(
+            self, course_id, assignment_id, params={}):
+        """
+        https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.index
+        """
+        url = '/api/v1/courses/%s/assignments/%s/submissions' % (
+            course_id, assignment_id)
+
+        submissions = []
+        for data in self._get_paged_resource(url, params=params):
+            submissions.append(self._submission_from_json(data))
+        return submissions
+
     def get_submissions_multiple_assignments_by_sis_id(
             self, is_section, sis_id, students=None, assignments=None):
         """
@@ -14,11 +27,11 @@ class Submissions(Canvas):
         """
         if is_section:
             return self.get_submissions_multiple_assignments(
-                is_section, self._sis_id(sis_id, "section"), students,
+                is_section, self._sis_id(sis_id, 'section'), students,
                 assignments)
         else:
             return self.get_submissions_multiple_assignments(
-                is_section, self._sis_id(sis_id, "course"), students,
+                is_section, self._sis_id(sis_id, 'course'), students,
                 assignments)
 
     def get_submissions_multiple_assignments(
@@ -29,17 +42,17 @@ class Submissions(Canvas):
 
         https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.for_students
         """
-        course_type = "courses"
+        course_type = 'courses'
         if is_section:
-            course_type = "sections"
+            course_type = 'sections'
         params = {}
         if students is not None:
-            params["student_ids"] = students
+            params['student_ids'] = students
         if assignments is not None:
-            params["assignments"] = assignments
+            params['assignments'] = assignments
 
-        url = "/api/v1/%s/%s/students/submissions" % (course_type, course_id)
-        data = self._get_resource(url, params=params)
+        url = '/api/v1/%s/%s/students/submissions' % (course_type, course_id)
+        data = self._get_paged_resource(url, params=params)
         submissions = []
         for submission in data:
             sub = self._submission_from_json(submission)
@@ -68,4 +81,15 @@ class Submissions(Canvas):
             graded_date_str = data['graded_at']
             submission.graded_at = dateutil.parser.parse(graded_date_str)
         submission.submission_type = data['submission_type']
+
+        submission.attachments = []
+        for attachment_data in data.get('attachments', []):
+            submission.attachments.append(Attachment(
+                attachment_id=attachment_data['id'],
+                filename=attachment_data['filename'],
+                display_name=attachment_data['display_name'],
+                content_type=attachment_data['content-type'],
+                size=attachment_data['size'],
+                url=attachment_data['url']))
+
         return submission
