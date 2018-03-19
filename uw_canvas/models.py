@@ -350,9 +350,11 @@ class Assignment(models.Model):
     position = models.IntegerField()
     name = models.CharField(max_length=500)
     muted = models.NullBooleanField()
+    published = models.NullBooleanField()
     html_url = models.CharField(max_length=500, null=True)
     turnitin_enabled = models.NullBooleanField()
     vericite_enabled = models.NullBooleanField()
+    has_submissions = models.NullBooleanField()
 
     def __init__(self, *args, **kwargs):
         super(Assignment, self).__init__(*args, **kwargs)

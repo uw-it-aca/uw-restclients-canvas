@@ -52,9 +52,11 @@ class Assignments(Canvas):
         assignment.position = data['position']
         assignment.name = data['name']
         assignment.muted = data['muted']
+        assignment.published = data['published']
         assignment.html_url = data['html_url']
         assignment.turnitin_enabled = data.get('turnitin_enabled', False)
         assignment.vericite_enabled = data.get('vericite_enabled', False)
+        assignment.has_submissions = data['has_submitted_submissions']
         assignment.submission_types = data.get('submission_types', [])
         assignment.external_tool_tag_attributes = data.get(
             'external_tool_tag_attributes', {})
