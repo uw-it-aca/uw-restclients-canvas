@@ -32,6 +32,8 @@
             "exclude_small_matches_value": null
         },
         "muted": false,
+        "published": false,
+        "has_submitted_submissions": false,
         "html_url": "https://uw.test.instructure.com/courses/862539/assignments/2367793",
         "needs_grading_count": 0,
         "use_rubric_for_grading": false,
@@ -96,6 +98,8 @@
             "exclude_small_matches_value": null
         },
         "muted": false,
+        "published": false,
+        "has_submitted_submissions": false,
         "html_url": "https://uw.test.instructure.com/courses/862539/assignments/2367794",
         "needs_grading_count": 0,
         "integration_id": "",
