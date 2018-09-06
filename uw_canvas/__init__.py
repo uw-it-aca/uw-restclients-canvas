@@ -1,16 +1,14 @@
 """
 This is the interface for interacting with Instructure's Canvas web services.
 """
-from restclients_core.exceptions import DataFailureException
-from uw_canvas.dao import Canvas_DAO
+
 from commonconf import settings
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
+from urllib.parse import quote
 import warnings
 import json
 import re
+from restclients_core.exceptions import DataFailureException
+from uw_canvas.dao import Canvas_DAO
 
 
 DEFAULT_PAGINATION = 0

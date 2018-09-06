@@ -43,12 +43,12 @@ class CanvasTerm(models.Model):
 
 class CanvasCourse(models.Model):
     RE_COURSE_SIS_ID = re.compile(
-        "^\d{4}-"                           # year
-        "(?:winter|spring|summer|autumn)-"  # quarter
-        "[\w& ]+-"                          # curriculum
-        "\d{3}-"                            # course number
-        "[A-Z][A-Z0-9]?"                    # section id
-        "(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
+        r"^\d{4}-"                           # year
+        r"(?:winter|spring|summer|autumn)-"  # quarter
+        r"[\w& ]+-"                          # curriculum
+        r"\d{3}-"                            # course number
+        r"[A-Z][A-Z0-9]?"                    # section id
+        r"(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
         re.VERBOSE)
 
     course_id = models.IntegerField()
@@ -100,11 +100,11 @@ class CanvasCourse(models.Model):
 
 class CanvasSection(models.Model):
     RE_SECTION_SIS_ID = re.compile(
-        "^\d{4}-"                                  # year
-        "(?:winter|spring|summer|autumn)-"         # quarter
-        "[\w& ]+-"                                 # curriculum
-        "\d{3}-"                                   # course number
-        "[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
+        r"^\d{4}-"                                  # year
+        r"(?:winter|spring|summer|autumn)-"         # quarter
+        r"[\w& ]+-"                                 # curriculum
+        r"\d{3}-"                                   # course number
+        r"[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
         re.VERBOSE)
 
     section_id = models.IntegerField()
