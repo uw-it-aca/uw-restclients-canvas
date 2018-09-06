@@ -1,10 +1,7 @@
 from uw_canvas import Canvas
 from uw_canvas.users import Users
 from uw_canvas.models import CanvasAdmin
-try:
-    from urllib.parse import quote, unquote
-except ImportError:
-    from urllib import quote, unquote
+from urllib.parse import quote, unquote
 
 
 class Admins(Canvas):

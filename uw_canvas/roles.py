@@ -1,9 +1,6 @@
 from uw_canvas import Canvas
 from uw_canvas.models import CanvasRole, CanvasAccount
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
+from urllib.parse import quote
 
 
 class Roles(Canvas):
