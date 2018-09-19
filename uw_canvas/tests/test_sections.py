@@ -22,9 +22,12 @@ class CanvasTestSections(TestCase):
         self.assertEquals(section.sws_instructor_regid(), None)
         self.assertEquals(section.is_academic_sis_id(), True)
 
-        section = CanvasSection(sis_section_id="2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE--")
+        section = CanvasSection(
+            sis_section_id=(
+                "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE--"))
         self.assertEquals(section.sws_section_id(), "2013,spring,PHYS,599/A")
-        self.assertEquals(section.sws_instructor_regid(), "9136CCB8F66711D5BE060004AC494FFE")
+        self.assertEquals(
+            section.sws_instructor_regid(), "9136CCB8F66711D5BE060004AC494FFE")
         self.assertEquals(section.is_academic_sis_id(), True)
 
         section = CanvasSection(sis_section_id="course_123456_groups")
@@ -35,7 +38,8 @@ class CanvasTestSections(TestCase):
     def test_sections(self):
         canvas = Sections()
 
-        sections = canvas.get_sections_in_course_by_sis_id('2013-spring-CSE-142-A', {'include': ['students']})
+        sections = canvas.get_sections_in_course_by_sis_id(
+            '2013-spring-CSE-142-A', {'include': ['students']})
 
         self.assertEquals(len(sections), 16, "Too few sections")
 
@@ -48,7 +52,8 @@ class CanvasTestSections(TestCase):
     def test_sections_with_students(self):
         canvas = Sections()
 
-        sections = canvas.get_sections_with_students_in_course_by_sis_id('2013-spring-CSE-142-A')
+        sections = canvas.get_sections_with_students_in_course_by_sis_id(
+            '2013-spring-CSE-142-A')
 
         self.assertEquals(len(sections), 16, "Too few sections")
 
