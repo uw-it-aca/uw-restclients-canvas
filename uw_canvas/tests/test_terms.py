@@ -9,6 +9,7 @@ class CanvasTestTermsMissingAccount(TestCase):
         canvas = Terms()
         self.assertRaises(MissingAccountID, canvas.get_all_terms)
 
+
 @fdao_canvas_override
 class CanvasTestTerms(TestCase):
     def test_get_all_terms(self):
