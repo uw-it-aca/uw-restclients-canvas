@@ -10,7 +10,8 @@ class CanvasTestUsersMissingAccount(TestCase):
     def test_create_user(self):
         canvas = Users()
 
-        new_user = CanvasUser(name="J AVG USR",
+        new_user = CanvasUser(
+            name="J AVG USR",
             login_id="testid99",
             sis_user_id="DEB35E0A465242CF9C5CDBC108050EC0",
             email="testid99@foo.com",
@@ -29,8 +30,9 @@ class CanvasTestUsers(TestCase):
         self.assertEquals(user.user_id, 188885, "Has correct user id")
         self.assertEquals(user.name, "J AVG USR", "Has correct name")
         self.assertEquals(user.short_name, None, "Has correct short name")
-        self.assertEquals(user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
-                          "Has correct sis id")
+        self.assertEquals(
+            user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
+            "Has correct sis id")
         self.assertEquals(user.email, "testid99@foo.com", "Has correct email")
 
         user = canvas.get_user_by_sis_id("DEB35E0A465242CF9C5CDBC108050EC0")
@@ -38,16 +40,20 @@ class CanvasTestUsers(TestCase):
         self.assertEquals(user.user_id, 188885, "Has correct user id")
         self.assertEquals(user.name, "J AVG USR", "Has correct name")
         self.assertEquals(user.short_name, None, "Has correct short name")
-        self.assertEquals(user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
-                          "Has correct sis id")
+        self.assertEquals(
+            user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
+            "Has correct sis id")
         self.assertEquals(user.email, "testid99@foo.com", "Has correct email")
-        self.assertEquals(user.avatar_url, "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0cd05241443a591868?s=80&r=g", "Has correct avatar url")
+        self.assertEquals(user.avatar_url, (
+            "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0c"
+            "d05241443a591868?s=80&r=g"), "Has correct avatar url")
 
     @mock.patch.object(Users, '_post_resource')
     def test_create_user(self, mock_create):
         canvas = Users()
 
-        new_user = CanvasUser(name="J AVG USR",
+        new_user = CanvasUser(
+            name="J AVG USR",
             login_id="testid99",
             sis_user_id="DEB35E0A465242CF9C5CDBC108050EC0",
             email="testid99@foo.com",
@@ -55,23 +61,42 @@ class CanvasTestUsers(TestCase):
 
         account_id = 88888
         canvas.create_user(new_user, account_id)
-        mock_create.assert_called_with(
-            '/api/v1/accounts/88888/users',
-            {'communication_channel': {'type': 'email', 'skip_confirmation': True, 'address': 'testid99@foo.com'}, 'user': {'locale': 'en', 'sortable_name': None, 'name': 'J AVG USR', 'short_name': None, 'time_zone': None}, 'pseudonym': {'sis_user_id': 'DEB35E0A465242CF9C5CDBC108050EC0', 'send_confirmation': False, 'unique_id': 'testid99'}})
+        mock_create.assert_called_with('/api/v1/accounts/88888/users', {
+            'communication_channel': {
+                'type': 'email',
+                'skip_confirmation': True,
+                'address': 'testid99@foo.com'
+            },
+            'user': {
+                'locale': 'en',
+                'sortable_name': None,
+                'name': 'J AVG USR',
+                'short_name': None,
+                'time_zone': None
+            },
+            'pseudonym': {
+                'sis_user_id': 'DEB35E0A465242CF9C5CDBC108050EC0',
+                'send_confirmation': False,
+                'unique_id': 'testid99'
+            }
+        })
 
     def test_get_users_for_course_id(self):
         canvas = Users()
 
-        users = canvas.get_users_for_course("862539",
-            params={"search_term": "jav", "include": ["enrollments"]})
+        users = canvas.get_users_for_course("862539", params={
+            "search_term": "jav", "include": ["enrollments"]})
 
         self.assertEquals(len(users), 3, "Found 3 canvas users")
 
         user = users[0]
         self.assertEquals(user.login_id, "javerage", "Login ID")
-        self.assertEquals(user.sis_user_id, "15AE3883B6EC44C349E04E5FE089ABEB", "SIS User ID")
+        self.assertEquals(
+            user.sis_user_id, "15AE3883B6EC44C349E04E5FE089ABEB",
+            "SIS User ID")
         self.assertEquals(user.name, "JAMES AVERAGE", "Name")
-        self.assertEquals(user.sortable_name, "AVERAGE, JAMES", "Sortable Name")
+        self.assertEquals(
+            user.sortable_name, "AVERAGE, JAMES", "Sortable Name")
         enrollment = user.enrollments[0]
         self.assertEquals(enrollment.sis_course_id, "2015-summer-TRAIN-100-A")
         self.assertEquals(enrollment.role, "DesignerEnrollment", "Role")
@@ -90,7 +115,6 @@ class CanvasTestUsers(TestCase):
         self.assertEquals(login.login_id, 100, "Has correct login_id")
         self.assertEquals(login.sis_user_id, sis_user_id, "Has correct sis id")
         self.assertEquals(login.unique_id, "testid99", "Has correct unique id")
-
 
         logins = canvas.get_user_logins_by_sis_id(sis_user_id)
 

@@ -22,18 +22,20 @@ class CanvasTestSISImport(TestCase):
     def test_import_str(self, mock_post):
         canvas = SISImport()
         canvas.import_str('a,b,c,d,e,f')
-        mock_post.assert_called_with(
-            '/api/v1/accounts/12345/sis_imports.json?import_type=instructure_csv',
-            {'Content-Type': 'text/csv'},
-            'a,b,c,d,e,f')
+        mock_post.assert_called_with((
+            '/api/v1/accounts/12345/sis_imports.json?'
+            'import_type=instructure_csv'), {
+                'Content-Type': 'text/csv'
+            }, 'a,b,c,d,e,f')
 
         # With extra params
         canvas.import_str('a,b,c,d,e,f',
                           params={'override_sis_stickiness': '1'})
-        mock_post.assert_called_with(
-            '/api/v1/accounts/12345/sis_imports.json?import_type=instructure_csv&override_sis_stickiness=1',
-            {'Content-Type': 'text/csv'},
-            'a,b,c,d,e,f')
+        mock_post.assert_called_with((
+            '/api/v1/accounts/12345/sis_imports.json?import_type='
+            'instructure_csv&override_sis_stickiness=1'), {
+                'Content-Type': 'text/csv'
+            }, 'a,b,c,d,e,f')
 
     @mock.patch.object(SISImport, '_post_resource')
     @mock.patch.object(SISImport, '_build_archive')
@@ -41,10 +43,11 @@ class CanvasTestSISImport(TestCase):
         mock_build.return_value = ''
         canvas = SISImport()
         canvas.import_dir('/path/to/csv')
-        mock_post.assert_called_with(
-            '/api/v1/accounts/12345/sis_imports.json?import_type=instructure_csv',
-            {'Content-Type': 'application/zip'},
-            '')
+        mock_post.assert_called_with((
+            '/api/v1/accounts/12345/sis_imports.json?'
+            'import_type=instructure_csv'), {
+                'Content-Type': 'application/zip'
+            }, '')
 
     def test_get_import_status(self):
         canvas = SISImport()
