@@ -23,7 +23,7 @@ class SISImport(Canvas):
             raise MissingAccountID()
 
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
-        url = "/api/v1/accounts/%s/sis_imports.json%s" % (
+        url = "/api/v1/accounts/{}/sis_imports.json{}".format(
             self._canvas_account_id, self._params(params))
         headers = {"Content-Type": "text/csv"}
 
@@ -42,7 +42,7 @@ class SISImport(Canvas):
 
         body = self._build_archive(dir_path)
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
-        url = "/api/v1/accounts/%s/sis_imports.json%s" % (
+        url = "/api/v1/accounts/{}/sis_imports.json{}".format(
             self._canvas_account_id, self._params(params))
         headers = {"Content-Type": "application/zip"}
 
@@ -59,7 +59,7 @@ class SISImport(Canvas):
         if not self._canvas_account_id:
             raise MissingAccountID()
 
-        url = "/api/v1/accounts/%s/sis_imports/%s.json" % (
+        url = "/api/v1/accounts/{}/sis_imports/{}.json".format(
             self._canvas_account_id, sis_import.import_id)
 
         return self._sis_import_from_json(self._get_resource(url))
@@ -89,7 +89,7 @@ class SISImport(Canvas):
 
         archive.close()
 
-        with open(zip_path, "r") as f:
+        with open(zip_path, "rb") as f:
             body = f.read()
 
         return body
