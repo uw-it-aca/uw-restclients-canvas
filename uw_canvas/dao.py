@@ -19,13 +19,13 @@ class Canvas_DAO(DAO):
 
     def _custom_headers(self, method, url, headers, body):
         bearer_key = self.get_service_setting("OAUTH_BEARER", "")
-        return {"Authorization": "Bearer %s" % bearer_key}
+        return {"Authorization": "Bearer {}".format(bearer_key)}
 
     def _edit_mock_response(self, method, url, headers, body, response):
         if "POST" == method or "PUT" == method:
             if response.status != 400:
-                path = "%s/resources/canvas/file%s.%s" % (
-                    abspath(dirname(__file__)), url, method)
+                path = "{path}/resources/canvas/file{url}.{method}".format(
+                    path=abspath(dirname(__file__)), url=url, method=method)
 
                 try:
                     handle = open(path)
