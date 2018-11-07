@@ -14,7 +14,7 @@ class ReportFailureException(Exception):
         self.report = report
 
     def __str__(self):
-        return ("Error fetching report %s" % self.report.report_id)
+        return ("Error fetching report {}".format(self.report.report_id))
 
 
 class Reports(Canvas):
@@ -24,7 +24,7 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.available_reports
         """
-        url = "/api/v1/accounts/%s/reports" % account_id
+        url = "/api/v1/accounts/{}/reports".format(account_id)
 
         report_types = []
         for datum in self._get_resource(url):
@@ -47,7 +47,7 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.index
         """
-        url = "/api/v1/accounts/%s/reports/%s" % (account_id, report_type)
+        url = "/api/v1/accounts/{}/reports/{}".format(account_id, report_type)
 
         reports = []
         for datum in self._get_resource(url):
@@ -64,7 +64,7 @@ class Reports(Canvas):
         if term_id is not None:
             params["enrollment_term_id"] = term_id
 
-        url = "/api/v1/accounts/%s/reports/%s" % (account_id, report_type)
+        url = "/api/v1/accounts/{}/reports/{}".format(account_id, report_type)
         body = {"parameters": params}
 
         data = self._post_resource(url, body)
@@ -158,7 +158,7 @@ class Reports(Canvas):
                 report.report_id is None):
             raise ReportFailureException(report)
 
-        url = "/api/v1/accounts/%s/reports/%s/%s" % (
+        url = "/api/v1/accounts/{}/reports/{}/{}".format(
             report.account_id, report.type, report.report_id)
 
         data = self._get_resource(url)
@@ -170,7 +170,7 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.destroy
         """
-        url = "/api/v1/accounts/%s/reports/%s/%s" % (
+        url = "/api/v1/accounts/{}/reports/{}/{}".format(
             report.account_id, report.type, report.report_id)
 
         response = self._delete_resource(url)
@@ -182,7 +182,7 @@ class Reports(Canvas):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
-        return response.data
+        return response.data.decode("utf-8")
 
     def _report_from_json(self, account_id, data):
         report = Report()
