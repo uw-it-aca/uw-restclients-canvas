@@ -1,6 +1,8 @@
 from uw_canvas import Canvas
 from uw_canvas.models import CanvasAccount, CanvasSSOSettings
 
+ACCOUNTS_API = "/api/v1/accounts/{}"
+
 
 class Accounts(Canvas):
     def get_account(self, account_id):
@@ -9,7 +11,7 @@ class Accounts(Canvas):
 
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.show
         """
-        url = "/api/v1/accounts/%s" % account_id
+        url = ACCOUNTS_API.format(account_id)
         return self._account_from_json(self._get_resource(url))
 
     def get_account_by_sis_id(self, sis_id):
@@ -25,7 +27,7 @@ class Accounts(Canvas):
 
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.sub_accounts
         """
-        url = "/api/v1/accounts/%s/sub_accounts" % (account_id)
+        url = ACCOUNTS_API.format(account_id) + "/sub_accounts"
 
         accounts = []
         for datum in self._get_paged_resource(url, params=params):
@@ -61,8 +63,23 @@ class Accounts(Canvas):
 
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.update
         """
-        url = "/api/v1/accounts/%s" % account.account_id
+        url = ACCOUNTS_API.format(account.account_id)
         body = {"account": {"name": account.name}}
+
+        data = self._put_resource(url, body)
+        return self._account_from_json(data)
+
+    def update_sis_id(self, account_id, sis_account_id):
+        """
+        Updates the SIS ID for the account identified by the passed account ID.
+
+        https://canvas.instructure.com/doc/api/accounts.html#method.accounts.update
+        """
+        if account_id == self._canvas_account_id:
+            raise Exception("SIS ID cannot be updated for the root account")
+
+        url = ACCOUNTS_API.format(account_id)
+        body = {"account": {"sis_account_id": sis_account_id}}
 
         data = self._put_resource(url, body)
         return self._account_from_json(data)
@@ -73,7 +90,7 @@ class Accounts(Canvas):
 
         https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.show_sso_settings
         """
-        url = '/api/v1/accounts/%s/sso_settings' % account_id
+        url = ACCOUNTS_API.format(account_id) + "/sso_settings"
 
         data = self._get_resource(url)
         return self._auth_settings_from_json(data)
@@ -84,7 +101,7 @@ class Accounts(Canvas):
 
         https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.update_sso_settings
         """
-        url = '/api/v1/accounts/%s/sso_settings' % account_id
+        url = ACCOUNTS_API.format(account_id) + "/sso_settings"
 
         data = self._put_resource(url, auth_settings.json_data())
         return self._auth_settings_from_json(data)
