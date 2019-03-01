@@ -1,7 +1,9 @@
 from unittest import TestCase
+from commonconf import settings
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.accounts import Accounts as Canvas
 from restclients_core.exceptions import DataFailureException
+import mock
 
 
 @fdao_canvas_override
@@ -44,3 +46,18 @@ class CanvasTestAccounts(TestCase):
             "Has proper name")
         self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:csem')
         self.assertEquals(account.parent_account_id, 54321)
+
+    @mock.patch.object(Canvas, '_account_from_json')
+    @mock.patch.object(Canvas, '_put_resource')
+    def test_update_sis_id(self, mock_update, mock_from_json):
+        canvas = Canvas()
+
+        canvas.update_sis_id(54321, 'NEW_SIS_ID')
+        mock_update.assert_called_with(
+            '/api/v1/accounts/54321',
+            {'account': {'sis_account_id': 'NEW_SIS_ID'}})
+
+        # Cannot update sis id for root account
+        self.assertRaises(Exception, canvas.update_sis_id,
+                          getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID'),
+                          'NEW_SIS_ID')
