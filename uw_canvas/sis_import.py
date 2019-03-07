@@ -9,7 +9,7 @@ import os
 
 # List of csv files determines sequence of import
 CSV_FILES = ["accounts.csv", "users.csv", "terms.csv", "courses.csv",
-             "sections.csv", "enrollments.csv", "xlists.csv"]
+             "sections.csv", "enrollments.csv", "xlists.csv", "admins.csv"]
 
 
 class SISImport(Canvas):
