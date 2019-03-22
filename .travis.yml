@@ -11,7 +11,7 @@ before_script:
 - pip install coveralls
 script:
 - pycodestyle uw_canvas/
-- coverage run --omit=uw_canvas/examples/* uw_canvas/test.py -v
+- coverage run uw_canvas/test.py -v
 after_script:
 - coveralls
 before_deploy:
