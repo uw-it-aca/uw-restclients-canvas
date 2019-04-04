@@ -80,7 +80,7 @@ class Canvas(object):
         """
         generate sis_id object reference
         """
-        return quote('sis_%s_id:%s' % (sis_field, sis_id))
+        return quote('sis_{}_id:{}'.format(sis_field, sis_id))
 
     def _params(self, params):
         if params and len(params):
@@ -92,7 +92,7 @@ class Canvas(object):
                 else:
                     p.append(key + '=' + quote(str(val)))
 
-            return "?%s" % ('&'.join(p))
+            return "?" + '&'.join(p)
         return ""
 
     def _next_page(self, response):
@@ -138,7 +138,7 @@ class Canvas(object):
             if self.valid_canvas_id(self._as_user):
                 as_user = self._as_user
             else:
-                as_user = 'sis_user_id:%s' % self._as_user
+                as_user = 'sis_user_id:{}'.format(self._as_user)
             params['as_user_id'] = as_user
 
     def _get_paged_resource(self, url, params=None, data_key=None):
@@ -157,7 +157,7 @@ class Canvas(object):
         if 'per_page' not in params and self._per_page != DEFAULT_PAGINATION:
             params["per_page"] = self._per_page
 
-        full_url = '%s%s' % (url, self._params(params))
+        full_url = url + self._params(params)
         return self._get_resource_url(full_url, auto_page, data_key)
 
     def _get_resource(self, url, params=None, data_key=None):
@@ -169,7 +169,7 @@ class Canvas(object):
 
         self._set_as_user(params)
 
-        full_url = '%s%s' % (url, self._params(params))
+        full_url = url + self._params(params)
 
         return self._get_resource_url(full_url, True, data_key)
 
@@ -182,7 +182,7 @@ class Canvas(object):
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
-        url = '%s%s' % (url, self._params(params))
+        url = url + self._params(params)
         response = DAO.putURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 201 or
@@ -200,7 +200,7 @@ class Canvas(object):
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
-        url = '%s%s' % (url, self._params(params))
+        url = url + self._params(params)
         response = DAO.postURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 204):
@@ -216,7 +216,7 @@ class Canvas(object):
         self._set_as_user(params)
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
-        url = '%s%s' % (url, self._params(params))
+        url = url + self._params(params)
         response = DAO.deleteURL(url, headers)
 
         if not (response.status == 200 or response.status == 204):
