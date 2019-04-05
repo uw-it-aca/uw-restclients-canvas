@@ -98,12 +98,18 @@ class Users(Canvas):
     def get_user_page_views(self, user_id, start_time=None, end_time=None):
         params = {}
         if start_time is not None:
-            params['start_time'] = start_time.isoformat()
+            params["start_time"] = start_time.isoformat()
         if end_time is not None:
-            params['end_time'] = end_time.isoformat()
+            params["end_time"] = end_time.isoformat()
 
         url = "/api/v1/users/{}/page_views".format(user_id)
         return self._get_paged_resource(url, params=params)
+
+    def get_user_page_views_by_sis_login_id(
+            self, sis_login_id, start_time=None, end_time=None):
+        return self.get_user_page_views(
+            self._sis_id(sis_login_id, sis_field="login"),
+            start_time=start_time, end_time=end_time)
 
     def _user_from_json(self, data):
         user = CanvasUser()

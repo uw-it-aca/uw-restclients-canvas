@@ -146,7 +146,6 @@ class CanvasTestUsers(TestCase):
     @mock.patch.object(Users, '_get_resource_url')
     def test_get_page_views(self, mock_get):
         canvas = Users()
-
         user_id = 11111
 
         ret = canvas.get_user_page_views(user_id)
@@ -164,5 +163,29 @@ class CanvasTestUsers(TestCase):
             user_id, start_time=start, end_time=end)
         mock_get.assert_called_with(
             '/api/v1/users/11111/page_views?'
+            'end_time=2017-01-01T00%3A00%3A00&'
+            'start_time=2015-01-01T00%3A00%3A00', True, None)
+
+    @mock.patch.object(Users, '_get_resource_url')
+    def test_get_page_views_by_sis_login_id(self, mock_get):
+        canvas = Users()
+        login_id = 'javerage'
+
+        ret = canvas.get_user_page_views_by_sis_login_id(login_id)
+        mock_get.assert_called_with(
+            '/api/v1/users/sis_login_id%3Ajaverage/page_views', True, None)
+
+        start = datetime(2015, 1, 1)
+        ret = canvas.get_user_page_views_by_sis_login_id(
+            login_id, start_time=start)
+        mock_get.assert_called_with(
+            '/api/v1/users/sis_login_id%3Ajaverage/page_views?'
+            'start_time=2015-01-01T00%3A00%3A00', True, None)
+
+        end = datetime(2017, 1, 1)
+        ret = canvas.get_user_page_views_by_sis_login_id(
+            login_id, start_time=start, end_time=end)
+        mock_get.assert_called_with(
+            '/api/v1/users/sis_login_id%3Ajaverage/page_views?'
             'end_time=2017-01-01T00%3A00%3A00&'
             'start_time=2015-01-01T00%3A00%3A00', True, None)
