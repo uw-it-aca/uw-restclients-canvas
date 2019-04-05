@@ -10,7 +10,7 @@ class Users(Canvas):
 
         https://canvas.instructure.com/doc/api/users.html#method.profile.settings
         """
-        url = "/api/v1/users/%s/profile" % user_id
+        url = "/api/v1/users/{}/profile".format(user_id)
         return self._user_from_json(self._get_resource(url))
 
     def get_user_by_sis_id(self, sis_user_id):
@@ -25,7 +25,7 @@ class Users(Canvas):
         """
         Returns a list of users for the given course id.
         """
-        url = "/api/v1/courses/%s/users" % course_id
+        url = "/api/v1/courses/{}/users".format(course_id)
         data = self._get_paged_resource(url, params=params)
         users = []
         for datum in data:
@@ -50,7 +50,7 @@ class Users(Canvas):
             if account_id is None:
                 raise MissingAccountID()
 
-        url = "/api/v1/accounts/%s/users" % account_id
+        url = "/api/v1/accounts/{}/users".format(account_id)
 
         data = self._post_resource(url, user.post_data())
         return self._user_from_json(data)
@@ -61,7 +61,7 @@ class Users(Canvas):
 
         https://canvas.instructure.com/doc/api/logins.html#method.pseudonyms.index
         """
-        url = "/api/v1/users/%s/logins" % user_id
+        url = "/api/v1/users/{}/logins".format(user_id)
 
         data = self._get_paged_resource(url, params=params)
 
@@ -89,10 +89,21 @@ class Users(Canvas):
             if account_id is None:
                 raise MissingAccountID
 
-        url = "/api/v1/accounts/%s/logins/%s" % (account_id, login.login_id)
+        url = "/api/v1/accounts/{}/logins/{}".format(
+            account_id, login.login_id)
 
         data = self._put_resource(url, login.put_data())
         return self._login_from_json(data)
+
+    def get_user_page_views(self, user_id, start_time=None, end_time=None):
+        params = {}
+        if start_time is not None:
+            params['start_time'] = start_time.isoformat()
+        if end_time is not None:
+            params['end_time'] = end_time.isoformat()
+
+        url = "/api/v1/users/{}/page_views".format(user_id)
+        return self._get_paged_resource(url, params=params)
 
     def _user_from_json(self, data):
         user = CanvasUser()

@@ -3,6 +3,7 @@ from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.users import Users
 from uw_canvas.models import CanvasUser
 from uw_canvas import MissingAccountID
+from datetime import datetime
 import mock
 
 
@@ -141,3 +142,27 @@ class CanvasTestUsers(TestCase):
         mock_update.assert_called_with(
             '/api/v1/accounts/12345/logins/100',
             {'login': {'sis_user_id': '', 'unique_id': 'testid99new'}})
+
+    @mock.patch.object(Users, '_get_resource_url')
+    def test_get_page_views(self, mock_get):
+        canvas = Users()
+
+        user_id = 11111
+
+        ret = canvas.get_user_page_views(user_id)
+        mock_get.assert_called_with(
+            '/api/v1/users/11111/page_views', True, None)
+
+        start = datetime(2015, 1, 1)
+        ret = canvas.get_user_page_views(user_id, start_time=start)
+        mock_get.assert_called_with(
+            '/api/v1/users/11111/page_views?'
+            'start_time=2015-01-01T00%3A00%3A00', True, None)
+
+        end = datetime(2017, 1, 1)
+        ret = canvas.get_user_page_views(
+            user_id, start_time=start, end_time=end)
+        mock_get.assert_called_with(
+            '/api/v1/users/11111/page_views?'
+            'end_time=2017-01-01T00%3A00%3A00&'
+            'start_time=2015-01-01T00%3A00%3A00', True, None)
