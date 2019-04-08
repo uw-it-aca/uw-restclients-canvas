@@ -1,6 +1,8 @@
 from uw_canvas import Canvas
-from uw_canvas.models import CanvasCourse, CanvasTerm
-import re
+from uw_canvas.accounts import ACCOUNTS_API
+from uw_canvas.models import CanvasCourse
+
+COURSES_API = "/api/v1/courses/{}"
 
 
 class Courses(Canvas):
@@ -15,8 +17,8 @@ class Courses(Canvas):
             include.append("term")
         params["include"] = include
 
-        url = "/api/v1/courses/%s" % (course_id)
-        return self._course_from_json(self._get_resource(url, params=params))
+        url = COURSES_API.format(course_id)
+        return CanvasCourse(data=self._get_resource(url, params=params))
 
     def get_course_by_sis_id(self, sis_course_id, params={}):
         """
@@ -34,11 +36,11 @@ class Courses(Canvas):
         if "published" in params:
             params["published"] = "true" if params["published"] else ""
 
-        url = "/api/v1/accounts/%s/courses" % (account_id)
+        url = ACCOUNTS_API.format(account_id) + "/courses"
 
         courses = []
         for data in self._get_paged_resource(url, params=params):
-            courses.append(self._course_from_json(data))
+            courses.append(CanvasCourse(data=data))
         return courses
 
     def get_courses_in_account_by_sis_id(self, sis_account_id, params={}):
@@ -77,7 +79,7 @@ class Courses(Canvas):
         courses = []
         for datum in data:
             if "sis_course_id" in datum:
-                courses.append(self._course_from_json(datum))
+                courses.append(CanvasCourse(data=datum))
             else:
                 courses.append(self.get_course(datum["id"], params))
 
@@ -89,12 +91,9 @@ class Courses(Canvas):
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.create
         """
-        url = "/api/v1/accounts/%s/courses" % account_id
+        url = ACCOUNTS_API.format(account_id) + "/courses"
         body = {"course": {"name": course_name}}
-
-        data = self._post_resource(url, body)
-
-        return self._course_from_json(data)
+        return CanvasCourse(data=self._post_resource(url, body))
 
     def update_sis_id(self, course_id, sis_course_id):
         """
@@ -102,36 +101,6 @@ class Courses(Canvas):
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.update
         """
-        url = "/api/v1/courses/%s" % course_id
+        url = COURSES_API.format(course_id)
         body = {"course": {"sis_course_id": sis_course_id}}
-
-        data = self._put_resource(url, body)
-
-        return self._course_from_json(data)
-
-    def _course_from_json(self, data):
-        course = CanvasCourse()
-        course.course_id = data["id"]
-        course.sis_course_id = data.get("sis_course_id", None)
-        course.account_id = data["account_id"]
-        course.code = data["course_code"]
-        course.name = data["name"]
-        course.workflow_state = data["workflow_state"]
-        course.public_syllabus = data["public_syllabus"]
-
-        course_url = data["calendar"]["ics"]
-        course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
-        course.course_url = "%scourses/%s" % (course_url, data["id"])
-
-        # Optional attributes specified in the course URL
-        if "term" in data:
-            canvas_term = data["term"]
-            course.term = CanvasTerm(
-                term_id=canvas_term.get("id"),
-                sis_term_id=canvas_term.get("sis_term_id", None),
-                name=canvas_term.get("name"))
-
-        if "syllabus_body" in data:
-            course.syllabus_body = data["syllabus_body"]
-
-        return course
+        return CanvasCourse(data=self._put_resource(url, body))

@@ -135,18 +135,18 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(course.sws_instructor_regid(), None)
         self.assertEquals(course.is_academic_sis_id(), False)
 
-    @mock.patch.object(Courses, '_course_from_json')
     @mock.patch.object(Courses, '_post_resource')
-    def test_create_course(self, mock_create, mock_from_json):
+    def test_create_course(self, mock_create):
+        mock_create.return_value = None
         canvas = Courses()
         canvas.create_course(88888, "Created Course")
         mock_create.assert_called_with(
             '/api/v1/accounts/88888/courses',
             {'course': {'name': 'Created Course'}})
 
-    @mock.patch.object(Courses, '_course_from_json')
     @mock.patch.object(Courses, '_put_resource')
-    def test_update_sis_id(self, mock_update, mock_from_json):
+    def test_update_sis_id(self, mock_update):
+        mock_update.return_value = None
         canvas = Courses()
         canvas.update_sis_id(149650, "NEW_SIS_ID")
         mock_update.assert_called_with(

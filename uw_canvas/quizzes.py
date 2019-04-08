@@ -1,6 +1,8 @@
 from uw_canvas import Canvas
+from uw_canvas.courses import COURSES_API
 from uw_canvas.models import Quiz
-import dateutil.parser
+
+QUIZZES_API = COURSES_API + "/quizzes"
 
 
 class Quizzes(Canvas):
@@ -18,33 +20,15 @@ class Quizzes(Canvas):
 
         https://canvas.instructure.com/doc/api/quizzes.html#method.quizzes_api.index
         """
-
-        url = "/api/v1/courses/%s/quizzes" % course_id
+        url = QUIZZES_API.format(course_id)
         data = self._get_resource(url)
         quizzes = []
-        for quiz in data:
-            quiz = self._quiz_from_json(quiz)
-            quizzes.append(quiz)
+        for datum in data:
+            quizzes.append(Quiz(data=datum))
         return quizzes
-
-    def _quiz_from_json(self, data):
-        quiz = Quiz()
-        quiz.quiz_id = data['id']
-        try:
-            quiz.due_at = dateutil.parser.parse(data['due_at'])
-        except Exception as ex:
-            quiz.due_at = None
-        quiz.title = data['title']
-        quiz.html_url = data['html_url']
-        quiz.published = data['published']
-        quiz.points_possible = data['points_possible']
-
-        return quiz
 
     def get_submissions_for_sis_course_id_and_quiz_id(
             self, sis_course_id, quiz_id):
-        url = "/api/v1/courses/%s/quizzes/%s/submissions" % (
-            self._sis_id(sis_course_id, sis_field="course"), quiz_id)
-        submissions = Canvas()._get_resource(url, data_key="quiz_submissions")
-
-        return submissions
+        course_id = self._sis_id(sis_course_id, sis_field="course")
+        url = QUIZZES_API.format(course_id) + "/{}/submissions".format(quiz_id)
+        return Canvas()._get_resource(url, data_key="quiz_submissions")

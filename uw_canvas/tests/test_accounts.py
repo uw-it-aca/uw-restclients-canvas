@@ -47,9 +47,8 @@ class CanvasTestAccounts(TestCase):
         self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:csem')
         self.assertEquals(account.parent_account_id, 54321)
 
-    @mock.patch.object(Canvas, '_account_from_json')
     @mock.patch.object(Canvas, '_put_resource')
-    def test_update_sis_id(self, mock_update, mock_from_json):
+    def test_update_sis_id(self, mock_update):
         canvas = Canvas()
 
         canvas.update_sis_id(54321, 'NEW_SIS_ID')

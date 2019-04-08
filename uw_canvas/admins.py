@@ -1,7 +1,8 @@
 from uw_canvas import Canvas
-from uw_canvas.users import Users
 from uw_canvas.models import CanvasAdmin
 from urllib.parse import quote, unquote
+
+ADMINS_API = "/api/v1/accounts/{}/admins"
 
 
 class Admins(Canvas):
@@ -11,11 +12,11 @@ class Admins(Canvas):
 
         https://canvas.instructure.com/doc/api/admins.html#method.admins.index
         """
-        url = "/api/v1/accounts/%s/admins" % (account_id)
+        url = ADMINS_API.format(account_id)
 
         admins = []
         for data in self._get_paged_resource(url, params=params):
-            admins.append(self._admin_from_json(data))
+            admins.append(CanvasAdmin(data=data))
         return admins
 
     def get_admins_by_sis_id(self, sis_account_id):
@@ -30,14 +31,12 @@ class Admins(Canvas):
 
         https://canvas.instructure.com/doc/api/admins.html#method.admins.create
         """
-        url = "/api/v1/accounts/%s/admins" % account_id
+        url = ADMINS_API.format(account_id)
         body = {"user_id": unquote(str(user_id)),
                 "role": role,
                 "send_confirmation": False}
 
-        data = self._post_resource(url, body)
-
-        return self._admin_from_json(data)
+        return CanvasAdmin(data=self._post_resource(url, body))
 
     def create_admin_by_sis_id(self, sis_account_id, user_id, role):
         """
@@ -51,8 +50,8 @@ class Admins(Canvas):
 
         https://canvas.instructure.com/doc/api/admins.html#method.admins.destroy
         """
-        url = "/api/v1/accounts/%s/admins/%s?role=%s" % (account_id, user_id,
-                                                         quote(role))
+        url = ADMINS_API.format(account_id) + "/{}?role={}".format(
+            user_id, quote(role))
 
         response = self._delete_resource(url)
         return True
@@ -62,10 +61,3 @@ class Admins(Canvas):
         Remove an account admin role from a user for the account sis id.
         """
         return self.delete_admin(self._sis_id(sis_account_id), user_id, role)
-
-    def _admin_from_json(delf, data):
-        admin = CanvasAdmin()
-        admin.admin_id = data["id"]
-        admin.role = data["role"]
-        admin.user = Users()._user_from_json(data["user"])
-        return admin

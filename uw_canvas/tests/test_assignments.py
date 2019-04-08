@@ -1,6 +1,7 @@
 from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.assignments import Assignments
+from uw_canvas.models import Assignment
 
 
 @fdao_canvas_override
@@ -72,4 +73,4 @@ class CanvasTestAssignments(TestCase):
                 "due_at": None
                 }
 
-        assignment = Assignments()._assignment_from_json(data)
+        assignment = Assignment(data=data)

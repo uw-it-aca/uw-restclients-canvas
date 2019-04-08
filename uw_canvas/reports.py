@@ -1,5 +1,6 @@
 from uw_canvas import Canvas
 from uw_canvas.dao import CanvasFileDownload_DAO
+from uw_canvas.accounts import ACCOUNTS_API
 from uw_canvas.models import Report, ReportType, Attachment
 from restclients_core.exceptions import DataFailureException
 from time import sleep
@@ -24,7 +25,7 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.available_reports
         """
-        url = "/api/v1/accounts/{}/reports".format(account_id)
+        url = ACCOUNTS_API.format(account_id) + "/reports"
 
         report_types = []
         for datum in self._get_resource(url):
@@ -33,8 +34,8 @@ class Reports(Canvas):
             report_type.title = datum["title"]
             report_type.parameters = datum["parameters"]
             if datum["last_run"] is not None:
-                report = self._report_from_json(account_id, datum["last_run"])
-                report_type.last_run = report
+                datum["last_run"]["account_id"] = account_id
+                report_type.last_run = Report(data=datum["last_run"])
 
             report_types.append(report_type)
 
@@ -47,11 +48,13 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.index
         """
-        url = "/api/v1/accounts/{}/reports/{}".format(account_id, report_type)
+        url = ACCOUNTS_API.format(account_id) + "/reports/{}".format(
+            report_type)
 
         reports = []
         for datum in self._get_resource(url):
-            reports.append(self._report_from_json(account_id, datum))
+            datum["account_id"] = account_id
+            reports.append(Report(data=datum))
 
         return reports
 
@@ -64,11 +67,13 @@ class Reports(Canvas):
         if term_id is not None:
             params["enrollment_term_id"] = term_id
 
-        url = "/api/v1/accounts/{}/reports/{}".format(account_id, report_type)
+        url = ACCOUNTS_API.format(account_id) + "/reports/{}".format(
+            report_type)
         body = {"parameters": params}
 
         data = self._post_resource(url, body)
-        return self._report_from_json(account_id, data)
+        data["account_id"] = account_id
+        return Report(data=data)
 
     def create_course_provisioning_report(self, account_id, term_id=None,
                                           params={}):
@@ -158,11 +163,12 @@ class Reports(Canvas):
                 report.report_id is None):
             raise ReportFailureException(report)
 
-        url = "/api/v1/accounts/{}/reports/{}/{}".format(
-            report.account_id, report.type, report.report_id)
+        url = ACCOUNTS_API.format(report.account_id) + "/reports/{}/{}".format(
+            report.type, report.report_id)
 
         data = self._get_resource(url)
-        return self._report_from_json(report.account_id, data)
+        data["account_id"] = report.account_id
+        return Report(data=data)
 
     def delete_report(self, report):
         """
@@ -170,8 +176,8 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.destroy
         """
-        url = "/api/v1/accounts/{}/reports/{}/{}".format(
-            report.account_id, report.type, report.report_id)
+        url = ACCOUNTS_API.format(report.account_id) + "/reports/{}/{}".format(
+            report.type, report.report_id)
 
         response = self._delete_resource(url)
         return True
@@ -183,24 +189,3 @@ class Reports(Canvas):
             raise DataFailureException(url, response.status, response.data)
 
         return response.data.decode("utf-8")
-
-    def _report_from_json(self, account_id, data):
-        report = Report()
-        report.account_id = account_id
-        report.report_id = data["id"]
-        report.type = data["report"]
-        report.url = data["file_url"]
-        report.status = data["status"]
-        report.progress = data["progress"]
-        report.parameters = data["parameters"]
-
-        if "attachment" in data:
-            report.attachment = Attachment(
-                attachment_id=data["attachment"]["id"],
-                filename=data["attachment"]["filename"],
-                display_name=data["attachment"]["display_name"],
-                content_type=data["attachment"]["content-type"],
-                size=data["attachment"]["size"],
-                url=data["attachment"]["url"])
-
-        return report

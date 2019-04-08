@@ -1,5 +1,6 @@
 from uw_canvas import Canvas
-from uw_canvas.models import CanvasRole, CanvasAccount
+from uw_canvas.accounts import ACCOUNTS_API
+from uw_canvas.models import CanvasRole
 from urllib.parse import quote
 
 
@@ -10,11 +11,11 @@ class Roles(Canvas):
 
         https://canvas.instructure.com/doc/api/roles.html#method.role_overrides.api_index
         """
-        url = "/api/v1/accounts/%s/roles" % (account_id)
+        url = ACCOUNTS_API.format(account_id) + "/roles"
 
         roles = []
         for datum in self._get_resource(url, params=params):
-            roles.append(self._role_from_json(datum))
+            roles.append(CanvasRole(data=datum))
         return roles
 
     def get_roles_by_account_sis_id(self, account_sis_id, params={}):
@@ -43,8 +44,8 @@ class Roles(Canvas):
 
         https://canvas.instructure.com/doc/api/roles.html#method.role_overrides.show
         """
-        url = "/api/v1/accounts/%s/roles/%s" % (account_id, role_id)
-        return self._role_from_json(self._get_resource(url))
+        url = ACCOUNTS_API.format(account_id) + "/roles/{}".format(role_id)
+        return CanvasRole(data=self._get_resource(url))
 
     def get_role_by_account_sis_id(self, account_sis_id, role_id):
         """
@@ -52,14 +53,3 @@ class Roles(Canvas):
         """
         return self.get_role(self._sis_id(account_sis_id, sis_field="account"),
                              role_id)
-
-    def _role_from_json(self, data):
-        role = CanvasRole()
-        role.role_id = data["id"]
-        role.label = data["label"]
-        role.base_role_type = data["base_role_type"]
-        role.workflow_state = data["workflow_state"]
-        role.permissions = data.get("permissions", {})
-        if "account" in data:
-            role.account = CanvasAccount(data["account"])
-        return role

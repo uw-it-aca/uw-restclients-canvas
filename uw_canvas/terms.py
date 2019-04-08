@@ -1,6 +1,6 @@
 from uw_canvas import Canvas, MissingAccountID
+from uw_canvas.accounts import ACCOUNTS_API
 from uw_canvas.models import CanvasTerm
-import dateutil.parser
 
 
 class Terms(Canvas):
@@ -13,13 +13,13 @@ class Terms(Canvas):
             raise MissingAccountID()
 
         params = {"workflow_state": 'all', 'per_page': 500}
-        url = '/api/v1/accounts/%s/terms' % self._canvas_account_id
+        url = ACCOUNTS_API.format(self._canvas_account_id) + "/terms"
         data_key = 'enrollment_terms'
 
         terms = []
         response = self._get_paged_resource(url, params, data_key)
         for data in response[data_key]:
-            terms.append(self._term_from_json(data))
+            terms.append(CanvasTerm(data=data))
         return terms
 
     def get_term_by_sis_id(self, sis_term_id):
@@ -38,21 +38,9 @@ class Terms(Canvas):
         if not self._canvas_account_id:
             raise MissingAccountID()
 
-        url = '/api/v1/accounts/%s/terms/%s' % (
-            self._canvas_account_id,
-            self._sis_id(sis_term_id, sis_field='term'))
-        body = {'enrollment_term': {'overrides': overrides}}
-        return self._term_from_json(self._put_resource(url, body))
+        url = ACCOUNTS_API.format(
+            self._canvas_account_id) + "/terms/{}".format(
+                self._sis_id(sis_term_id, sis_field='term'))
 
-    def _term_from_json(self, data):
-        term = CanvasTerm()
-        term.term_id = data.get('id')
-        term.sis_term_id = data.get('sis_term_id')
-        term.name = data.get('name')
-        term.workflow_state = data.get('workflow_state')
-        if 'start_at' in data and data['start_at']:
-            term.start_at = dateutil.parser.parse(data['start_at'])
-        if 'end_at' in data and data['end_at']:
-            term.end_at = dateutil.parser.parse(data['end_at'])
-        term.overrides = data.get('overrides', {})
-        return term
+        body = {'enrollment_term': {'overrides': overrides}}
+        return CanvasTerm(data=self._put_resource(url, body))
