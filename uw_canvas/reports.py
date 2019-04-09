@@ -3,6 +3,7 @@ from uw_canvas.dao import CanvasFileDownload_DAO
 from uw_canvas.accounts import ACCOUNTS_API
 from uw_canvas.models import Report, ReportType, Attachment
 from restclients_core.exceptions import DataFailureException
+from commonconf import settings
 from time import sleep
 import re
 
@@ -29,16 +30,7 @@ class Reports(Canvas):
 
         report_types = []
         for datum in self._get_resource(url):
-            report_type = ReportType()
-            report_type.name = datum["report"]
-            report_type.title = datum["title"]
-            report_type.parameters = datum["parameters"]
-            if datum["last_run"] is not None:
-                datum["last_run"]["account_id"] = account_id
-                report_type.last_run = Report(data=datum["last_run"])
-
-            report_types.append(report_type)
-
+            report_types.append(ReportType(data=datum, account_id=account_id))
         return report_types
 
     def get_reports_by_type(self, account_id, report_type):
@@ -140,10 +132,11 @@ class Reports(Canvas):
         if report.report_id is None or report.status is None:
             raise ReportFailureException(report)
 
+        interval = getattr(settings, 'CANVAS_REPORT_POLLING_INTERVAL', 5)
         while report.status != "complete":
             if report.status == "error":
                 raise ReportFailureException(report)
-            sleep(5)
+            sleep(interval)
             report = self.get_report_status(report)
 
         if report.attachment is None or report.attachment.url is None:
