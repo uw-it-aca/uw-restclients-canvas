@@ -2,6 +2,7 @@ from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.enrollments import Enrollments
 from uw_canvas.models import CanvasEnrollment
+import mock
 
 
 @fdao_canvas_override
@@ -83,3 +84,28 @@ class CanvasTestEnrollment(TestCase):
         self.assertEquals(enrollment.login_id, None)
         self.assertEquals(
             enrollment.status, CanvasEnrollment.STATUS_INVITED, "Status")
+
+    @mock.patch.object(Enrollments, '_post_resource')
+    def test_enroll_user(self, mock_create):
+        mock_create.return_value = None
+        canvas = Enrollments()
+
+        canvas.enroll_user("862539", "12345", "Student")
+        mock_create.assert_called_with(
+            '/api/v1/courses/862539/enrollments', {
+                'enrollment': {'user_id': '12345', 'type': 'Student'}})
+
+    @mock.patch.object(Enrollments, '_post_resource')
+    def test_enroll_user_in_course(self, mock_create):
+        mock_create.return_value = None
+        canvas = Enrollments()
+
+        canvas.enroll_user_in_course("862539", "12345", "Student",
+                                     course_section_id="99999",
+                                     role_id="1111", status="active")
+        mock_create.assert_called_with(
+            '/api/v1/courses/862539/enrollments', {
+                'enrollment': {'user_id': '12345', 'type': 'Student',
+                               'enrollment_state': 'active',
+                               'course_section_id': '99999',
+                               'role_id': '1111'}})

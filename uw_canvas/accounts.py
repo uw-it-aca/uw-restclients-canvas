@@ -12,7 +12,7 @@ class Accounts(Canvas):
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.show
         """
         url = ACCOUNTS_API.format(account_id)
-        return self._account_from_json(self._get_resource(url))
+        return CanvasAccount(data=self._get_resource(url))
 
     def get_account_by_sis_id(self, sis_id):
         """
@@ -31,7 +31,7 @@ class Accounts(Canvas):
 
         accounts = []
         for datum in self._get_paged_resource(url, params=params):
-            accounts.append(self._account_from_json(datum))
+            accounts.append(CanvasAccount(data=datum))
 
         return accounts
 
@@ -66,8 +66,7 @@ class Accounts(Canvas):
         url = ACCOUNTS_API.format(account.account_id)
         body = {"account": {"name": account.name}}
 
-        data = self._put_resource(url, body)
-        return self._account_from_json(data)
+        return CanvasAccount(data=self._put_resource(url, body))
 
     def update_sis_id(self, account_id, sis_account_id):
         """
@@ -81,8 +80,7 @@ class Accounts(Canvas):
         url = ACCOUNTS_API.format(account_id)
         body = {"account": {"sis_account_id": sis_account_id}}
 
-        data = self._put_resource(url, body)
-        return self._account_from_json(data)
+        return CanvasAccount(data=self._put_resource(url, body))
 
     def get_auth_settings(self, account_id):
         """
@@ -91,9 +89,7 @@ class Accounts(Canvas):
         https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.show_sso_settings
         """
         url = ACCOUNTS_API.format(account_id) + "/sso_settings"
-
-        data = self._get_resource(url)
-        return self._auth_settings_from_json(data)
+        return CanvasSSOSettings(data=self._get_resource(url))
 
     def update_auth_settings(self, account_id, auth_settings):
         """
@@ -102,24 +98,5 @@ class Accounts(Canvas):
         https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.update_sso_settings
         """
         url = ACCOUNTS_API.format(account_id) + "/sso_settings"
-
         data = self._put_resource(url, auth_settings.json_data())
-        return self._auth_settings_from_json(data)
-
-    def _auth_settings_from_json(self, data):
-        sso_data = data['sso_settings']
-        auth_settings = CanvasSSOSettings()
-        auth_settings.change_password_url = sso_data['change_password_url']
-        auth_settings.login_handle_name = sso_data['login_handle_name']
-        auth_settings.unknown_user_url = sso_data['unknown_user_url']
-        auth_settings.auth_discovery_url = sso_data['auth_discovery_url']
-        return auth_settings
-
-    def _account_from_json(self, data):
-        account = CanvasAccount()
-        account.account_id = data["id"]
-        account.sis_account_id = data.get("sis_account_id", None)
-        account.name = data["name"]
-        account.parent_account_id = data["parent_account_id"]
-        account.root_account_id = data["root_account_id"]
-        return account
+        return CanvasSSOSettings(data=data)

@@ -1,6 +1,8 @@
 from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.assignments import Assignments
+from uw_canvas.models import Assignment
+import mock
 
 
 @fdao_canvas_override
@@ -37,6 +39,19 @@ class CanvasTestAssignments(TestCase):
             "2013-autumn-PHYS-248-A")
         self.assertEquals(len(assignments), 2, "Assignment Count")
 
+    @mock.patch.object(Assignments, '_put_resource')
+    def test_update_assignment(self, mock_update):
+        mock_update.return_value = None
+        canvas = Assignments()
+
+        assignments = canvas.get_assignments("862539")
+        assignment = assignments[0]
+
+        canvas.update_assignment(assignment)
+        mock_update.assert_called_with(
+            '/api/v1/courses/862539/assignments/2367793', {
+                'assignment': {'integration_id': '', 'integration_data': ''}})
+
     def test_json_data(self):
         canvas = Assignments()
 
@@ -72,4 +87,4 @@ class CanvasTestAssignments(TestCase):
                 "due_at": None
                 }
 
-        assignment = Assignments()._assignment_from_json(data)
+        assignment = Assignment(data=data)

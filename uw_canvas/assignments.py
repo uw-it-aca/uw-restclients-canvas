@@ -1,6 +1,8 @@
 from uw_canvas import Canvas
+from uw_canvas.courses import COURSES_API
 from uw_canvas.models import Assignment
-import dateutil.parser
+
+ASSIGNMENTS_API = COURSES_API + "/assignments"
 
 
 class Assignments(Canvas):
@@ -10,12 +12,11 @@ class Assignments(Canvas):
 
         https://canvas.instructure.com/doc/api/assignments.html#method.assignments_api.index
         """
-        url = "/api/v1/courses/%s/assignments" % course_id
+        url = ASSIGNMENTS_API.format(course_id)
         data = self._get_resource(url)
         assignments = []
-        for assignment in data:
-            assignment = self._assignment_from_json(assignment)
-            assignments.append(assignment)
+        for datum in data:
+            assignments.append(Assignment(data=datum))
         return assignments
 
     def get_assignments_by_sis_id(self, sis_id):
@@ -32,32 +33,8 @@ class Assignments(Canvas):
 
         https://canvas.instructure.com/doc/api/assignments.html#method.assignments_api.update
         """
-        url = "/api/v1/courses/%s/assignments/%s" % (assignment.course_id,
-                                                     assignment.assignment_id)
+        url = ASSIGNMENTS_API.format(assignment.course_id) + "/{}".format(
+            assignment.assignment_id)
 
         data = self._put_resource(url, assignment.json_data())
-        return self._assignment_from_json(data)
-
-    def _assignment_from_json(self, data):
-        assignment = Assignment()
-        assignment.assignment_id = data['id']
-        assignment.course_id = data['course_id']
-        assignment.integration_id = data['integration_id']
-        assignment.integration_data = data['integration_data']
-        if 'due_at' in data and data['due_at']:
-            assignment.due_at = dateutil.parser.parse(data['due_at'])
-        assignment.points_possible = data['points_possible']
-        assignment.grading_type = data['grading_type']
-        assignment.grading_standard_id = data['grading_standard_id']
-        assignment.position = data['position']
-        assignment.name = data['name']
-        assignment.muted = data['muted']
-        assignment.published = data['published']
-        assignment.html_url = data['html_url']
-        assignment.turnitin_enabled = data.get('turnitin_enabled', False)
-        assignment.vericite_enabled = data.get('vericite_enabled', False)
-        assignment.has_submissions = data['has_submitted_submissions']
-        assignment.submission_types = data.get('submission_types', [])
-        assignment.external_tool_tag_attributes = data.get(
-            'external_tool_tag_attributes', {})
-        return assignment
+        return Assignment(data=data)

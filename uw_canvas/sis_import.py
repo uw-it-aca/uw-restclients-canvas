@@ -1,4 +1,5 @@
 from uw_canvas import Canvas, MissingAccountID
+from uw_canvas.accounts import ACCOUNTS_API
 from uw_canvas.models import SISImport as SISImportModel
 from uw_canvas.dao import Canvas_DAO
 from restclients_core.exceptions import DataFailureException
@@ -10,6 +11,7 @@ import os
 # List of csv files determines sequence of import
 CSV_FILES = ["accounts.csv", "users.csv", "terms.csv", "courses.csv",
              "sections.csv", "enrollments.csv", "xlists.csv", "admins.csv"]
+SIS_IMPORTS_API = ACCOUNTS_API + "/sis_imports"
 
 
 class SISImport(Canvas):
@@ -23,13 +25,11 @@ class SISImport(Canvas):
             raise MissingAccountID()
 
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
-        url = "/api/v1/accounts/{}/sis_imports.json{}".format(
-            self._canvas_account_id, self._params(params))
+        url = SIS_IMPORTS_API.format(
+            self._canvas_account_id) + ".json{}".format(self._params(params))
         headers = {"Content-Type": "text/csv"}
 
-        data = self._post_resource(url, headers, csv)
-
-        return self._sis_import_from_json(data)
+        return SISImportModel(data=self._post_resource(url, headers, csv))
 
     def import_dir(self, dir_path, params={}):
         """
@@ -42,13 +42,11 @@ class SISImport(Canvas):
 
         body = self._build_archive(dir_path)
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
-        url = "/api/v1/accounts/{}/sis_imports.json{}".format(
-            self._canvas_account_id, self._params(params))
+        url = SIS_IMPORTS_API.format(
+            self._canvas_account_id) + ".json{}".format(self._params(params))
         headers = {"Content-Type": "application/zip"}
 
-        data = self._post_resource(url, headers, body)
-
-        return self._sis_import_from_json(data)
+        return SISImportModel(data=self._post_resource(url, headers, body))
 
     def get_import_status(self, sis_import):
         """
@@ -59,10 +57,10 @@ class SISImport(Canvas):
         if not self._canvas_account_id:
             raise MissingAccountID()
 
-        url = "/api/v1/accounts/{}/sis_imports/{}.json".format(
-            self._canvas_account_id, sis_import.import_id)
+        url = SIS_IMPORTS_API.format(
+            self._canvas_account_id) + "/{}.json".format(sis_import.import_id)
 
-        return self._sis_import_from_json(self._get_resource(url))
+        return SISImportModel(data=self._get_resource(url))
 
     def _post_resource(self, url, headers, body):
         headers.update({"Accept": "application/json",
@@ -93,12 +91,3 @@ class SISImport(Canvas):
             body = f.read()
 
         return body
-
-    def _sis_import_from_json(self, data):
-        sis_import = SISImportModel()
-        sis_import.import_id = data["id"]
-        sis_import.workflow_state = data["workflow_state"]
-        sis_import.progress = data.get("progress", "0")
-        sis_import.processing_warnings = data.get("processing_warnings", [])
-        sis_import.processing_errors = data.get("processing_errors", [])
-        return sis_import
