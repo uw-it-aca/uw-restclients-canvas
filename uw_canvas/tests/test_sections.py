@@ -2,6 +2,7 @@ from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.sections import Sections
 from uw_canvas.models import CanvasSection
+import mock
 
 
 @fdao_canvas_override
@@ -62,3 +63,27 @@ class CanvasTestSections(TestCase):
             n += len(section.students)
 
         self.assertEquals(n, 32, "Too few students")
+
+    @mock.patch.object(Sections, '_post_resource')
+    def test_create_section(self, mock_create):
+        mock_create.return_value = None
+        canvas = Sections()
+
+        canvas.create_section("123456", "Test Section", "test-section-id")
+        mock_create.assert_called_with(
+            '/api/v1/courses/123456/sections', {
+                'course_section': {
+                    'name': 'Test Section',
+                    'sis_section_id': 'test-section-id'}})
+
+    @mock.patch.object(Sections, '_put_resource')
+    def test_update_section(self, mock_update):
+        mock_update.return_value = None
+        canvas = Sections()
+
+        canvas.update_section("999999", "New Name", "test-section-id")
+        mock_update.assert_called_with(
+            '/api/v1/sections/999999', {
+                'course_section': {
+                    'name': 'New Name',
+                    'sis_section_id': 'test-section-id'}})

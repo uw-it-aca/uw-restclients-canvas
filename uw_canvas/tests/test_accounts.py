@@ -2,6 +2,7 @@ from unittest import TestCase
 from commonconf import settings
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.accounts import Accounts as Canvas
+from uw_canvas.models import CanvasSSOSettings
 from restclients_core.exceptions import DataFailureException
 import mock
 
@@ -48,7 +49,23 @@ class CanvasTestAccounts(TestCase):
         self.assertEquals(account.parent_account_id, 54321)
 
     @mock.patch.object(Canvas, '_put_resource')
+    def test_update_account(self, mock_update):
+        mock_update.return_value = None
+        canvas = Canvas()
+
+        accounts = canvas.get_all_sub_accounts_by_sis_id(
+            'uwcourse:seattle:cse')
+        account = accounts[0]
+        account.name = "New Name"
+
+        canvas.update_account(account)
+        mock_update.assert_called_with(
+            '/api/v1/accounts/88888',
+            {'account': {'name': 'New Name'}})
+
+    @mock.patch.object(Canvas, '_put_resource')
     def test_update_sis_id(self, mock_update):
+        mock_update.return_value = None
         canvas = Canvas()
 
         canvas.update_sis_id(54321, 'NEW_SIS_ID')
@@ -60,3 +77,22 @@ class CanvasTestAccounts(TestCase):
         self.assertRaises(Exception, canvas.update_sis_id,
                           getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID'),
                           'NEW_SIS_ID')
+
+    @mock.patch.object(Canvas, '_put_resource')
+    def test_update_auth_settings(self, mock_update):
+        mock_update.return_value = None
+        canvas = Canvas()
+
+        auth_settings = CanvasSSOSettings(
+            unknown_user_url='https://test.edu/unknown')
+
+        canvas.update_auth_settings(
+            getattr(settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID'),
+            auth_settings)
+        mock_update.assert_called_with(
+            '/api/v1/accounts/12345/sso_settings', {
+                'sso_settings': {
+                    'login_handle_name': None,
+                    'change_password_url': None,
+                    'auth_discovery_url': None,
+                    'unknown_user_url': 'https://test.edu/unknown'}})
