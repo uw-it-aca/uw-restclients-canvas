@@ -421,6 +421,21 @@ class ReportType(models.Model):
     name = models.CharField(max_length=500, choices=NAME_CHOICES)
     title = models.CharField(max_length=500)
 
+    def __init__(self, *args, **kwargs):
+        self.parameters = {}
+        self.last_run = None
+
+        data = kwargs.get("data")
+        if data is None:
+            return super(ReportType, self).__init__(*args, **kwargs)
+
+        self.name = data["report"]
+        self.title = data["title"]
+        self.parameters = data["parameters"]
+        if "last_run" in data and data["last_run"] is not None:
+            data["last_run"]["account_id"] = kwargs.get("account_id")
+            self.last_run = Report(data=data["last_run"])
+
 
 class SISImport(models.Model):
     CSV_IMPORT_TYPE = "instructure_csv"
