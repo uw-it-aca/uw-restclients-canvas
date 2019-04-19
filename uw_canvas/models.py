@@ -70,6 +70,7 @@ class CanvasRole(models.Model):
 
     def json_data(self):
         return {
+            "id": self.role_id,
             "label": self.label,
             "base_role_type": self.base_role_type,
             "workflow_state": self.workflow_state,
