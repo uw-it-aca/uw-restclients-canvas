@@ -39,3 +39,13 @@ class CanvasTestRoles(TestCase):
         self.assertEquals(role.label, "Course Access")
         self.assertEquals(
             role.permissions.get('read_course_list').get('enabled'), True)
+
+    def test_role_json_data(self):
+        canvas = Roles()
+        role = canvas.get_role(12345, 999)
+
+        json_data = role.json_data()
+        self.assertEqual(json_data["label"], "Course Access")
+        self.assertEqual(json_data["base_role_type"], "AccountMembership")
+        self.assertEqual(json_data["workflow_state"], "active")
+        self.assertEqual(type(json_data["permissions"]), dict)
