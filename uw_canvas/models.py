@@ -54,6 +54,8 @@ class CanvasRole(models.Model):
     workflow_state = models.CharField(max_length=50)
 
     def __init__(self, *args, **kwargs):
+        self.permissions = {}
+
         data = kwargs.get("data")
         if data is None:
             return super(CanvasRole, self).__init__(*args, **kwargs)
@@ -65,6 +67,14 @@ class CanvasRole(models.Model):
         self.permissions = data.get("permissions", {})
         if "account" in data:
             self.account = CanvasAccount(data=data["account"])
+
+    def json_data(self):
+        return {
+            "label": self.label,
+            "base_role_type": self.base_role_type,
+            "workflow_state": self.workflow_state,
+            "permissions": self.permissions,
+        }
 
 
 class CanvasTerm(models.Model):
