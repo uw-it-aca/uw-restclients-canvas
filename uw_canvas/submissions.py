@@ -19,7 +19,8 @@ class Submissions(Canvas):
         return submissions
 
     def get_submissions_multiple_assignments_by_sis_id(
-            self, is_section, sis_id, students=None, assignments=None):
+            self, is_section, sis_id, students=None, assignments=None,
+            **params):
         """
         List submissions for multiple assignments by course/section sis id and
         optionally student
@@ -29,14 +30,15 @@ class Submissions(Canvas):
         if is_section:
             return self.get_submissions_multiple_assignments(
                 is_section, self._sis_id(sis_id, 'section'), students,
-                assignments)
+                assignments, **params)
         else:
             return self.get_submissions_multiple_assignments(
                 is_section, self._sis_id(sis_id, 'course'), students,
-                assignments)
+                assignments, **params)
 
     def get_submissions_multiple_assignments(
-            self, is_section, course_id, students=None, assignments=None):
+            self, is_section, course_id, students=None, assignments=None,
+            **params):
         """
         List submissions for multiple assignments by course/section id and
         optionally student
@@ -44,11 +46,10 @@ class Submissions(Canvas):
         https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.for_students
         """
         api = SECTIONS_API if is_section else COURSES_API
-        params = {}
         if students is not None:
             params['student_ids'] = students
         if assignments is not None:
-            params['assignments'] = assignments
+            params['assignment_ids'] = assignments
 
         url = api.format(course_id) + "/students/submissions"
         data = self._get_paged_resource(url, params=params)
