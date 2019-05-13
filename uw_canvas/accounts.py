@@ -98,5 +98,5 @@ class Accounts(Canvas):
         https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.update_sso_settings
         """
         url = ACCOUNTS_API.format(account_id) + "/sso_settings"
-        data = self._put_resource(url, auth_settings.json_data())
-        return CanvasSSOSettings(data=data)
+        body = {"sso_settings": auth_settings.json_data()}
+        return CanvasSSOSettings(data=self._put_resource(url, body))
