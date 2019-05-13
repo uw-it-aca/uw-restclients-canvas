@@ -33,18 +33,19 @@ class CanvasSSOSettings(models.Model):
         if data is None:
             return super(CanvasSSOSettings, self).__init__(*args, **kwargs)
 
-        self.change_password_url = data['change_password_url']
-        self.login_handle_name = data['login_handle_name']
-        self.unknown_user_url = data['unknown_user_url']
-        self.auth_discovery_url = data['auth_discovery_url']
+        sso_data = data['sso_settings']
+        self.change_password_url = sso_data['change_password_url']
+        self.login_handle_name = sso_data['login_handle_name']
+        self.unknown_user_url = sso_data['unknown_user_url']
+        self.auth_discovery_url = sso_data['auth_discovery_url']
 
     def json_data(self):
-        return {'sso_settings': {
+        return {
             'login_handle_name': self.login_handle_name,
             'change_password_url': self.change_password_url,
             'auth_discovery_url': self.auth_discovery_url,
             'unknown_user_url': self.unknown_user_url
-        }}
+        }
 
 
 class CanvasRole(models.Model):
