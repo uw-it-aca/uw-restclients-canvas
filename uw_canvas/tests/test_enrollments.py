@@ -13,24 +13,36 @@ class CanvasTestEnrollment(TestCase):
         enrollments = canvas.get_enrollments_for_course_by_sis_id(
             "2013-autumn-PHYS-248-A")
 
-        self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
+        self.assertEqual(len(enrollments), 2, "Has 2 canvas enrollments")
 
         students = canvas.get_enrollments_for_course_by_sis_id(
             "2013-autumn-PHYS-248-A", {"role": "student"})
 
-        self.assertEquals(len(students), 1, "Has 1 student enrollments")
+        self.assertEqual(len(students), 1, "Has 1 student enrollments")
 
     def test_enrollments_for_section_id(self):
         canvas = Enrollments()
 
         enrollments = canvas.get_enrollments_for_section_by_sis_id(
             "2013-autumn-PHYS-248-A--")
-        self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
+        self.assertEqual(len(enrollments), 2, "Has 2 canvas enrollments")
 
         students = canvas.get_enrollments_for_section_by_sis_id(
             "2013-autumn-PHYS-248-A--", {"role": "student"})
 
-        self.assertEquals(len(students), 1, "Has 1 student enrollments")
+        self.assertEqual(len(students), 1, "Has 1 student enrollments")
+
+        enr = students[0]
+        self.assertEqual(enr.current_score, 77.76)
+        self.assertEqual(enr.current_grade, None)
+        self.assertEqual(enr.final_score, 53.37)
+        self.assertEqual(enr.final_grade, None)
+        self.assertEqual(enr.unposted_current_score, 58.32)
+        self.assertEqual(enr.unposted_final_score, 55.37)
+        self.assertEqual(enr.unposted_current_grade, None)
+        self.assertEqual(enr.unposted_final_grade, None)
+        self.assertEqual(enr.override_score, 80.0)
+        self.assertEqual(enr.override_grade, None)
 
     # Expected values will have to change when the json files are updated
     def test_enrollments_by_regid(self):
