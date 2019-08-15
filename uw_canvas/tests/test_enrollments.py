@@ -13,24 +13,24 @@ class CanvasTestEnrollment(TestCase):
         enrollments = canvas.get_enrollments_for_course_by_sis_id(
             "2013-autumn-PHYS-248-A")
 
-        self.assertEquals(len(enrollments), 3, "Has 3 canvas enrollments")
+        self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
 
         students = canvas.get_enrollments_for_course_by_sis_id(
             "2013-autumn-PHYS-248-A", {"role": "student"})
 
-        self.assertEquals(len(students), 2, "Has 2 student enrollments")
+        self.assertEquals(len(students), 1, "Has 1 student enrollments")
 
     def test_enrollments_for_section_id(self):
         canvas = Enrollments()
 
         enrollments = canvas.get_enrollments_for_section_by_sis_id(
             "2013-autumn-PHYS-248-A--")
-        self.assertEquals(len(enrollments), 3, "Has 3 canvas enrollments")
+        self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
 
         students = canvas.get_enrollments_for_section_by_sis_id(
             "2013-autumn-PHYS-248-A--", {"role": "student"})
 
-        self.assertEquals(len(students), 2, "Has 2 student enrollments")
+        self.assertEquals(len(students), 1, "Has 1 student enrollments")
 
     # Expected values will have to change when the json files are updated
     def test_enrollments_by_regid(self):
