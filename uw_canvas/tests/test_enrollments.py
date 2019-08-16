@@ -44,6 +44,11 @@ class CanvasTestEnrollment(TestCase):
         self.assertEqual(enr.override_score, 80.0)
         self.assertEqual(enr.override_grade, None)
 
+        self.assertEquals(enr.sis_course_id, "2013-autumn-PHYS-248-A")
+        self.assertEquals(enr.sws_course_id(), "2013,autumn,PHYS,248/A")
+        self.assertEquals(enr.sis_section_id, "2013-autumn-PHYS-248-A--")
+        self.assertEquals(enr.sws_section_id(), "2013,autumn,PHYS,248/A")
+
     # Expected values will have to change when the json files are updated
     def test_enrollments_by_regid(self):
         canvas = Enrollments()

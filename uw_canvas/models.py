@@ -163,8 +163,9 @@ class CanvasCourse(models.Model):
             (year, quarter, curr_abbr, course_num,
                 section_id) = self.sis_course_id.split('-', 4)
 
-        return '%s,%s,%s,%s/%s' % (
-            year, quarter.lower(), curr_abbr.upper(), course_num, section_id)
+        return '{year},{quarter},{curr_abbr},{course_num}/{section_id}'.format(
+            year=year, quarter=quarter.lower(), curr_abbr=curr_abbr.upper(),
+            course_num=course_num, section_id=section_id)
 
     def sws_instructor_regid(self):
         if not self.is_academic_sis_id():
@@ -228,8 +229,9 @@ class CanvasSection(models.Model):
             (year, quarter, curr_abbr, course_num,
                 section_id) = sis_section_id.split('-', 4)
 
-        return '%s,%s,%s,%s/%s' % (
-            year, quarter.lower(), curr_abbr.upper(), course_num, section_id)
+        return '{year},{quarter},{curr_abbr},{course_num}/{section_id}'.format(
+            year=year, quarter=quarter.lower(), curr_abbr=curr_abbr.upper(),
+            course_num=course_num, section_id=section_id)
 
     def sws_instructor_regid(self):
         if not self.is_academic_sis_id():
@@ -360,18 +362,11 @@ class CanvasEnrollment(models.Model):
             self.grade_html_url = gr_data.get("html_url")
 
     def sws_course_id(self):
-        if self.sis_course_id is None:
-            return None
+        return CanvasCourse(sis_course_id=self.sis_course_id).sws_course_id()
 
-        parts = self.sis_course_id.split("-")
-
-        if len(parts) != 5:
-            return None
-
-        sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
-                                     parts[4])
-
-        return sws_id
+    def sws_section_id(self):
+        return CanvasSection(
+            sis_section_id=self.sis_section_id).sws_section_id()
 
     def json_data(self):
         return {"user_id": self.user_id,
