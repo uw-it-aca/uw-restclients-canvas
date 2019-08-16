@@ -348,12 +348,12 @@ class CanvasEnrollment(models.Model):
         if "grades" in data:
             gr_data = data["grades"]
             self.current_score = gr_data.get("current_score")
-            self.final_score = gr_data.get("final_score")
             self.current_grade = gr_data.get("current_grade")
+            self.final_score = gr_data.get("final_score")
             self.final_grade = gr_data.get("final_grade")
             self.unposted_current_score = gr_data.get("unposted_current_score")
-            self.unposted_final_score = gr_data.get("unposted_final_score")
             self.unposted_current_grade = gr_data.get("unposted_current_grade")
+            self.unposted_final_score = gr_data.get("unposted_final_score")
             self.unposted_final_grade = gr_data.get("unposted_final_grade")
             self.override_score = gr_data.get("override_score")
             self.override_grade = gr_data.get("override_grade")
@@ -382,9 +382,15 @@ class CanvasEnrollment(models.Model):
                 "role": self.role,
                 "status": self.status,
                 "current_score": self.current_score,
-                "final_score": self.final_score,
                 "current_grade": self.current_grade,
-                "final_grade": self.final_grade}
+                "final_score": self.final_score,
+                "final_grade": self.final_grade,
+                "unposted_current_score": self.unposted_current_score,
+                "unposted_current_grade": self.unposted_current_grade,
+                "unposted_final_score": self.unposted_final_score,
+                "unposted_final_grade": self.unposted_final_grade,
+                "override_score": self.override_score,
+                "override_grade": self.override_grade}
 
 
 class Attachment(models.Model):
