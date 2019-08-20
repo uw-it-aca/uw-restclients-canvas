@@ -163,8 +163,9 @@ class CanvasCourse(models.Model):
             (year, quarter, curr_abbr, course_num,
                 section_id) = self.sis_course_id.split('-', 4)
 
-        return '%s,%s,%s,%s/%s' % (
-            year, quarter.lower(), curr_abbr.upper(), course_num, section_id)
+        return '{year},{quarter},{curr_abbr},{course_num}/{section_id}'.format(
+            year=year, quarter=quarter.lower(), curr_abbr=curr_abbr.upper(),
+            course_num=course_num, section_id=section_id)
 
     def sws_instructor_regid(self):
         if not self.is_academic_sis_id():
@@ -228,8 +229,9 @@ class CanvasSection(models.Model):
             (year, quarter, curr_abbr, course_num,
                 section_id) = sis_section_id.split('-', 4)
 
-        return '%s,%s,%s,%s/%s' % (
-            year, quarter.lower(), curr_abbr.upper(), course_num, section_id)
+        return '{year},{quarter},{curr_abbr},{course_num}/{section_id}'.format(
+            year=year, quarter=quarter.lower(), curr_abbr=curr_abbr.upper(),
+            course_num=course_num, section_id=section_id)
 
     def sws_instructor_regid(self):
         if not self.is_academic_sis_id():
@@ -304,6 +306,15 @@ class CanvasEnrollment(models.Model):
                                       decimal_places=2, null=True)
     current_grade = models.TextField(max_length=12, null=True)
     final_grade = models.TextField(max_length=12, null=True)
+    unposted_current_score = models.DecimalField(max_digits=10,
+                                                 decimal_places=2, null=True)
+    unposted_final_score = models.DecimalField(max_digits=10,
+                                               decimal_places=2, null=True)
+    unposted_current_grade = models.TextField(max_length=12, null=True)
+    unposted_final_grade = models.TextField(max_length=12, null=True)
+    override_score = models.DecimalField(max_digits=10,
+                                         decimal_places=2, null=True)
+    override_grade = models.TextField(max_length=12, null=True)
     grade_html_url = models.CharField(max_length=1000)
     total_activity_time = models.IntegerField(null=True)
     last_activity_at = models.DateTimeField(null=True)
@@ -317,8 +328,8 @@ class CanvasEnrollment(models.Model):
         self.user_id = data["user_id"]
         self.course_id = data["course_id"]
         self.section_id = data["course_section_id"]
-        self.sis_course_id = data.get("sis_course_id", None)
-        self.sis_section_id = data.get("sis_section_id", None)
+        self.sis_course_id = data.get("sis_course_id")
+        self.sis_section_id = data.get("sis_section_id")
         self.role = data["type"]
         self.status = data["enrollment_state"]
         self.html_url = data["html_url"]
@@ -331,32 +342,31 @@ class CanvasEnrollment(models.Model):
 
         if "user" in data:
             user_data = data["user"]
-            self.name = user_data.get("name", None)
-            self.sortable_name = user_data.get("sortable_name", None)
-            self.login_id = user_data.get("login_id", None)
-            self.sis_user_id = user_data.get("sis_user_id", None)
+            self.name = user_data.get("name")
+            self.sortable_name = user_data.get("sortable_name")
+            self.login_id = user_data.get("login_id")
+            self.sis_user_id = user_data.get("sis_user_id")
 
         if "grades" in data:
-            grade_data = data["grades"]
-            self.current_score = grade_data.get("current_score", None)
-            self.final_score = grade_data.get("final_score", None)
-            self.current_grade = grade_data.get("current_grade", None)
-            self.final_grade = grade_data.get("final_grade", None)
-            self.grade_html_url = grade_data.get("html_url", None)
+            gr_data = data["grades"]
+            self.current_score = gr_data.get("current_score")
+            self.current_grade = gr_data.get("current_grade")
+            self.final_score = gr_data.get("final_score")
+            self.final_grade = gr_data.get("final_grade")
+            self.unposted_current_score = gr_data.get("unposted_current_score")
+            self.unposted_current_grade = gr_data.get("unposted_current_grade")
+            self.unposted_final_score = gr_data.get("unposted_final_score")
+            self.unposted_final_grade = gr_data.get("unposted_final_grade")
+            self.override_score = gr_data.get("override_score")
+            self.override_grade = gr_data.get("override_grade")
+            self.grade_html_url = gr_data.get("html_url")
 
     def sws_course_id(self):
-        if self.sis_course_id is None:
-            return None
+        return CanvasCourse(sis_course_id=self.sis_course_id).sws_course_id()
 
-        parts = self.sis_course_id.split("-")
-
-        if len(parts) != 5:
-            return None
-
-        sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
-                                     parts[4])
-
-        return sws_id
+    def sws_section_id(self):
+        return CanvasSection(
+            sis_section_id=self.sis_section_id).sws_section_id()
 
     def json_data(self):
         return {"user_id": self.user_id,
@@ -367,9 +377,15 @@ class CanvasEnrollment(models.Model):
                 "role": self.role,
                 "status": self.status,
                 "current_score": self.current_score,
-                "final_score": self.final_score,
                 "current_grade": self.current_grade,
-                "final_grade": self.final_grade}
+                "final_score": self.final_score,
+                "final_grade": self.final_grade,
+                "unposted_current_score": self.unposted_current_score,
+                "unposted_current_grade": self.unposted_current_grade,
+                "unposted_final_score": self.unposted_final_score,
+                "unposted_final_grade": self.unposted_final_grade,
+                "override_score": self.override_score,
+                "override_grade": self.override_grade}
 
 
 class Attachment(models.Model):
