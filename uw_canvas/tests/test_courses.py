@@ -27,6 +27,8 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(course.public_syllabus, False, "public_syllabus")
         self.assertEquals(
             course.workflow_state, "unpublished", "workflow_state")
+        self.assertEquals(
+            course.grading_standard_id, 25, "grading_standard_id")
         self.assertTrue(course.is_unpublished)
 
     def test_course_with_params(self):
