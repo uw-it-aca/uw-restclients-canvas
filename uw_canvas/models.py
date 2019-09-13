@@ -123,6 +123,7 @@ class CanvasCourse(models.Model):
     workflow_state = models.CharField(max_length=50)
     public_syllabus = models.NullBooleanField()
     syllabus_body = models.TextField(null=True)
+    grading_standard_id = models.IntegerField(null=True)
 
     def __init__(self, *args, **kwargs):
         self.students = []
@@ -138,6 +139,7 @@ class CanvasCourse(models.Model):
         self.name = data["name"]
         self.workflow_state = data["workflow_state"]
         self.public_syllabus = data["public_syllabus"]
+        self.grading_standard_id = data.get("grading_standard_id")
 
         course_url = data["calendar"]["ics"]
         course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
