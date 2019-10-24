@@ -39,6 +39,14 @@ class CanvasTestAssignments(TestCase):
             "2013-autumn-PHYS-248-A")
         self.assertEquals(len(assignments), 2, "Assignment Count")
 
+    @mock.patch.object(Assignments, '_get_resource_url')
+    def test_assignment_params(self, mock_get):
+        canvas = Assignments()
+        result = canvas.get_assignments("862539", include=['submission'])
+        mock_get.assert_called_with(
+            "/api/v1/courses/862539/assignments?include[]=submission",
+            True, None)
+
     @mock.patch.object(Assignments, '_put_resource')
     def test_update_assignment(self, mock_update):
         mock_update.return_value = None

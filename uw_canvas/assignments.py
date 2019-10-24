@@ -6,20 +6,20 @@ ASSIGNMENTS_API = COURSES_API + "/assignments"
 
 
 class Assignments(Canvas):
-    def get_assignments(self, course_id):
+    def get_assignments(self, course_id, **params):
         """
         List assignments for a given course
 
         https://canvas.instructure.com/doc/api/assignments.html#method.assignments_api.index
         """
         url = ASSIGNMENTS_API.format(course_id)
-        data = self._get_resource(url)
+        data = self._get_paged_resource(url, params=params)
         assignments = []
         for datum in data:
             assignments.append(Assignment(data=datum))
         return assignments
 
-    def get_assignments_by_sis_id(self, sis_id):
+    def get_assignments_by_sis_id(self, sis_id, **params):
         """
         List assignments for a given course by sid_id
 
