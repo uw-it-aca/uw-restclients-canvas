@@ -15,6 +15,8 @@
         "user_id": 496164,
         "workflow_state": "graded",
         "late": false,
+        "assignment_visible": true,
+        "posted_at": null,
         "preview_url": "https://uw.test.instructure.com/courses/862539/assignments/2367793/submissions/496164?preview=1"
     },
     {
@@ -33,6 +35,8 @@
         "user_id": 496164,
         "workflow_state": "graded",
         "late": false,
+        "assignment_visible": true,
+        "posted_at": null,
         "preview_url": "https://uw.test.instructure.com/courses/862539/assignments/2367794/submissions/496164?preview=1"
     },
     {
@@ -51,6 +55,8 @@
         "user_id": 613337,
         "workflow_state": "graded",
         "late": false,
+        "assignment_visible": true,
+        "posted_at": "2013-12-13T20:17:38Z",
         "preview_url": "https://uw.test.instructure.com/courses/862539/assignments/2367793/submissions/613337?preview=1",
         "attachments": [
             {
@@ -87,6 +93,8 @@
         "url": null,
         "user_id": 496164,
         "workflow_state": "",
+        "assignment_visible": true,
+        "posted_at": null,
         "late": false,
         "preview_url": null
     }

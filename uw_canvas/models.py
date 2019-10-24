@@ -576,6 +576,7 @@ class Submission(models.Model):
     attempt = models.IntegerField(max_length=2)
     submitted_at = models.DateTimeField()
     assignment_id = models.IntegerField()
+    assignment_visible = models.NullBooleanField()
     workflow_state = models.CharField(max_length=100, null=True)
     preview_url = models.CharField(max_length=500)
     late = models.NullBooleanField()
@@ -585,6 +586,7 @@ class Submission(models.Model):
     url = models.CharField(max_length=500, null=True)
     grader_id = models.IntegerField()
     graded_at = models.DateTimeField(null=True)
+    posted_at = models.DateTimeField(null=True)
     submission_type = models.CharField(max_length=100, null=True)
 
     def __init__(self, *args, **kwargs):
@@ -600,6 +602,7 @@ class Submission(models.Model):
         if "submitted_at" in data and data["submitted_at"] is not None:
             self.submitted_at = dateutil.parser.parse(data["submitted_at"])
         self.assignment_id = data["assignment_id"]
+        self.assignment_visible = data["assignment_visible"]
         self.workflow_state = data["workflow_state"]
         self.preview_url = data["preview_url"]
         self.late = data["late"]
@@ -611,6 +614,8 @@ class Submission(models.Model):
         self.grader_id = data["grader_id"]
         if "graded_at" in data and data["graded_at"] is not None:
             self.graded_at = dateutil.parser.parse(data["graded_at"])
+        if "posted_at" in data and data["posted_at"] is not None:
+            self.posted_at = dateutil.parser.parse(data["posted_at"])
         self.submission_type = data["submission_type"]
 
         for attachment_data in data.get("attachments", []):
