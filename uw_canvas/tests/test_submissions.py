@@ -79,3 +79,11 @@ class CanvasTestSubmissions(TestCase):
             '/api/v1/sections/sis_section_id%3A2013-autumn-PHYS-248-AB/'
             'students/submissions?student_ids[]=333333&student_ids[]=777777',
             True, None)
+
+        result = canvas.get_submissions_multiple_assignments_by_sis_id(
+            is_section=True, sis_id='2013-autumn-PHYS-248-AB',
+            student_ids=['all'])
+        mock_get.assert_called_with(
+            '/api/v1/sections/sis_section_id%3A2013-autumn-PHYS-248-AB/'
+            'students/submissions?student_ids[]=all',
+            True, None)
