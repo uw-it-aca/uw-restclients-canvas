@@ -576,7 +576,7 @@ class Submission(models.Model):
     attempt = models.IntegerField(max_length=2)
     submitted_at = models.DateTimeField()
     assignment_id = models.IntegerField()
-    assignment_visible = models.NullBooleanField()
+    assignment_visible = models.BooleanField(null=True)
     workflow_state = models.CharField(max_length=100, null=True)
     preview_url = models.CharField(max_length=500)
     late = models.NullBooleanField()
@@ -602,7 +602,6 @@ class Submission(models.Model):
         if "submitted_at" in data and data["submitted_at"] is not None:
             self.submitted_at = dateutil.parser.parse(data["submitted_at"])
         self.assignment_id = data["assignment_id"]
-        self.assignment_visible = data["assignment_visible"]
         self.workflow_state = data["workflow_state"]
         self.preview_url = data["preview_url"]
         self.late = data["late"]
@@ -617,6 +616,9 @@ class Submission(models.Model):
         if "posted_at" in data and data["posted_at"] is not None:
             self.posted_at = dateutil.parser.parse(data["posted_at"])
         self.submission_type = data["submission_type"]
+
+        # assignment_visible is not always present
+        self.assignment_visible = data.get("assignment_visible")
 
         for attachment_data in data.get("attachments", []):
             self.attachments.append(Attachment(data=attachment_data))
