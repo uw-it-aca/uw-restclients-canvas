@@ -22,11 +22,14 @@ class CanvasTestGradingStandards(TestCase):
 
     @mock.patch.object(GradingStandards, '_get_resource')
     def test_get_grading_standard_for_course(self, mock_get):
+        mock_get.return_value = self.json_data
         canvas = GradingStandards()
-        ret = canvas.get_grading_standard_for_course(
+
+        model = canvas.get_grading_standard_for_course(
             "123456", "225")
         mock_get.assert_called_with(
             '/api/v1/courses/123456/grading_standards/225')
+        self.assertEqual(model.json_data(), self.json_data)
 
     @mock.patch.object(GradingStandards, '_get_resource_url')
     def test_get_grading_standards_for_course(self, mock_get):
