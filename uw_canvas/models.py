@@ -731,6 +731,15 @@ class GradingStandard(models.Model):
         self.context_id = data["context_id"]
         self.grading_scheme = data["grading_scheme"]
 
+    def json_data(self):
+        return {
+            "id": self.grading_standard_id,
+            "title": self.title,
+            "context_type": self.context_type,
+            "context_id": self.context_id,
+            "grading_scheme": self.grading_scheme,
+        }
+
 
 class DiscussionTopic(models.Model):
     topic_id = models.IntegerField()
