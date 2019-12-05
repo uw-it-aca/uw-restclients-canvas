@@ -673,15 +673,26 @@ class Assignment(models.Model):
 
     def json_data(self):
         data = {
+            "id": self.assignment_id,
+            "course_id": self.course_id,
             "integration_id": self.integration_id,
             "integration_data": self.integration_data,
+            "points_possible": self.points_possible,
+            "grading_type": self.grading_type,
+            "grading_standard_id": self.grading_standard_id,
+            "position": self.position,
+            "name": self.name,
+            "muted": self.muted,
+            "published": self.published,
+            "html_url": self.html_url,
+            "submission_types": self.submission_types,
         }
 
         if "external_tool" in self.submission_types:
             data["external_tool_tag_attributes"] = (
                 self.external_tool_tag_attributes)
 
-        return {"assignment": data}
+        return data
 
 
 class Quiz(models.Model):
