@@ -289,11 +289,10 @@ class CanvasEnrollment(models.Model):
     )
 
     user_id = models.IntegerField()
-    sis_user_id = models.CharField(max_length=100, null=True)
     course_id = models.IntegerField()
     section_id = models.IntegerField()
     login_id = models.CharField(max_length=80, null=True)
-    sis_user_id = models.CharField(max_length=32, null=True)
+    sis_user_id = models.CharField(max_length=100, null=True)
     role = models.CharField(max_length=80, choices=ROLE_CHOICES)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES)
     name = models.CharField(max_length=100)
@@ -333,7 +332,6 @@ class CanvasEnrollment(models.Model):
 
         self.course = None
         self.user_id = data["user_id"]
-        self.sis_user_id = data.get("sis_user_id")
         self.course_id = data["course_id"]
         self.section_id = data["course_section_id"]
         self.sis_course_id = data.get("sis_course_id")

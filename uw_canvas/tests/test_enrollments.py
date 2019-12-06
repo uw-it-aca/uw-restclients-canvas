@@ -54,7 +54,7 @@ class CanvasTestEnrollment(TestCase):
         canvas = Enrollments()
 
         enrollments = canvas.get_enrollments_for_regid(
-            "9136CCB8F66711D5BE060004AC494FFE")
+            "9136CCB8F66711D5BE060004AC494FFE", include_courses=True)
 
         self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
 
@@ -65,7 +65,9 @@ class CanvasTestEnrollment(TestCase):
         self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
         self.assertEquals(enrollment.sis_user_id,
                           "9136CCB8F66711D5BE060004AC494FFE")
-
+        self.assertEquals(enrollment.course_name, "MECHANICS")
+        self.assertIsNotNone(enrollment.course)
+                          
         stu_enrollment = enrollments[1]
         self.assertEquals(
             stu_enrollment.grade_html_url,
