@@ -63,6 +63,8 @@ class CanvasTestEnrollment(TestCase):
                           "https://test.canvas.edu/courses/149650")
         self.assertEquals(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
         self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEquals(enrollment.sis_user_id,
+                          "9136CCB8F66711D5BE060004AC494FFE")
 
         stu_enrollment = enrollments[1]
         self.assertEquals(
