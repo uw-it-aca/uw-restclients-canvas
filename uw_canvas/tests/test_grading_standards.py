@@ -1,4 +1,6 @@
 from unittest import TestCase
+from commonconf import override_settings
+from uw_canvas import MissingAccountID
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.grading_standards import GradingStandards
 import mock
@@ -43,6 +45,22 @@ class CanvasTestGradingStandards(TestCase):
         mock_get.assert_called_with(
             '/api/v1/accounts/999999/grading_standards/123')
         self.assertEqual(model.json_data(), self.account_json_data)
+
+    @mock.patch.object(GradingStandards, '_get_resource')
+    def test_find_grading_standard_for_account(self, mock_get):
+        mock_get.return_value = self.account_json_data
+        canvas = GradingStandards()
+
+        with (override_settings(CANVAS_ACCOUNT_ID=5)):
+            model = canvas.find_grading_standard_for_account(999999, 2)
+            self.assertEqual(model.json_data(), self.account_json_data)
+
+    @override_settings(CANVAS_ACCOUNT_ID=None)
+    def test_find_grading_standard_for_missing_root_account(self):
+        canvas = GradingStandards()
+        self.assertRaises(
+            MissingAccountID, canvas.find_grading_standard_for_account,
+            999999, 2)
 
     @mock.patch.object(GradingStandards, '_get_resource')
     def test_get_grading_standard_for_course(self, mock_get):

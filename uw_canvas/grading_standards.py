@@ -1,4 +1,4 @@
-from uw_canvas import Canvas
+from uw_canvas import Canvas, MissingAccountID
 from uw_canvas.accounts import Accounts, ACCOUNTS_API
 from uw_canvas.courses import COURSES_API
 from uw_canvas.models import GradingStandard
