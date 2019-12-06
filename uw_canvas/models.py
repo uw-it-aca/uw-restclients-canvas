@@ -1,6 +1,6 @@
-from restclients_core import models
 import dateutil.parser
 import re
+from restclients_core import models
 
 
 class CanvasAccount(models.Model):
@@ -289,6 +289,7 @@ class CanvasEnrollment(models.Model):
     )
 
     user_id = models.IntegerField()
+    sis_user_id = models.CharField(max_length=100, null=True)
     course_id = models.IntegerField()
     section_id = models.IntegerField()
     login_id = models.CharField(max_length=80, null=True)
@@ -322,12 +323,17 @@ class CanvasEnrollment(models.Model):
     last_activity_at = models.DateTimeField(null=True)
     limit_privileges_to_course_section = models.NullBooleanField()
 
+    def get_course_url(self, html_url):
+        return re.sub(r'/users/\d+$', '', html_url)
+
     def __init__(self, *args, **kwargs):
         data = kwargs.get("data")
         if data is None:
             return super(CanvasEnrollment, self).__init__(*args, **kwargs)
 
+        self.course = None
         self.user_id = data["user_id"]
+        self.sis_user_id = data.get("sis_user_id")
         self.course_id = data["course_id"]
         self.section_id = data["course_section_id"]
         self.sis_course_id = data.get("sis_course_id")
@@ -335,6 +341,8 @@ class CanvasEnrollment(models.Model):
         self.role = data["type"]
         self.status = data["enrollment_state"]
         self.html_url = data["html_url"]
+        self.course_url = self.get_course_url(self.html_url)
+
         self.total_activity_time = data["total_activity_time"]
         self.limit_privileges_to_course_section = data.get(
             "limit_privileges_to_course_section", False)
@@ -372,7 +380,9 @@ class CanvasEnrollment(models.Model):
 
     def json_data(self):
         return {"user_id": self.user_id,
+                "sis_user_id": self.sis_user_id,
                 "course_id": self.course_id,
+                "course_url": self.course_url,
                 "section_id": self.section_id,
                 "login_id": self.login_id,
                 "sis_user_id": self.sis_user_id,
