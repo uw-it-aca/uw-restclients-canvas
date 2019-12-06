@@ -36,5 +36,5 @@ class Assignments(Canvas):
         url = ASSIGNMENTS_API.format(assignment.course_id) + "/{}".format(
             assignment.assignment_id)
 
-        data = self._put_resource(url, assignment.json_data())
+        data = self._put_resource(url, {"assignment": assignment.json_data()})
         return Assignment(data=data)

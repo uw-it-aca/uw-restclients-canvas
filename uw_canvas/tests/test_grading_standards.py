@@ -1,4 +1,6 @@
 from unittest import TestCase
+from commonconf import override_settings
+from uw_canvas import MissingAccountID
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.grading_standards import GradingStandards
 import mock
@@ -7,9 +9,22 @@ import mock
 @fdao_canvas_override
 class CanvasTestGradingStandards(TestCase):
     def setUp(self):
-        self.json_data = {
+        self.account_json_data = {
+            "id": "2",
+            "title": "Test Account Grading Standard",
+            "context_type": "Account",
+            "context_id": "999999",
+            "grading_scheme": [
+                {"name": "A", "value": 0.95},
+                {"name": "B", "value": 0.85},
+                {"name": "C", "value": 0.75},
+                {"name": "D", "value": 0.65},
+            ]
+        }
+
+        self.course_json_data = {
             "id": "1",
-            "title": "Test Grading Standard",
+            "title": "Test Course Grading Standard",
             "context_type": "Course",
             "context_id": "123456",
             "grading_scheme": [
@@ -21,19 +36,46 @@ class CanvasTestGradingStandards(TestCase):
         }
 
     @mock.patch.object(GradingStandards, '_get_resource')
+    def test_get_grading_standard_for_account(self, mock_get):
+        mock_get.return_value = self.account_json_data
+        canvas = GradingStandards()
+
+        model = canvas.get_grading_standard_for_account(
+            "999999", "123")
+        mock_get.assert_called_with(
+            '/api/v1/accounts/999999/grading_standards/123')
+        self.assertEqual(model.json_data(), self.account_json_data)
+
+    @mock.patch.object(GradingStandards, '_get_resource')
+    def test_find_grading_standard_for_account(self, mock_get):
+        mock_get.return_value = self.account_json_data
+        canvas = GradingStandards()
+
+        with (override_settings(CANVAS_ACCOUNT_ID=5)):
+            model = canvas.find_grading_standard_for_account(999999, 2)
+            self.assertEqual(model.json_data(), self.account_json_data)
+
+    @override_settings(CANVAS_ACCOUNT_ID=None)
+    def test_find_grading_standard_for_missing_root_account(self):
+        canvas = GradingStandards()
+        self.assertRaises(
+            MissingAccountID, canvas.find_grading_standard_for_account,
+            999999, 2)
+
+    @mock.patch.object(GradingStandards, '_get_resource')
     def test_get_grading_standard_for_course(self, mock_get):
-        mock_get.return_value = self.json_data
+        mock_get.return_value = self.course_json_data
         canvas = GradingStandards()
 
         model = canvas.get_grading_standard_for_course(
             "123456", "225")
         mock_get.assert_called_with(
             '/api/v1/courses/123456/grading_standards/225')
-        self.assertEqual(model.json_data(), self.json_data)
+        self.assertEqual(model.json_data(), self.course_json_data)
 
     @mock.patch.object(GradingStandards, '_get_resource_url')
     def test_get_grading_standards_for_course(self, mock_get):
-        mock_get.return_value = [self.json_data]
+        mock_get.return_value = [self.course_json_data]
         canvas = GradingStandards()
 
         ret = canvas.get_grading_standards_for_course("123456")
@@ -41,12 +83,15 @@ class CanvasTestGradingStandards(TestCase):
             '/api/v1/courses/123456/grading_standards', True, None)
 
         model = ret[0]
-        self.assertEqual(model.grading_standard_id, self.json_data["id"])
-        self.assertEqual(model.title, self.json_data["title"])
-        self.assertEqual(model.context_type, self.json_data["context_type"])
-        self.assertEqual(model.context_id, self.json_data["context_id"])
-        self.assertEqual(model.grading_scheme,
-                         self.json_data["grading_scheme"])
+        self.assertEqual(
+            model.grading_standard_id, self.course_json_data["id"])
+        self.assertEqual(model.title, self.course_json_data["title"])
+        self.assertEqual(
+            model.context_type, self.course_json_data["context_type"])
+        self.assertEqual(
+            model.context_id, self.course_json_data["context_id"])
+        self.assertEqual(
+            model.grading_scheme, self.course_json_data["grading_scheme"])
 
     @mock.patch.object(GradingStandards, '_post_resource')
     def test_create_grading_standard_for_course(self, mock_create):

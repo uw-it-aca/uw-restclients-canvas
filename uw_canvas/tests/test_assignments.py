@@ -58,7 +58,7 @@ class CanvasTestAssignments(TestCase):
         canvas.update_assignment(assignment)
         mock_update.assert_called_with(
             '/api/v1/courses/862539/assignments/2367793', {
-                'assignment': {'integration_id': '', 'integration_data': ''}})
+                'assignment': assignment.json_data()})
 
     def test_json_data(self):
         canvas = Assignments()
@@ -67,15 +67,18 @@ class CanvasTestAssignments(TestCase):
             "2013-autumn-PHYS-248-A")
 
         assignment = assignments[0]
-        data = assignment.json_data()["assignment"]
-        self.assertEquals(
-            'external_tool' in assignment.submission_types, False)
-        self.assertEquals('external_tool_tag_attributes' in data, False)
+        data = assignment.json_data()
+        self.assertEqual(assignment.assignment_id, 2367793)
+        self.assertEqual(assignment.points_possible, 1000000000)
+        self.assertFalse('external_tool' in assignment.submission_types)
+        self.assertFalse('external_tool_tag_attributes' in data)
 
         assignment = assignments[1]
-        data = assignment.json_data()["assignment"]
-        self.assertEquals('external_tool' in assignment.submission_types, True)
-        self.assertEquals('external_tool_tag_attributes' in data, True)
+        data = assignment.json_data()
+        self.assertEqual(assignment.assignment_id, 2367794)
+        self.assertEqual(assignment.points_possible, 123)
+        self.assertTrue('external_tool' in assignment.submission_types)
+        self.assertTrue('external_tool_tag_attributes' in data)
 
     def test_due_at_none(self):
         data = {
