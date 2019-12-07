@@ -50,7 +50,7 @@ class Enrollments(Canvas):
             self._sis_id(sis_section_id, sis_field="section"), params)
 
     def get_enrollments_for_regid(self, regid, params={},
-                                  include_courses=True):
+                                  include_courses=False):
         """
         Return a list of enrollments for the passed user regid.
 
@@ -72,13 +72,7 @@ class Enrollments(Canvas):
                     enrollment.course = course
                     # the following 3 lines are not removed
                     # to be backward compatible.
-                    enrollment.course_url = course.course_url
                     enrollment.course_name = course.name
-                    enrollment.sis_course_id = course.sis_course_id
-            else:
-                enrollment.course_url = re.sub(
-                    r'/users/\d+$', '', enrollment.html_url)
-
             enrollments.append(enrollment)
         return enrollments
 

@@ -54,17 +54,19 @@ class CanvasTestEnrollment(TestCase):
         canvas = Enrollments()
 
         enrollments = canvas.get_enrollments_for_regid(
-            "9136CCB8F66711D5BE060004AC494FFE")
+            "9136CCB8F66711D5BE060004AC494FFE", include_courses=True)
 
         self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
 
         enrollment = enrollments[0]
-
-        self.assertEquals(
-            enrollment.course.course_url,
-            "https://canvas.uw.edu/courses/149650", "Has proper course url")
+        self.assertEquals(enrollment.course_url,
+                          "https://test.canvas.edu/courses/149650")
         self.assertEquals(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
         self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEquals(enrollment.sis_user_id,
+                          "9136CCB8F66711D5BE060004AC494FFE")
+        self.assertEquals(enrollment.course_name, "MECHANICS")
+        self.assertIsNotNone(enrollment.course)
 
         stu_enrollment = enrollments[1]
         self.assertEquals(
@@ -95,9 +97,9 @@ class CanvasTestEnrollment(TestCase):
         self.assertEquals(len(enrollments), 1, "Has 1 canvas enrollment")
 
         enrollment = enrollments[0]
-        self.assertEquals(enrollment.name, "j.average@gmail.com", "Name")
+        self.assertEquals(enrollment.name, "James Average", "Name")
         self.assertEquals(
-            enrollment.sortable_name, "j.average@gmail.com", "Sortable Name")
+            enrollment.sortable_name, "Average, James", "Sortable Name")
         self.assertEquals(enrollment.login_id, None)
         self.assertEquals(
             enrollment.status, CanvasEnrollment.STATUS_INVITED, "Status")
