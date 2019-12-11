@@ -23,6 +23,10 @@ class CanvasTestSections(TestCase):
         self.assertEquals(section.sws_instructor_regid(), None)
         self.assertEquals(section.is_academic_sis_id(), True)
 
+        section = CanvasSection(sis_section_id="2019-autumn-GEN ST-199-O8--")
+        self.assertEquals(section.sws_section_id(),
+                          "2019,autumn,GEN ST,199/O8")
+
         section = CanvasSection(
             sis_section_id=(
                 "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE--"))

@@ -109,7 +109,7 @@ class CanvasCourse(models.Model):
         r"(?:winter|spring|summer|autumn)-"  # quarter
         r"[\w& ]+-"                          # curriculum
         r"\d{3}-"                            # course number
-        r"[A-Z][A-Z0-9]?"                    # section id
+        r"[A-Z0-9]{0,2}"                     # section id
         r"(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
         re.VERBOSE)
 
@@ -194,7 +194,7 @@ class CanvasSection(models.Model):
         r"(?:winter|spring|summer|autumn)-"         # quarter
         r"[\w& ]+-"                                 # curriculum
         r"\d{3}-"                                   # course number
-        r"[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
+        r"[0-9A-Z]{1,2}-?[0-9A-Z]{0,32}-{0,2}$",    # section id|regid
         re.VERBOSE)
 
     section_id = models.IntegerField()
@@ -249,10 +249,9 @@ class CanvasSection(models.Model):
         return reg_id
 
     def is_academic_sis_id(self):
-        if (self.sis_section_id is None or
-                self.RE_SECTION_SIS_ID.match(self.sis_section_id) is None):
-            return False
-        return True
+        return (self.sis_section_id is not None and
+                len(self.sis_section_id) and
+                self.RE_SECTION_SIS_ID.match(self.sis_section_id) is not None)
 
 
 class CanvasEnrollment(models.Model):
