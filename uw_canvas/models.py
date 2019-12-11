@@ -109,7 +109,7 @@ class CanvasCourse(models.Model):
         r"(?:winter|spring|summer|autumn)-"  # quarter
         r"[\w& ]+-"                          # curriculum
         r"\d{3}-"                            # course number
-        r"[A-Z0-9]{0,2}"                     # section id
+        r"[A-Z0-9]{1,2}"                     # section id
         r"(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
         re.VERBOSE)
 
