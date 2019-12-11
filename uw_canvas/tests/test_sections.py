@@ -9,10 +9,13 @@ import mock
 class CanvasTestSections(TestCase):
     def test_sis_id(self):
         section = CanvasSection()
+
+        # Missing section ID
         self.assertEquals(section.sws_section_id(), None)
         self.assertEquals(section.sws_instructor_regid(), None)
         self.assertEquals(section.is_academic_sis_id(), False)
 
+        # Valid section IDs
         section = CanvasSection(sis_section_id="2013-spring-PHYS-121-A--")
         self.assertEquals(section.sws_section_id(), "2013,spring,PHYS,121/A")
         self.assertEquals(section.sws_instructor_regid(), None)
@@ -23,6 +26,10 @@ class CanvasTestSections(TestCase):
         self.assertEquals(section.sws_instructor_regid(), None)
         self.assertEquals(section.is_academic_sis_id(), True)
 
+        section = CanvasSection(sis_section_id="2013-autumn-GEN ST-199-A7--")
+        self.assertEquals(
+            section.sws_section_id(), "2013,autumn,GEN ST,199/A7")
+
         section = CanvasSection(
             sis_section_id=(
                 "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE--"))
@@ -30,6 +37,23 @@ class CanvasTestSections(TestCase):
         self.assertEquals(
             section.sws_instructor_regid(), "9136CCB8F66711D5BE060004AC494FFE")
         self.assertEquals(section.is_academic_sis_id(), True)
+
+        # Invalid section IDs
+        section = CanvasSection(sis_section_id="2013-spring-PHYS-121-A")
+        self.assertEquals(section.sws_section_id(), None)
+
+        section = CanvasSection(sis_section_id="2013-spring-PHYS-121-A-")
+        self.assertEquals(section.sws_section_id(), None)
+
+        section = CanvasSection(
+            sis_section_id=(
+                "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE"))
+        self.assertEquals(section.sws_section_id(), None)
+
+        section = CanvasSection(
+            sis_section_id=(
+                "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE-"))
+        self.assertEquals(section.sws_section_id(), None)
 
         section = CanvasSection(sis_section_id="course_123456_groups")
         self.assertEquals(section.sws_section_id(), None)
