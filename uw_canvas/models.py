@@ -193,7 +193,7 @@ class CanvasSection(models.Model):
         r"(?:winter|spring|summer|autumn)-"         # quarter
         r"[\w& ]+-"                                 # curriculum
         r"\d{3}-"                                   # course number
-        r"[A-Z][A-F0-9]?(-[A-F0-9]{32})?-{0,2}$",   # section id|regid
+        r"[A-Z][A-Z0-9]?(-[A-F0-9]{32})?-{0,2}$",   # section id|regid
         re.VERBOSE)
 
     section_id = models.IntegerField()
