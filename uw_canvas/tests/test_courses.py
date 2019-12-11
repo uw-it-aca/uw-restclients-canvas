@@ -70,6 +70,7 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(
             course.course_url, "https://canvas.uw.edu/courses/141414",
             "Has proper course url")
+        self.assertTrue(course.is_unpublished())
 
     def test_published_courses(self):
         canvas = Courses()
@@ -91,6 +92,7 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(
             course.course_url, "https://canvas.uw.edu/courses/141414",
             "Has proper course url")
+        self.assertTrue(course.is_unpublished())
 
     def test_courses_by_regid(self):
         canvas = Courses()

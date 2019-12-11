@@ -67,6 +67,7 @@ class CanvasTestEnrollment(TestCase):
                           "9136CCB8F66711D5BE060004AC494FFE")
         self.assertEquals(enrollment.course_name, "MECHANICS")
         self.assertIsNotNone(enrollment.course)
+        self.assertIsNotNone(enrollment.json_data())
 
         stu_enrollment = enrollments[1]
         self.assertEquals(

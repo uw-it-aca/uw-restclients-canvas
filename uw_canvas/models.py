@@ -182,10 +182,9 @@ class CanvasCourse(models.Model):
         return reg_id
 
     def is_academic_sis_id(self):
-        if (self.sis_course_id is None or
-                self.RE_COURSE_SIS_ID.match(self.sis_course_id) is None):
-            return False
-        return True
+        return (self.sis_course_id is not None and
+                len(self.sis_course_id) and
+                self.RE_COURSE_SIS_ID.match(self.sis_course_id) is not None)
 
 
 class CanvasSection(models.Model):
