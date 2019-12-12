@@ -124,6 +124,11 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(course.sws_instructor_regid(), None)
         self.assertEquals(course.is_academic_sis_id(), True)
 
+        course = CanvasCourse(sis_course_id="2013-autumn-GEN ST-199-A7")
+        self.assertEquals(course.sws_course_id(), "2013,autumn,GEN ST,199/A7")
+        self.assertEquals(course.sws_instructor_regid(), None)
+        self.assertEquals(course.is_academic_sis_id(), True)
+
         course = CanvasCourse(
             sis_course_id=(
                 "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE"))

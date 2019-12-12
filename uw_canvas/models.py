@@ -190,11 +190,11 @@ class CanvasCourse(models.Model):
 
 class CanvasSection(models.Model):
     RE_SECTION_SIS_ID = re.compile(
-        r"^\d{4}-"                                  # year
-        r"(?:winter|spring|summer|autumn)-"         # quarter
-        r"[\w& ]+-"                                 # curriculum
-        r"\d{3}-"                                   # course number
-        r"[A-Z](?:[A-Z0-9]|--|-[A-F0-9]{32}--)?$",  # section id|regid
+        r"^\d{4}-"                                      # year
+        r"(?:winter|spring|summer|autumn)-"             # quarter
+        r"[\w& ]+-"                                     # curriculum
+        r"\d{3}-"                                       # course number
+        r"[A-Z](?:--|[A-Z0-9](--)?|-[A-F0-9]{32}--)$",  # section id|regid
         re.VERBOSE)
 
     section_id = models.IntegerField()
