@@ -643,7 +643,6 @@ class Assignment(models.Model):
     grading_standard_id = models.IntegerField(null=True)
     position = models.IntegerField()
     name = models.CharField(max_length=500)
-    muted = models.NullBooleanField()
     published = models.NullBooleanField()
     html_url = models.CharField(max_length=500, null=True)
     turnitin_enabled = models.NullBooleanField()
@@ -669,7 +668,6 @@ class Assignment(models.Model):
         self.grading_standard_id = data['grading_standard_id']
         self.position = data['position']
         self.name = data['name']
-        self.muted = data['muted']
         self.published = data['published']
         self.html_url = data['html_url']
         self.turnitin_enabled = data.get('turnitin_enabled', False)
@@ -690,7 +688,6 @@ class Assignment(models.Model):
             "grading_standard_id": self.grading_standard_id,
             "position": self.position,
             "name": self.name,
-            "muted": self.muted,
             "published": self.published,
             "html_url": self.html_url,
             "submission_types": self.submission_types,
