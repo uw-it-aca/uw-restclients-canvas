@@ -12,7 +12,6 @@ class CanvasTestAssignments(TestCase):
         assignments = canvas.get_assignments("862539")
         assignment = assignments[0]
         self.assertEquals(assignment.name, "Assignment 1", "Assignment name")
-        self.assertEquals(assignment.muted, False, "Assignment isn't muted")
         self.assertEquals(
             assignment.published, True, "Assignment is published")
         self.assertEquals(assignment.due_at.day, 1, "Due date")
@@ -91,11 +90,10 @@ class CanvasTestAssignments(TestCase):
                 "grading_standard_id": "data",
                 "position": "data",
                 "name": "data",
-                "muted": "data",
                 "published": "data",
                 "has_submitted_submissions": "data",
                 "html_url": "data",
                 "due_at": None
                 }
-
         assignment = Assignment(data=data)
+        self.assertEqual(assignment.due_at, None)
