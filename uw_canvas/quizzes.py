@@ -14,21 +14,22 @@ class Quizzes(Canvas):
         """
         return self.get_quizzes(self._sis_id(sis_id, "course"))
 
-    def get_quizzes(self, course_id):
+    def get_quizzes(self, course_id, **params):
         """
         List quizzes for a given course
 
         https://canvas.instructure.com/doc/api/quizzes.html#method.quizzes_api.index
         """
         url = QUIZZES_API.format(course_id)
-        data = self._get_resource(url)
+        data = self._get_paged_resource(url, params=params)
         quizzes = []
         for datum in data:
             quizzes.append(Quiz(data=datum))
         return quizzes
 
     def get_submissions_for_sis_course_id_and_quiz_id(
-            self, sis_course_id, quiz_id):
+            self, sis_course_id, quiz_id, **params):
         course_id = self._sis_id(sis_course_id, sis_field="course")
         url = QUIZZES_API.format(course_id) + "/{}/submissions".format(quiz_id)
-        return Canvas()._get_resource(url, data_key="quiz_submissions")
+        return Canvas()._get_paged_resource(
+            url, params=params, data_key="quiz_submissions")

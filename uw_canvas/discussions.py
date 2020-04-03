@@ -1,12 +1,15 @@
 from uw_canvas import Canvas
+from uw_canvas.courses import COURSES_API
 from uw_canvas.models import DiscussionTopic, DiscussionEntry
+
+DISCUSSIONS_API = COURSES_API + "/discussion_topics"
 
 
 class Discussions(Canvas):
-    def get_discussion_topics_for_sis_course_id(self, sis_course_id):
-        url = "/api/v1/courses/%s/discussion_topics" % self._sis_id(
-            sis_course_id, sis_field="course")
-        data = self._get_resource(url)
+    def get_discussion_topics_for_sis_course_id(self, sis_course_id, **params):
+        url = DISCUSSIONS_API.format(self._sis_id(
+            sis_course_id, sis_field="course"))
+        data = self._get_paged_resource(url, params=params)
 
         topics = []
 
@@ -20,10 +23,10 @@ class Discussions(Canvas):
 
         return topics
 
-    def get_entries_for_topic(self, topic):
-        url = "/api/v1/courses/%s/discussion_topics/%s/entries" % (
-            topic.course_id, topic.topic_id)
-        data = self._get_resource(url)
+    def get_entries_for_topic(self, topic, **params):
+        url = DISCUSSIONS_API.format(topic.course_id) + "/{}/entries".format(
+            topic.topic_id)
+        data = self._get_paged_resource(url, params=params)
 
         entries = []
         for entry_data in data:
@@ -33,11 +36,11 @@ class Discussions(Canvas):
             entries.append(entry)
 
             replies_url = (
-                "/api/v1/courses/%s/discussion_topics/%s/"
-                "entries/%s/replies") % (
-                    topic.course_id, topic.topic_id, entry.entry_id)
+                DISCUSSIONS_API.format(topic.course_id) +
+                "/{}/entries/{}/replies".format(topic.topic_id, entry.entry_id)
+            )
 
-            reply_data = self._get_resource(replies_url)
+            reply_data = self._get_paged_resource(replies_url)
             for reply_values in reply_data:
                 entry = DiscussionEntry()
                 entry.entry_id = reply_values["id"]
