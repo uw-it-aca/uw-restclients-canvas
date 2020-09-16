@@ -14,7 +14,7 @@ class Roles(Canvas):
         url = ACCOUNTS_API.format(account_id) + "/roles"
 
         roles = []
-        for datum in self._get_resource(url, params=params):
+        for datum in self._get_paged_resource(url, params=params):
             roles.append(CanvasRole(data=datum))
         return roles
 
@@ -26,13 +26,15 @@ class Roles(Canvas):
                                                       sis_field="account"),
                                          params)
 
-    def get_effective_course_roles_in_account(self, account_id):
+    def get_effective_course_roles_in_account(self, account_id, params={}):
         """
         List all course roles available to an account, for the passed Canvas
         account ID, including course roles inherited from parent accounts.
         """
         course_roles = []
-        params = {"show_inherited": "1"}
+        params["show_inherited"] = "1"
+        if "per_page" not in params:
+            params["per_page"] = 100
         for role in self.get_roles_in_account(account_id, params):
             if role.base_role_type != "AccountMembership":
                 course_roles.append(role)
