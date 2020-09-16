@@ -14,7 +14,7 @@ class Roles(Canvas):
         url = ACCOUNTS_API.format(account_id) + "/roles"
 
         roles = []
-        for datum in self._get_resource(url, params=params):
+        for datum in self._get_paged_resource(url, params=params):
             roles.append(CanvasRole(data=datum))
         return roles
 
