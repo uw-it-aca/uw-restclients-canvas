@@ -31,22 +31,30 @@ class SISImport(Canvas):
 
         return SISImportModel(data=self._post_resource(url, headers, csv))
 
-    def import_dir(self, dir_path, params={}):
+    def import_archive(self, archive, params={}):
         """
-        Imports a directory of CSV files.
+        Imports a zip archive of CSV files.
 
         https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.create
         """
         if not self._canvas_account_id:
             raise MissingAccountID()
 
-        body = self._build_archive(dir_path)
         params["import_type"] = SISImportModel.CSV_IMPORT_TYPE
         url = SIS_IMPORTS_API.format(
             self._canvas_account_id) + ".json{}".format(self._params(params))
         headers = {"Content-Type": "application/zip"}
 
-        return SISImportModel(data=self._post_resource(url, headers, body))
+        return SISImportModel(data=self._post_resource(url, headers, archive))
+
+    def import_dir(self, dir_path, params={}):
+        """
+        Imports a directory of CSV files.
+
+        https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.create
+        """
+        archive = self._build_archive(dir_path)
+        return self.import_archive(archive, params)
 
     def get_import_status(self, sis_import):
         """
