@@ -11,9 +11,9 @@ class CanvasTestSISImportMissingAccount(TestCase):
         canvas = SISImport()
         self.assertRaises(MissingAccountID, canvas.import_str, 'a,b,c,d,e,f')
 
-    def test_import_dir(self):
+    def test_import_archive(self):
         canvas = SISImport()
-        self.assertRaises(MissingAccountID, canvas.import_dir, '/path/to/csv')
+        self.assertRaises(MissingAccountID, canvas.import_archive, None)
 
 
 @fdao_canvas_override
@@ -36,6 +36,16 @@ class CanvasTestSISImport(TestCase):
             'instructure_csv&override_sis_stickiness=1'), {
                 'Content-Type': 'text/csv'
             }, 'a,b,c,d,e,f')
+
+    @mock.patch.object(SISImport, '_post_resource')
+    def test_import_archive(self, mock_post):
+        canvas = SISImport()
+        canvas.import_archive('')
+        mock_post.assert_called_with((
+            '/api/v1/accounts/12345/sis_imports.json?'
+            'import_type=instructure_csv'), {
+                'Content-Type': 'application/zip'
+            }, '')
 
     @mock.patch.object(SISImport, '_post_resource')
     @mock.patch.object(SISImport, '_build_archive')
