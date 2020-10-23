@@ -61,12 +61,11 @@ class CanvasFileDownloadLiveDAO(LiveDAO):
 
     def create_pool(self):
         # Use a PoolManager to allow redirects to other hosts
-        max_pool_size = self.dao.get_service_setting("POOL_SIZE", 10)
-        socket_timeout = self.dao.get_service_setting("TIMEOUT", 10)
-        ca_certs = self.dao.get_setting("CA_BUNDLE",
-                                        "/etc/ssl/certs/ca-bundle.crt")
-
         return PoolManager(
-            cert_reqs="CERT_REQUIRED", ca_certs=ca_certs,
-            timeout=socket_timeout, maxsize=max_pool_size, block=True,
+            cert_reqs="CERT_REQUIRED",
+            ca_certs=self.dao.get_setting("CA_BUNDLE",
+                                          "/etc/ssl/certs/ca-bundle.crt"),
+            timeout=self._get_timeout(),
+            maxsize=self._get_max_pool_size(),
+            block=True,
             retries=Retry(total=1, connect=0, read=0, redirect=1))
