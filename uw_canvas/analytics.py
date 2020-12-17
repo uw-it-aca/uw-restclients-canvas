@@ -69,14 +69,14 @@ class Analytics(Canvas):
         return self.get_student_summaries_by_course(
             self._sis_id(sis_course_id, sis_field="course"))
 
-    def get_student_summaries_by_course(self, sis_course_id):
+    def get_student_summaries_by_course(self, course_id):
         """
         Returns per-student data for the given course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_student_summaries
         """
         url = "/api/v1/courses/%s/analytics/student_summaries.json" % (
-            self._sis_id(sis_course_id, sis_field="course"))
+            course_id)
         return self._get_resource(url)
 
     def get_student_activity_for_sis_course_id_and_sis_user_id(
