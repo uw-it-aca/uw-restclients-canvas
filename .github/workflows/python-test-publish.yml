@@ -1,0 +1,92 @@
+#
+# Example GitHub Actions config for UW-IT AXD2 app testing and publishing to PyPi
+#
+# Preconditions:
+#
+#  1) Application test suite is kicked off by APP_NAME/test.py
+#
+#  2) Application contains a setup.py file
+#
+#  3) Application repo has access to the required secret
+#     at https://github.com/organizations/uw-it-aca/settings/secrets:
+#
+#     PYPI_API_TOKEN
+#
+# To adapt this config to a specific Python app:
+#
+#  1) Set APP_NAME to the name of the package name/directory.
+#
+#  2) Verify that the lists of branches for push/pull_request is appropriate,
+#     and add other branch names if needed.
+#
+---
+name: tests
+
+env:
+  APP_NAME: uw_canvas
+
+on:
+  push:
+    branches: [main, master, qa, develop]
+  pull_request:
+    branches: [main, master, qa, develop]
+    types: [opened, reopened, synchronize]
+  release:
+    branches: [main, master]
+    types: [published]
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pycodestyle commonconf nose2 coverage coveralls==2.2.0
+
+      - name: Run Pycodestyle
+        run: pycodestyle ${APP_NAME}/
+
+      - name: Run Tests
+        run: |
+          python -m compileall ${APP_NAME}/
+          coverage run ${APP_NAME}/test.py -v
+
+      - name: Report Test Coverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: coveralls
+
+  publish:
+    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
+
+    needs: test
+
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Publish to PyPi
+        uses: uw-it-aca/actions/publish-pypi@main
+        with:
+          app_name: ${APP_NAME}
+          tag_name: ${{ github.event.release.tag_name }}
+          api_token: ${{ secrets.PYPI_API_TOKEN }}
