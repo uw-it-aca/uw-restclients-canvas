@@ -1,6 +1,6 @@
 # REST client for the Canvas LMS API
 
-[![Build Status](https://api.travis-ci.org/uw-it-aca/uw-restclients-canvas.svg?branch=master)](https://travis-ci.org/uw-it-aca/uw-restclients-canvas)
+[![Build Status](https://github.com/uw-it-aca/uw-restclients-canvas/workflows/tests/badge.svg?branch=master)](https://github.com/uw-it-aca/uw-restclients-canvas/actions)
 [![Coverage Status](https://coveralls.io/repos/uw-it-aca/uw-restclients-canvas/badge.svg?branch=master)](https://coveralls.io/r/uw-it-aca/uw-restclients-canvas?branch=master)
 [![PyPi Version](https://img.shields.io/pypi/v/uw-restclients-canvas.svg)](https://pypi.python.org/pypi/uw-restclients-canvas)
 ![Python versions](https://img.shields.io/pypi/pyversions/uw-restclients-canvas.svg)
