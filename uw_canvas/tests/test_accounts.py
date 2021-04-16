@@ -1,3 +1,6 @@
+# Copyright 2021 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from unittest import TestCase
 from commonconf import settings
 from uw_canvas.utilities import fdao_canvas_override
