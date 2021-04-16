@@ -52,10 +52,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e .
-          pip install pycodestyle commonconf nose2 coverage coveralls==2.2.0
+          pip install commonconf nose2 coverage coveralls==2.2.0
 
-      - name: Run Pycodestyle
-        run: pycodestyle ${APP_NAME}/
+      - name: Run Python Linters
+        uses: uw-it-aca/actions/python-linters@main
+        with:
+          app_name: ${APP_NAME}
 
       - name: Run Tests
         run: |

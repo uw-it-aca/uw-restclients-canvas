@@ -1,3 +1,6 @@
+# Copyright 2021 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 # This is just a test runner for coverage
 from commonconf.backends import use_configparser_backend
 from os.path import abspath, dirname
