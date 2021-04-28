@@ -85,6 +85,29 @@ class CanvasTestUsers(TestCase):
             }
         })
 
+    @mock.patch.object(Users, '_put_resource')
+    def test_merge_users(self, mock_merge):
+        canvas = Users()
+
+        user = CanvasUser(
+            user_id=12345,
+            name="J AVG USR",
+            login_id="testid99",
+            sis_user_id="DEB35E0A465242CF9C5CDBC108050EC0",
+            email="testid99@foo.com",
+            locale="en")
+
+        destination_user = CanvasUser(
+            user_id=56789,
+            name="J AVG USR",
+            login_id="javerage",
+            sis_user_id="15AE3883B6EC44C349E04E5FE089ABEB",
+            email="javerage@example.edu",
+            locale="en")
+
+        canvas.merge_users(user, destination_user)
+        mock_merge.assert_called_with('/api/v1/users/12345/merge_into/56789')
+
     def test_get_users_for_course_id(self):
         canvas = Users()
 
