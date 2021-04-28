@@ -176,7 +176,7 @@ class Canvas(object):
 
         return self._get_resource_url(full_url, True, data_key)
 
-    def _put_resource(self, url, body):
+    def _put_resource(self, url, body={}):
         """
         Canvas PUT method.
         """
