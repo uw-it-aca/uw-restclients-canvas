@@ -61,6 +61,17 @@ class Users(Canvas):
         data = self._post_resource(url, user.post_data())
         return CanvasUser(data=data)
 
+    def merge_users(self, user, destination_user):
+        """
+        Merge user into another user.
+
+        https://canvas.instructure.com/doc/api/users.html#method.users.merge_into
+        """
+        url = USERS_API.format(user.user_id) + "/merge_into/{}".format(
+            destination_user.user_id)
+        data = self._put_resource(url)
+        return CanvasUser(data=data)
+
     def get_user_logins(self, user_id, params={}):
         """
         Return a user's logins for the given user_id.
