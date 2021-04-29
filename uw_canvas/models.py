@@ -1,9 +1,9 @@
 # Copyright 2021 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from restclients_core import models
 import dateutil.parser
 import re
-from restclients_core import models
 
 
 class CanvasAccount(models.Model):
@@ -508,6 +508,8 @@ class CanvasUser(models.Model):
     locale = models.CharField(max_length=2, null=True)
     email = models.CharField(max_length=100, null=True)
     avatar_url = models.CharField(max_length=500, null=True)
+    last_login = models.DateTimeField(null=True)
+    bio = models.TextField(null=True)
 
     def __init__(self, *args, **kwargs):
         self.enrollments = []
@@ -526,8 +528,31 @@ class CanvasUser(models.Model):
         self.time_zone = data.get("time_zone")
         self.locale = data.get("locale")
         self.avatar_url = data.get("avatar_url")
+        self.bio = data.get("bio")
+        if "last_login" in data and "last_login" is not None:
+            self.last_login = dateutil.parser.parse(data["last_login"])
         for enr_datum in data.get("enrollments", []):
             self.enrollments.append(CanvasEnrollment(data=enr_datum))
+
+    def json_data(self):
+        return {
+            "id": self.user_id,
+            "name": self.name,
+            "sortable_name": self.sortable_name,
+            "short_name": self.short_name,
+            "sis_user_id": self.sis_user_id,
+            "sis_import_id": None,
+            "integration_id": None,
+            "login_id": self.login_id,
+            "avatar_url": self.avatar_url,
+            "enrollments": self.enrollments,
+            "email": self.email,
+            "locale": self.locale,
+            "last_login": self.last_login.isoformat() if (
+                self.last_login is not None) else None,
+            "time_zone": self.time_zone,
+            "bio": self.bio,
+        }
 
     def post_data(self):
         return {"user": {"name": self.name,
