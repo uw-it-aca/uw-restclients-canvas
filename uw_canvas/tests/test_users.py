@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from unittest import TestCase
+from commonconf import override_settings
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.users import Users
 from uw_canvas.models import CanvasUser
@@ -191,6 +192,11 @@ class CanvasTestUsers(TestCase):
             '/api/v1/accounts/12345/logins/100',
             {'login': {'sis_user_id': '', 'unique_id': 'testid99new'}})
 
+        with override_settings(RESTCLIENTS_CANVAS_ACCOUNT_ID=None):
+            canvas = Users()
+            self.assertRaises(
+                MissingAccountID, canvas.update_user_login, login)
+
     @mock.patch.object(Users, '_delete_resource')
     def test_delete_login(self, mock_delete):
         canvas = Users()
@@ -199,7 +205,7 @@ class CanvasTestUsers(TestCase):
         logins = canvas.get_user_logins(user_id)
         login = logins[0]
 
-        canvas.delete_user_login(login, account_id=12345)
+        canvas.delete_user_login(login)
         mock_delete.assert_called_with('/api/v1/users/188885/logins/100')
 
     @mock.patch.object(Users, '_get_resource_url')

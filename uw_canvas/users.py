@@ -112,17 +112,12 @@ class Users(Canvas):
         data = self._put_resource(url, login.put_data())
         return Login(data=data)
 
-    def delete_user_login(self, login, account_id=None):
+    def delete_user_login(self, login):
         """
         Delete an existing login.
 
         https://canvas.instructure.com/doc/api/logins.html#method.pseudonyms.destroy
         """
-        if account_id is None:
-            account_id = self._canvas_account_id
-            if account_id is None:
-                raise MissingAccountID
-
         login_id = login.login_id
         url = USERS_API.format(login.user_id) + "/logins/{}".format(login_id)
         self._delete_resource(url)
