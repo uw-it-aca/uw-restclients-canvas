@@ -52,6 +52,22 @@ class CanvasTestUsers(TestCase):
             "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0c"
             "d05241443a591868?s=80&r=g"), "Has correct avatar url")
 
+    @mock.patch.object(Users, '_get_resource')
+    def test_get_user_params(self, mock_get):
+        canvas = Users()
+        params = {'include': ['last_login']}
+
+        user = canvas.get_user(188885, params)
+        mock_get.assert_called_with('/api/v1/users/188885/profile',
+                                    params={'include': ['last_login']})
+
+        user = canvas.get_user_by_sis_id("DEB35E0A465242CF9C5CDBC108050EC0",
+                                         params)
+        mock_get.assert_called_with((
+                '/api/v1/users/sis_user_id%3ADEB35E0A465242CF9C5CDBC108050EC0/'
+                'profile'),
+            params={'include': ['last_login']})
+
     def test_json_data(self):
         canvas = Users()
         user = canvas.get_user(188885)

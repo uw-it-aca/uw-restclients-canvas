@@ -10,22 +10,23 @@ USERS_API = "/api/v1/users/{}"
 
 
 class Users(Canvas):
-    def get_user(self, user_id):
+    def get_user(self, user_id, params={}):
         """
         Returns user profile data.
 
         https://canvas.instructure.com/doc/api/users.html#method.profile.settings
         """
         url = USERS_API.format(user_id) + "/profile"
-        return CanvasUser(data=self._get_resource(url))
+        return CanvasUser(data=self._get_resource(url, params=params))
 
-    def get_user_by_sis_id(self, sis_user_id):
+    def get_user_by_sis_id(self, sis_user_id, params={}):
         """
         Returns user profile data for the passed user sis id.
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.users
         """
-        return self.get_user(self._sis_id(sis_user_id, sis_field="user"))
+        return self.get_user(self._sis_id(sis_user_id, sis_field="user"),
+                             params)
 
     def get_users_for_course(self, course_id, params={}):
         """
