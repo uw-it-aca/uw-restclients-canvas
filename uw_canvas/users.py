@@ -112,6 +112,16 @@ class Users(Canvas):
         data = self._put_resource(url, login.put_data())
         return Login(data=data)
 
+    def delete_user_login(self, login):
+        """
+        Delete an existing login.
+
+        https://canvas.instructure.com/doc/api/logins.html#method.pseudonyms.destroy
+        """
+        login_id = login.login_id
+        url = USERS_API.format(login.user_id) + "/logins/{}".format(login_id)
+        self._delete_resource(url)
+
     def get_user_page_views(self, user_id, start_time=None, end_time=None):
         params = {}
         if start_time is not None:
