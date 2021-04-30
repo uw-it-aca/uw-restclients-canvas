@@ -192,7 +192,7 @@ class CanvasTestUsers(TestCase):
             {'login': {'sis_user_id': '', 'unique_id': 'testid99new'}})
 
     @mock.patch.object(Users, '_delete_resource')
-    def test_update_login(self, mock_delete):
+    def test_delete_login(self, mock_delete):
         canvas = Users()
 
         user_id = 188885
