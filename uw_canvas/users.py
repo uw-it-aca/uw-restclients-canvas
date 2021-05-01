@@ -16,7 +16,7 @@ class Users(Canvas):
 
         https://canvas.instructure.com/doc/api/users.html#method.profile.settings
         """
-        url = USERS_API.format(user_id) + "/profile"
+        url = USERS_API.format(user_id)
         return CanvasUser(data=self._get_resource(url, params=params))
 
     def get_user_by_sis_id(self, sis_user_id, params={}):
