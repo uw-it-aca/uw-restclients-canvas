@@ -541,8 +541,6 @@ class CanvasUser(models.Model):
             "sortable_name": self.sortable_name,
             "short_name": self.short_name,
             "sis_user_id": self.sis_user_id,
-            "sis_import_id": None,
-            "integration_id": None,
             "login_id": self.login_id,
             "avatar_url": self.avatar_url,
             "enrollments": self.enrollments,

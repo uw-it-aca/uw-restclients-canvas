@@ -33,21 +33,21 @@ class CanvasTestUsers(TestCase):
 
         self.assertEquals(user.user_id, 188885, "Has correct user id")
         self.assertEquals(user.name, "J AVG USR", "Has correct name")
-        self.assertEquals(user.short_name, None, "Has correct short name")
+        self.assertEquals(user.short_name, "J USR", "Has correct short name")
         self.assertEquals(
             user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
             "Has correct sis id")
-        self.assertEquals(user.email, "testid99@foo.com", "Has correct email")
+        self.assertEquals(user.email, "testid99@foo.edu", "Has correct email")
 
         user = canvas.get_user_by_sis_id("DEB35E0A465242CF9C5CDBC108050EC0")
 
         self.assertEquals(user.user_id, 188885, "Has correct user id")
         self.assertEquals(user.name, "J AVG USR", "Has correct name")
-        self.assertEquals(user.short_name, None, "Has correct short name")
+        self.assertEquals(user.short_name, "J USR", "Has correct short name")
         self.assertEquals(
             user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
             "Has correct sis id")
-        self.assertEquals(user.email, "testid99@foo.com", "Has correct email")
+        self.assertEquals(user.email, "testid99@foo.edu", "Has correct email")
         self.assertEquals(user.avatar_url, (
             "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0c"
             "d05241443a591868?s=80&r=g"), "Has correct avatar url")
@@ -55,18 +55,17 @@ class CanvasTestUsers(TestCase):
     @mock.patch.object(Users, '_get_resource')
     def test_get_user_params(self, mock_get):
         canvas = Users()
-        params = {'include': ['last_login']}
+        params = {'include': 'last_login'}
 
         user = canvas.get_user(188885, params)
-        mock_get.assert_called_with('/api/v1/users/188885/profile',
-                                    params={'include': ['last_login']})
+        mock_get.assert_called_with('/api/v1/users/188885',
+                                    params={'include': 'last_login'})
 
-        user = canvas.get_user_by_sis_id("DEB35E0A465242CF9C5CDBC108050EC0",
-                                         params)
-        mock_get.assert_called_with((
-                '/api/v1/users/sis_user_id%3ADEB35E0A465242CF9C5CDBC108050EC0/'
-                'profile'),
-            params={'include': ['last_login']})
+        user = canvas.get_user_by_sis_id(
+            "DEB35E0A465242CF9C5CDBC108050EC0", params)
+        mock_get.assert_called_with(
+            '/api/v1/users/sis_user_id%3ADEB35E0A465242CF9C5CDBC108050EC0',
+            params={'include': 'last_login'})
 
     def test_json_data(self):
         canvas = Users()
@@ -77,16 +76,14 @@ class CanvasTestUsers(TestCase):
                 'https://en.gravatar.com/avatar/d8cb8c8cd40ddf0c'
                 'd05241443a591868?s=80&r=g'),
             'bio': None,
-            'email': 'testid99@foo.com',
+            'email': 'testid99@foo.edu',
             'enrollments': [],
             'id': 188885,
-            'integration_id': None,
             'last_login': '2013-02-20T14:45:27+00:00',
             'locale': None,
             'login_id': 'testid99',
             'name': 'J AVG USR',
-            'short_name': None,
-            'sis_import_id': None,
+            'short_name': 'J USR',
             'sis_user_id': 'DEB35E0A465242CF9C5CDBC108050EC0',
             'sortable_name': 'USR, J AVG',
             'time_zone': None})
