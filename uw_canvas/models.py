@@ -529,7 +529,7 @@ class CanvasUser(models.Model):
         self.locale = data.get("locale")
         self.avatar_url = data.get("avatar_url")
         self.bio = data.get("bio")
-        if "last_login" in data and "last_login" is not None:
+        if "last_login" in data and data["last_login"] is not None:
             self.last_login = dateutil.parser.parse(data["last_login"])
         for enr_datum in data.get("enrollments", []):
             self.enrollments.append(CanvasEnrollment(data=enr_datum))
