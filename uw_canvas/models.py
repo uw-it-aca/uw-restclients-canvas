@@ -325,9 +325,6 @@ class CanvasEnrollment(models.Model):
     last_activity_at = models.DateTimeField(null=True)
     limit_privileges_to_course_section = models.NullBooleanField()
 
-    def get_course_url(self, html_url):
-        return re.sub(r'/users/\d+$', '', html_url)
-
     def __init__(self, *args, **kwargs):
         data = kwargs.get("data")
         if data is None:
@@ -372,12 +369,21 @@ class CanvasEnrollment(models.Model):
             self.override_grade = gr_data.get("override_grade")
             self.grade_html_url = gr_data.get("html_url")
 
+    def get_course_url(self, html_url):
+        return re.sub(r'/users/\d+$', '', html_url)
+
     def sws_course_id(self):
         return CanvasCourse(sis_course_id=self.sis_course_id).sws_course_id()
 
     def sws_section_id(self):
         return CanvasSection(
             sis_section_id=self.sis_section_id).sws_section_id()
+
+    @staticmethod
+    def sis_import_role(role):
+        for base, name in CanvasEnrollment.ROLE_CHOICES:
+            if role.lower() == base.lower() or role.lower() == name.lower():
+                return name.lower()
 
     def json_data(self):
         return {"user_id": self.user_id,
