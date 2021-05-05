@@ -131,3 +131,15 @@ class CanvasTestEnrollment(TestCase):
                                'enrollment_state': 'active',
                                'course_section_id': '99999',
                                'role_id': '1111'}})
+
+    def test_sis_import_roles(self):
+        self.assertEqual(CanvasEnrollment.sis_import_role('StudentEnrollment'),
+                         'student')
+        self.assertEqual(CanvasEnrollment.sis_import_role('Student'),
+                         'student')
+        self.assertEqual(CanvasEnrollment.sis_import_role('student'),
+                         'student')
+        self.assertEqual(CanvasEnrollment.sis_import_role('TaEnrollment'),
+                         'ta')
+        self.assertEqual(CanvasEnrollment.sis_import_role('TA'), 'ta')
+        self.assertEqual(CanvasEnrollment.sis_import_role(''), None)
