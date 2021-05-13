@@ -336,6 +336,7 @@ class CanvasEnrollment(models.Model):
         self.section_id = data["course_section_id"]
         self.sis_course_id = data.get("sis_course_id")
         self.sis_section_id = data.get("sis_section_id")
+        self.sis_user_id = data.get("sis_user_id")
         self.role = data["type"]
         self.status = data["enrollment_state"]
         self.html_url = data["html_url"]
@@ -353,7 +354,6 @@ class CanvasEnrollment(models.Model):
             self.name = user_data.get("name")
             self.sortable_name = user_data.get("sortable_name")
             self.login_id = user_data.get("login_id")
-            self.sis_user_id = user_data.get("sis_user_id")
 
         if "grades" in data:
             gr_data = data["grades"]
