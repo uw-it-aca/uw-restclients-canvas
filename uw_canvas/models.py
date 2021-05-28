@@ -264,14 +264,20 @@ class CanvasEnrollment(models.Model):
     TA = "TaEnrollment"
     OBSERVER = "ObserverEnrollment"
     DESIGNER = "DesignerEnrollment"
+    GUEST_TEACHER = "Guest Teacher"
+    LIBRARIAN = "Librarian"
+    OTHER_FACULTY = "Other Faculty"
+    PROGRAM_STAFF = "Program Staff"
 
     ROLE_CHOICES = (
         (STUDENT, "Student"),
         (TEACHER, "Teacher"),
         (TA, "TA"),
         (OBSERVER, "Observer"),
-        (DESIGNER, "Designer")
+        (DESIGNER, "Designer"),
     )
+
+    CUSTOM_ROLES = [GUEST_TEACHER, LIBRARIAN, OTHER_FACULTY, PROGRAM_STAFF]
 
     STATUS_ACTIVE = "active"
     STATUS_INVITED = "invited"
@@ -296,7 +302,8 @@ class CanvasEnrollment(models.Model):
     section_id = models.IntegerField()
     login_id = models.CharField(max_length=80, null=True)
     sis_user_id = models.CharField(max_length=100, null=True)
-    role = models.CharField(max_length=80, choices=ROLE_CHOICES)
+    role = models.CharField(max_length=80)
+    base_role_type = models.CharField(max_length=80, choices=ROLE_CHOICES)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES)
     name = models.CharField(max_length=100)
     sortable_name = models.CharField(max_length=100)
@@ -337,7 +344,8 @@ class CanvasEnrollment(models.Model):
         self.sis_course_id = data.get("sis_course_id")
         self.sis_section_id = data.get("sis_section_id")
         self.sis_user_id = data.get("sis_user_id")
-        self.role = data["type"]
+        self.role = data["role"]
+        self.base_role_type = data["type"]
         self.status = data["enrollment_state"]
         self.html_url = data["html_url"]
         self.course_url = self.get_course_url(self.html_url)
@@ -384,6 +392,8 @@ class CanvasEnrollment(models.Model):
         for base, name in CanvasEnrollment.ROLE_CHOICES:
             if role.lower() == base.lower() or role.lower() == name.lower():
                 return name.lower()
+        if role in CanvasEnrollment.CUSTOM_ROLES:
+            return role
 
     def json_data(self):
         return {"user_id": self.user_id,
@@ -394,6 +404,7 @@ class CanvasEnrollment(models.Model):
                 "login_id": self.login_id,
                 "sis_user_id": self.sis_user_id,
                 "role": self.role,
+                "base_role_type": self.base_role_type,
                 "status": self.status,
                 "current_score": self.current_score,
                 "current_grade": self.current_grade,
