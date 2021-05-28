@@ -162,7 +162,9 @@ class CanvasTestUsers(TestCase):
             user.sortable_name, "AVERAGE, JAMES", "Sortable Name")
         enrollment = user.enrollments[0]
         self.assertEquals(enrollment.sis_course_id, "2015-summer-TRAIN-100-A")
-        self.assertEquals(enrollment.role, "DesignerEnrollment", "Role")
+        self.assertEquals(enrollment.role, "Librarian", "Role")
+        self.assertEquals(
+            enrollment.base_role_type, "DesignerEnrollment", "Base Role Type")
 
     def test_get_logins(self):
         canvas = Users()
