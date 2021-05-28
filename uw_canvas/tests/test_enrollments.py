@@ -142,4 +142,7 @@ class CanvasTestEnrollment(TestCase):
         self.assertEqual(CanvasEnrollment.sis_import_role('TaEnrollment'),
                          'ta')
         self.assertEqual(CanvasEnrollment.sis_import_role('TA'), 'ta')
-        self.assertEqual(CanvasEnrollment.sis_import_role(''), None)
+        self.assertEqual(CanvasEnrollment.sis_import_role('Librarian'),
+                         'Librarian')
+        self.assertEqual(CanvasEnrollment.sis_import_role('Unknown Role'),
+                         None)
