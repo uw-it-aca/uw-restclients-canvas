@@ -329,6 +329,7 @@ class CanvasEnrollment(models.Model):
     override_grade = models.TextField(max_length=12, null=True)
     grade_html_url = models.CharField(max_length=1000)
     total_activity_time = models.IntegerField(null=True)
+    created_at = models.DateTimeField()
     last_activity_at = models.DateTimeField(null=True)
     limit_privileges_to_course_section = models.NullBooleanField()
 
@@ -348,6 +349,7 @@ class CanvasEnrollment(models.Model):
         self.base_role_type = data["type"]
         self.status = data["enrollment_state"]
         self.html_url = data["html_url"]
+        self.created_at = dateutil.parser.parse(data["created_at"])
         self.course_url = self.get_course_url(self.html_url)
 
         self.total_activity_time = data["total_activity_time"]
@@ -760,7 +762,7 @@ class Quiz(models.Model):
         self.html_url = data["html_url"]
         self.published = data["published"]
         self.points_possible = data["points_possible"]
-        if "due_at" in data and "due_at" is not None:
+        if "due_at" in data and data["due_at"] is not None:
             self.due_at = dateutil.parser.parse(data["due_at"])
 
 
