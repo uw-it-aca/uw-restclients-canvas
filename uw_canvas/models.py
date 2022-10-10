@@ -1,5 +1,6 @@
-# Copyright 2021 UW-IT, University of Washington
+# Copyright 2022 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
+
 
 from restclients_core import models
 import dateutil.parser
@@ -329,6 +330,7 @@ class CanvasEnrollment(models.Model):
     override_grade = models.TextField(max_length=12, null=True)
     grade_html_url = models.CharField(max_length=1000)
     total_activity_time = models.IntegerField(null=True)
+    created_at = models.DateTimeField(null=True)
     last_activity_at = models.DateTimeField(null=True)
     limit_privileges_to_course_section = models.NullBooleanField()
 
@@ -349,6 +351,8 @@ class CanvasEnrollment(models.Model):
         self.status = data["enrollment_state"]
         self.html_url = data["html_url"]
         self.course_url = self.get_course_url(self.html_url)
+        if data.get("created_at"):
+            self.created_at = dateutil.parser.parse(data["created_at"])
 
         self.total_activity_time = data["total_activity_time"]
         self.limit_privileges_to_course_section = data.get(
@@ -760,7 +764,7 @@ class Quiz(models.Model):
         self.html_url = data["html_url"]
         self.published = data["published"]
         self.points_possible = data["points_possible"]
-        if "due_at" in data and "due_at" is not None:
+        if "due_at" in data and data["due_at"] is not None:
             self.due_at = dateutil.parser.parse(data["due_at"])
 
 
