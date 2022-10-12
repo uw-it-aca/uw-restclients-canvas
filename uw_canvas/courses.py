@@ -108,3 +108,16 @@ class Courses(Canvas):
         url = COURSES_API.format(course_id)
         body = {"course": {"sis_course_id": sis_course_id}}
         return CanvasCourse(data=self._put_resource(url, body))
+
+    def update_visibility(
+            self, course_id, is_public, is_public_to_auth_users):
+        """
+        Modifies course visibility by udpating the is_public and
+        is_public_to_auth_user booleans on a Course resource.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.update
+        """
+        url = COURSES_API.format(course_id)
+        body = {"course": {"is_public": is_public,
+                           "is_public_to_auth_users": is_public_to_auth_users}}
+        return CanvasCourse(data=self._put_resource(url, body))

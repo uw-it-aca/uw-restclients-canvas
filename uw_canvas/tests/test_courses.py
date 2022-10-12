@@ -28,6 +28,9 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(
             course.term.sis_term_id, "2013-spring", "SIS term id")
         self.assertEquals(course.term.term_id, 810, "Term id")
+        self.assertEquals(course.is_public, False, "is_public")
+        self.assertEquals(
+            course.is_public_to_auth_users, False, "is_public_to_auth_users")
         self.assertEquals(course.public_syllabus, False, "public_syllabus")
         self.assertEquals(
             course.workflow_state, "unpublished", "workflow_state")
@@ -163,3 +166,12 @@ class CanvasTestCourses(TestCase):
         mock_update.assert_called_with(
             '/api/v1/courses/149650',
             {'course': {'sis_course_id': 'NEW_SIS_ID'}})
+
+    @mock.patch.object(Courses, '_put_resource')
+    def test_update_visibility(self, mock_update):
+        mock_update.return_value = None
+        canvas = Courses()
+        canvas.update_visibility(149650, False, False)
+        mock_update.assert_called_with(
+            '/api/v1/courses/149650',
+            {'course': {'is_public': False, 'is_public_to_auth_users': False}})
