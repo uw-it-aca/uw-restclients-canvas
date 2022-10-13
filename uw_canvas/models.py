@@ -125,6 +125,8 @@ class CanvasCourse(models.Model):
     name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
     workflow_state = models.CharField(max_length=50)
+    is_public = models.NullBooleanField()
+    is_public_to_auth_users = models.NullBooleanField()
     public_syllabus = models.NullBooleanField()
     syllabus_body = models.TextField(null=True)
     grading_standard_id = models.IntegerField(null=True)
@@ -142,6 +144,8 @@ class CanvasCourse(models.Model):
         self.code = data["course_code"]
         self.name = data["name"]
         self.workflow_state = data["workflow_state"]
+        self.is_public = data["is_public"]
+        self.is_public_to_auth_users = data["is_public_to_auth_users"]
         self.public_syllabus = data["public_syllabus"]
         self.grading_standard_id = data.get("grading_standard_id")
 
