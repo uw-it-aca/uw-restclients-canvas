@@ -139,3 +139,7 @@ class Users(Canvas):
         return self.get_user_page_views(
             self._sis_id(sis_login_id, sis_field="login"),
             start_time=start_time, end_time=end_time)
+
+    def terminate_user_sessions(self, user_id):
+        url = USERS_API.format(user_id) + "/sessions"
+        return self._delete_resource(url)

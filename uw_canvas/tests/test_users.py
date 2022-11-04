@@ -224,6 +224,14 @@ class CanvasTestUsers(TestCase):
         canvas.delete_user_login(login)
         mock_delete.assert_called_with('/api/v1/users/188885/logins/100')
 
+    @mock.patch.object(Users, '_delete_resource')
+    def test_terminate_sessions(self, mock_delete):
+        canvas = Users()
+
+        user_id = 188885
+        canvas.terminate_user_sessions(user_id)
+        mock_delete.assert_called_with('/api/v1/users/188885/sessions')
+
     @mock.patch.object(Users, '_get_resource_url')
     def test_get_page_views(self, mock_get):
         canvas = Users()
