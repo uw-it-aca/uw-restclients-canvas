@@ -72,3 +72,16 @@ class CanvasTestSISImport(TestCase):
 
     def _setup_sis_import(self):
         return SISImportModel(import_id=1)
+
+    @mock.patch.object(SISImport, '_put_resource')
+    def test_delete_import(self, mock_put):
+        sis_import = SISImportModel(import_id=5)
+        SISImport().delete_import(sis_import)
+        mock_put.assert_called_with(
+            '/api/v1/accounts/12345/sis_imports/5/abort')
+
+    @mock.patch.object(SISImport, '_put_resource')
+    def test_delete_all_pending_imports(self, mock_put):
+        SISImport().delete_all_pending_imports()
+        mock_put.assert_called_with(
+            '/api/v1/accounts/12345/sis_imports/abort_all_pending')
