@@ -103,3 +103,31 @@ class SISImport(Canvas):
             body = f.read()
 
         return body
+
+    def delete_import(self, sis_import):
+        """
+        Abort a SIS import that has not completed.
+
+        https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.abort
+        """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
+        url = SIS_IMPORTS_API.format(
+            self._canvas_account_id) + "/{}/abort".format(sis_import.import_id)
+
+        return SISImportModel(data=self._put_resource(url))
+
+    def delete_all_pending_imports(self):
+        """
+        Abort already created but not processed or processing SIS imports.
+
+        https://canvas.instructure.com/doc/api/sis_imports.html#method.sis_imports_api.abort_all_pending
+        """
+        if not self._canvas_account_id:
+            raise MissingAccountID()
+
+        url = SIS_IMPORTS_API.format(
+            self._canvas_account_id) + "/abort_all_pending"
+
+        return self._put_resource(url)
