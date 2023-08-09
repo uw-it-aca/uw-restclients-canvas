@@ -37,6 +37,8 @@ class CanvasTestCourses(TestCase):
         self.assertEquals(
             course.grading_standard_id, 25, "grading_standard_id")
         self.assertTrue(course.is_unpublished)
+        self.assertEqual(
+            str(course.created_at), '2013-05-01 00:00:00-06:00')
 
     def test_course_with_params(self):
         canvas = Courses()
@@ -157,6 +159,11 @@ class CanvasTestCourses(TestCase):
         mock_create.assert_called_with(
             '/api/v1/accounts/88888/courses',
             {'course': {'name': 'Created Course'}})
+
+        canvas.create_course(88888, "Created Course", term_id="12345")
+        mock_create.assert_called_with(
+            '/api/v1/accounts/88888/courses',
+            {'course': {'name': 'Created Course', 'term_id': '12345'}})
 
     @mock.patch.object(Courses, '_put_resource')
     def test_update_sis_id(self, mock_update):

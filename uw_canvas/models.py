@@ -130,6 +130,7 @@ class CanvasCourse(models.Model):
     public_syllabus = models.NullBooleanField()
     syllabus_body = models.TextField(null=True)
     grading_standard_id = models.IntegerField(null=True)
+    created_at = models.DateTimeField()
 
     def __init__(self, *args, **kwargs):
         self.students = []
@@ -148,6 +149,8 @@ class CanvasCourse(models.Model):
         self.is_public_to_auth_users = data["is_public_to_auth_users"]
         self.public_syllabus = data["public_syllabus"]
         self.grading_standard_id = data.get("grading_standard_id")
+        if 'created_at' in data and data['created_at']:
+            self.created_at = dateutil.parser.parse(data['created_at'])
 
         course_url = data["calendar"]["ics"]
         course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
