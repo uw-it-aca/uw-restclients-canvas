@@ -89,7 +89,7 @@ class Courses(Canvas):
 
         return courses
 
-    def create_course(self, account_id, course_name):
+    def create_course(self, account_id, course_name, term_id=None):
         """
         Create a canvas course with the given subaccount id and course name.
 
@@ -97,6 +97,8 @@ class Courses(Canvas):
         """
         url = ACCOUNTS_API.format(account_id) + "/courses"
         body = {"course": {"name": course_name}}
+        if term_id is not None:
+            body["course"]["term_id"] = term_id
         return CanvasCourse(data=self._post_resource(url, body))
 
     def update_sis_id(self, course_id, sis_course_id):
