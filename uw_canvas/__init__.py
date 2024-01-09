@@ -1,4 +1,4 @@
-# Copyright 2023 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 
@@ -212,11 +212,10 @@ class Canvas(object):
 
         return json.loads(response.data)
 
-    def _delete_resource(self, url):
+    def _delete_resource(self, url, params={}):
         """
         Canvas DELETE method.
         """
-        params = {}
         self._set_as_user(params)
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
