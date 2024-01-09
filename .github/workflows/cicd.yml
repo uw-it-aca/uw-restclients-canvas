@@ -27,12 +27,12 @@ env:
 
 on:
   push:
-    branches: [main, master, qa, develop]
+    branches: [main, qa, develop]
   pull_request:
-    branches: [main, master, qa, develop]
+    branches: [main, qa, develop]
     types: [opened, reopened, synchronize]
   release:
-    branches: [main, master]
+    branches: [main]
     types: [published]
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
@@ -52,7 +52,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e .
-          pip install commonconf nose2 coverage coveralls==2.2.0
+          pip install commonconf nose2 coverage coveralls==3.3.1
 
       - name: Run Python Linters
         uses: uw-it-aca/actions/python-linters@main
@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 

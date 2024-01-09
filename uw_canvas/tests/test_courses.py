@@ -1,4 +1,4 @@
-# Copyright 2023 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 
@@ -182,3 +182,16 @@ class CanvasTestCourses(TestCase):
         mock_update.assert_called_with(
             '/api/v1/courses/149650',
             {'course': {'is_public': False, 'is_public_to_auth_users': False}})
+
+    @mock.patch.object(Courses, '_delete_resource')
+    def test_delete_course(self, mock_delete):
+        mock_delete.return_value = None
+        canvas = Courses()
+
+        canvas.delete_course(149650)
+        mock_delete.assert_called_with(
+            '/api/v1/courses/149650', params={'event': 'delete'})
+
+        canvas.delete_course(149650, event='conclude')
+        mock_delete.assert_called_with(
+            '/api/v1/courses/149650', params={'event': 'conclude'})

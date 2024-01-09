@@ -1,4 +1,4 @@
-# Copyright 2023 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 
@@ -123,3 +123,13 @@ class Courses(Canvas):
         body = {"course": {"is_public": is_public,
                            "is_public_to_auth_users": is_public_to_auth_users}}
         return CanvasCourse(data=self._put_resource(url, body))
+
+    def delete_course(self, course_id, event="delete"):
+        """
+        Delete or conclude the course identified by course_id.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.destroy
+        """
+        url = COURSES_API.format(course_id)
+        response = self._delete_resource(url, params={"event": event})
+        return True
