@@ -15,12 +15,12 @@ class CanvasTestAdmins(TestCase):
 
         admins = canvas.get_admins_by_sis_id('uwcourse:seattle:nursing:nurs')
 
-        self.assertEquals(len(admins), 11, "Failed to follow Link header")
+        self.assertEqual(len(admins), 11, "Failed to follow Link header")
 
         admin = admins[10]
 
-        self.assertEquals(admin.role, 'AccountAdmin', "Has proper role")
-        self.assertEquals(admin.user.user_id, 1111, "Has proper id")
+        self.assertEqual(admin.role, 'AccountAdmin', "Has proper role")
+        self.assertEqual(admin.user.user_id, 1111, "Has proper id")
 
     @mock.patch.object(Admins, '_post_resource')
     def test_create_admin(self, mock_post):

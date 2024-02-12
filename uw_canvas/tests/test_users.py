@@ -32,24 +32,24 @@ class CanvasTestUsers(TestCase):
         canvas = Users()
         user = canvas.get_user(188885)
 
-        self.assertEquals(user.user_id, 188885, "Has correct user id")
-        self.assertEquals(user.name, "J AVG USR", "Has correct name")
-        self.assertEquals(user.short_name, "J USR", "Has correct short name")
-        self.assertEquals(
+        self.assertEqual(user.user_id, 188885, "Has correct user id")
+        self.assertEqual(user.name, "J AVG USR", "Has correct name")
+        self.assertEqual(user.short_name, "J USR", "Has correct short name")
+        self.assertEqual(
             user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
             "Has correct sis id")
-        self.assertEquals(user.email, "testid99@foo.edu", "Has correct email")
+        self.assertEqual(user.email, "testid99@foo.edu", "Has correct email")
 
         user = canvas.get_user_by_sis_id("DEB35E0A465242CF9C5CDBC108050EC0")
 
-        self.assertEquals(user.user_id, 188885, "Has correct user id")
-        self.assertEquals(user.name, "J AVG USR", "Has correct name")
-        self.assertEquals(user.short_name, "J USR", "Has correct short name")
-        self.assertEquals(
+        self.assertEqual(user.user_id, 188885, "Has correct user id")
+        self.assertEqual(user.name, "J AVG USR", "Has correct name")
+        self.assertEqual(user.short_name, "J USR", "Has correct short name")
+        self.assertEqual(
             user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
             "Has correct sis id")
-        self.assertEquals(user.email, "testid99@foo.edu", "Has correct email")
-        self.assertEquals(user.avatar_url, (
+        self.assertEqual(user.email, "testid99@foo.edu", "Has correct email")
+        self.assertEqual(user.avatar_url, (
             "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0c"
             "d05241443a591868?s=80&r=g"), "Has correct avatar url")
 
@@ -151,20 +151,20 @@ class CanvasTestUsers(TestCase):
         users = canvas.get_users_for_course("862539", params={
             "search_term": "jav", "include": ["enrollments"]})
 
-        self.assertEquals(len(users), 3, "Found 3 canvas users")
+        self.assertEqual(len(users), 3, "Found 3 canvas users")
 
         user = users[0]
-        self.assertEquals(user.login_id, "javerage", "Login ID")
-        self.assertEquals(
+        self.assertEqual(user.login_id, "javerage", "Login ID")
+        self.assertEqual(
             user.sis_user_id, "15AE3883B6EC44C349E04E5FE089ABEB",
             "SIS User ID")
-        self.assertEquals(user.name, "JAMES AVERAGE", "Name")
-        self.assertEquals(
+        self.assertEqual(user.name, "JAMES AVERAGE", "Name")
+        self.assertEqual(
             user.sortable_name, "AVERAGE, JAMES", "Sortable Name")
         enrollment = user.enrollments[0]
-        self.assertEquals(enrollment.sis_course_id, "2015-summer-TRAIN-100-A")
-        self.assertEquals(enrollment.role, "Librarian", "Role")
-        self.assertEquals(
+        self.assertEqual(enrollment.sis_course_id, "2015-summer-TRAIN-100-A")
+        self.assertEqual(enrollment.role, "Librarian", "Role")
+        self.assertEqual(
             enrollment.base_role_type, "DesignerEnrollment", "Base Role Type")
 
     def test_get_logins(self):
@@ -174,23 +174,23 @@ class CanvasTestUsers(TestCase):
         sis_user_id = "DEB35E0A465242CF9C5CDBC108050EC0"
         logins = canvas.get_user_logins(user_id)
 
-        self.assertEquals(len(logins), 2, "Has correct login count")
+        self.assertEqual(len(logins), 2, "Has correct login count")
 
         login = logins[0]
-        self.assertEquals(login.user_id, user_id, "Has correct user id")
-        self.assertEquals(login.login_id, 100, "Has correct login_id")
-        self.assertEquals(login.sis_user_id, sis_user_id, "Has correct sis id")
-        self.assertEquals(login.unique_id, "testid99", "Has correct unique id")
+        self.assertEqual(login.user_id, user_id, "Has correct user id")
+        self.assertEqual(login.login_id, 100, "Has correct login_id")
+        self.assertEqual(login.sis_user_id, sis_user_id, "Has correct sis id")
+        self.assertEqual(login.unique_id, "testid99", "Has correct unique id")
 
         logins = canvas.get_user_logins_by_sis_id(sis_user_id)
 
-        self.assertEquals(len(logins), 2, "Has correct login count")
+        self.assertEqual(len(logins), 2, "Has correct login count")
 
         login = logins[0]
-        self.assertEquals(login.user_id, user_id, "Has correct user id")
-        self.assertEquals(login.login_id, 100, "Has correct login_id")
-        self.assertEquals(login.sis_user_id, sis_user_id, "Has correct sis id")
-        self.assertEquals(login.unique_id, "testid99", "Has correct unique id")
+        self.assertEqual(login.user_id, user_id, "Has correct user id")
+        self.assertEqual(login.login_id, 100, "Has correct login_id")
+        self.assertEqual(login.sis_user_id, sis_user_id, "Has correct sis id")
+        self.assertEqual(login.unique_id, "testid99", "Has correct unique id")
 
     @mock.patch.object(Users, '_put_resource')
     def test_update_login(self, mock_update):
