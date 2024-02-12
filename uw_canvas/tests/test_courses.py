@@ -16,25 +16,25 @@ class CanvasTestCourses(TestCase):
 
         course = canvas.get_course(149650)
 
-        self.assertEquals(course.course_id, 149650, "Has proper course id")
-        self.assertEquals(
+        self.assertEqual(course.course_id, 149650, "Has proper course id")
+        self.assertEqual(
             course.course_url, "https://canvas.uw.edu/courses/149650",
             "Has proper course url")
-        self.assertEquals(course.sis_course_id, "2013-spring-PHYS-121-A")
-        self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A")
-        self.assertEquals(course.sws_instructor_regid(), None)
-        self.assertEquals(course.is_academic_sis_id(), True)
-        self.assertEquals(course.account_id, 84378, "Has proper account id")
-        self.assertEquals(
+        self.assertEqual(course.sis_course_id, "2013-spring-PHYS-121-A")
+        self.assertEqual(course.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEqual(course.sws_instructor_regid(), None)
+        self.assertEqual(course.is_academic_sis_id(), True)
+        self.assertEqual(course.account_id, 84378, "Has proper account id")
+        self.assertEqual(
             course.term.sis_term_id, "2013-spring", "SIS term id")
-        self.assertEquals(course.term.term_id, 810, "Term id")
-        self.assertEquals(course.is_public, False, "is_public")
-        self.assertEquals(
+        self.assertEqual(course.term.term_id, 810, "Term id")
+        self.assertEqual(course.is_public, False, "is_public")
+        self.assertEqual(
             course.is_public_to_auth_users, False, "is_public_to_auth_users")
-        self.assertEquals(course.public_syllabus, False, "public_syllabus")
-        self.assertEquals(
+        self.assertEqual(course.public_syllabus, False, "public_syllabus")
+        self.assertEqual(
             course.workflow_state, "unpublished", "workflow_state")
-        self.assertEquals(
+        self.assertEqual(
             course.grading_standard_id, 25, "grading_standard_id")
         self.assertTrue(course.is_unpublished)
         self.assertEqual(
@@ -44,18 +44,18 @@ class CanvasTestCourses(TestCase):
         canvas = Courses()
         course1 = canvas.get_course(149650, params={"include": ["term"]})
 
-        self.assertEquals(
+        self.assertEqual(
             course1.term.term_id, 810, "Course contains term data")
-        self.assertEquals(
+        self.assertEqual(
             course1.syllabus_body, None,
             "Course doesn't contain syllabus_body")
 
         course2 = canvas.get_course(
             149650, params={"include": ["syllabus_body"]})
 
-        self.assertEquals(
+        self.assertEqual(
             course2.syllabus_body, "Syllabus", "Course contains syllabus_body")
-        self.assertEquals(
+        self.assertEqual(
             course1.term.term_id, 810, "Course contains term data")
 
     def test_courses(self):
@@ -65,18 +65,18 @@ class CanvasTestCourses(TestCase):
             'uwcourse:seattle:arts-&-sciences:amath:amath',
             {'published': True})
 
-        self.assertEquals(len(courses), 7, "Too few courses")
+        self.assertEqual(len(courses), 7, "Too few courses")
 
         course = courses[2]
 
-        self.assertEquals(course.course_id, 141414, "Has proper course id")
-        self.assertEquals(course.sis_course_id, "2013-spring-AMATH-403-A")
-        self.assertEquals(course.sws_course_id(), "2013,spring,AMATH,403/A")
-        self.assertEquals(
+        self.assertEqual(course.course_id, 141414, "Has proper course id")
+        self.assertEqual(course.sis_course_id, "2013-spring-AMATH-403-A")
+        self.assertEqual(course.sws_course_id(), "2013,spring,AMATH,403/A")
+        self.assertEqual(
             course.name,
             "AMATH 403 A: Methods For Partial Differential Equations")
-        self.assertEquals(course.account_id, 333333, "Has proper account id")
-        self.assertEquals(
+        self.assertEqual(course.account_id, 333333, "Has proper account id")
+        self.assertEqual(
             course.course_url, "https://canvas.uw.edu/courses/141414",
             "Has proper course url")
 
@@ -86,18 +86,18 @@ class CanvasTestCourses(TestCase):
         courses = canvas.get_published_courses_in_account_by_sis_id(
             'uwcourse:seattle:arts-&-sciences:amath:amath')
 
-        self.assertEquals(len(courses), 7, "Too few courses")
+        self.assertEqual(len(courses), 7, "Too few courses")
 
         course = courses[2]
 
-        self.assertEquals(course.course_id, 141414, "Has proper course id")
-        self.assertEquals(course.sis_course_id, "2013-spring-AMATH-403-A")
-        self.assertEquals(course.sws_course_id(), "2013,spring,AMATH,403/A")
-        self.assertEquals(
+        self.assertEqual(course.course_id, 141414, "Has proper course id")
+        self.assertEqual(course.sis_course_id, "2013-spring-AMATH-403-A")
+        self.assertEqual(course.sws_course_id(), "2013,spring,AMATH,403/A")
+        self.assertEqual(
             course.name,
             "AMATH 403 A: Methods For Partial Differential Equations")
-        self.assertEquals(course.account_id, 333333, "Has proper account id")
-        self.assertEquals(
+        self.assertEqual(course.account_id, 333333, "Has proper account id")
+        self.assertEqual(
             course.course_url, "https://canvas.uw.edu/courses/141414",
             "Has proper course url")
 
@@ -107,49 +107,49 @@ class CanvasTestCourses(TestCase):
         courses = canvas.get_courses_for_regid(
             "9136CCB8F66711D5BE060004AC494FFE")
 
-        self.assertEquals(len(courses), 1, "Has 1 canvas enrollment")
+        self.assertEqual(len(courses), 1, "Has 1 canvas enrollment")
 
         course = courses[0]
 
-        self.assertEquals(
+        self.assertEqual(
             course.course_url, "https://canvas.uw.edu/courses/149650",
             "Has proper course url")
-        self.assertEquals(
+        self.assertEqual(
             course.sis_course_id, "2013-spring-PHYS-121-A",
             "Course doesnt contain SIS ID")
-        self.assertEquals(
+        self.assertEqual(
             course.sws_course_id(), "2013,spring,PHYS,121/A",
             "Course doesnt contain SIS ID")
-        self.assertEquals(course.account_id, 84378, "Has proper account id")
+        self.assertEqual(course.account_id, 84378, "Has proper account id")
 
     def test_sis_id(self):
         course = CanvasCourse()
-        self.assertEquals(course.sws_course_id(), None)
-        self.assertEquals(course.sws_instructor_regid(), None)
-        self.assertEquals(course.is_academic_sis_id(), False)
+        self.assertEqual(course.sws_course_id(), None)
+        self.assertEqual(course.sws_instructor_regid(), None)
+        self.assertEqual(course.is_academic_sis_id(), False)
 
         course = CanvasCourse(sis_course_id="2013-spring-PHYS-121-A")
-        self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A")
-        self.assertEquals(course.sws_instructor_regid(), None)
-        self.assertEquals(course.is_academic_sis_id(), True)
+        self.assertEqual(course.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEqual(course.sws_instructor_regid(), None)
+        self.assertEqual(course.is_academic_sis_id(), True)
 
         course = CanvasCourse(sis_course_id="2013-autumn-GEN ST-199-A7")
-        self.assertEquals(course.sws_course_id(), "2013,autumn,GEN ST,199/A7")
-        self.assertEquals(course.sws_instructor_regid(), None)
-        self.assertEquals(course.is_academic_sis_id(), True)
+        self.assertEqual(course.sws_course_id(), "2013,autumn,GEN ST,199/A7")
+        self.assertEqual(course.sws_instructor_regid(), None)
+        self.assertEqual(course.is_academic_sis_id(), True)
 
         course = CanvasCourse(
             sis_course_id=(
                 "2013-spring-PHYS-599-A-9136CCB8F66711D5BE060004AC494FFE"))
-        self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,599/A")
-        self.assertEquals(
+        self.assertEqual(course.sws_course_id(), "2013,spring,PHYS,599/A")
+        self.assertEqual(
             course.sws_instructor_regid(), "9136CCB8F66711D5BE060004AC494FFE")
-        self.assertEquals(course.is_academic_sis_id(), True)
+        self.assertEqual(course.is_academic_sis_id(), True)
 
         course = CanvasCourse(sis_course_id="course_123456")
-        self.assertEquals(course.sws_course_id(), None)
-        self.assertEquals(course.sws_instructor_regid(), None)
-        self.assertEquals(course.is_academic_sis_id(), False)
+        self.assertEqual(course.sws_course_id(), None)
+        self.assertEqual(course.sws_instructor_regid(), None)
+        self.assertEqual(course.is_academic_sis_id(), False)
 
     @mock.patch.object(Courses, '_post_resource')
     def test_create_course(self, mock_create):

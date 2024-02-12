@@ -22,7 +22,7 @@ class CanvasTestTerms(TestCase):
 
         terms = canvas.get_all_terms()
 
-        self.assertEquals(len(terms), 16)
+        self.assertEqual(len(terms), 16)
 
     def test_get_term_by_sis_id(self):
         canvas = Terms()
@@ -31,12 +31,12 @@ class CanvasTestTerms(TestCase):
 
         term = canvas.get_term_by_sis_id(sis_term_id)
 
-        self.assertEquals(term.term_id, 3845, "Has proper term id")
-        self.assertEquals(term.name, "Summer 2013", "Has proper name")
-        self.assertEquals(term.sis_term_id, sis_term_id, "Has proper sis id")
-        self.assertEquals(term.workflow_state, "active")
-        self.assertEquals(str(term.start_at), "2013-06-23 07:00:00+00:00")
-        self.assertEquals(str(term.end_at), "2013-08-22 07:00:00+00:00")
+        self.assertEqual(term.term_id, 3845, "Has proper term id")
+        self.assertEqual(term.name, "Summer 2013", "Has proper name")
+        self.assertEqual(term.sis_term_id, sis_term_id, "Has proper sis id")
+        self.assertEqual(term.workflow_state, "active")
+        self.assertEqual(str(term.start_at), "2013-06-23 07:00:00+00:00")
+        self.assertEqual(str(term.end_at), "2013-08-22 07:00:00+00:00")
 
     @mock.patch.object(Terms, '_put_resource')
     def test_update_term_overrides(self, mock_update):

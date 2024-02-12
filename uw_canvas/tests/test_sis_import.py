@@ -66,9 +66,9 @@ class CanvasTestSISImport(TestCase):
     def test_get_import_status(self):
         canvas = SISImport()
         sis_import = canvas.get_import_status(self._setup_sis_import())
-        self.assertEquals(sis_import.import_id, 1)
-        self.assertEquals(sis_import.workflow_state, "imported")
-        self.assertEquals(sis_import.progress, "100")
+        self.assertEqual(sis_import.import_id, 1)
+        self.assertEqual(sis_import.workflow_state, "imported")
+        self.assertEqual(sis_import.progress, "100")
 
     def _setup_sis_import(self):
         return SISImportModel(import_id=1)

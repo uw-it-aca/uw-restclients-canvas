@@ -15,14 +15,14 @@ class CanvasTestQuizzes(TestCase):
         submissions = canvas.get_quizzes("862539")
 
         sub = submissions[0]
-        self.assertEquals(sub.quiz_id, 762037, "Has correct quiz id")
-        self.assertEquals(sub.published, True, "Is published")
-        self.assertEquals(sub.due_at.day, 1, "due at datetime")
+        self.assertEqual(sub.quiz_id, 762037, "Has correct quiz id")
+        self.assertEqual(sub.published, True, "Is published")
+        self.assertEqual(sub.due_at.day, 1, "due at datetime")
 
     def test_quizzes_by_sis_id(self):
         canvas = Quizzes()
         submissions = canvas.get_quizzes_by_sis_id("2013-autumn-PHYS-248-A")
-        self.assertEquals(len(submissions), 1, "Submission Count")
+        self.assertEqual(len(submissions), 1, "Submission Count")
 
     def test_quiz_without_due_date(self):
         quiz = Quiz(data={
@@ -33,5 +33,5 @@ class CanvasTestQuizzes(TestCase):
             "points_possible": 0,
         })
 
-        self.assertEquals(quiz.title, "title")
-        self.assertEquals(quiz.due_at, None)
+        self.assertEqual(quiz.title, "title")
+        self.assertEqual(quiz.due_at, None)

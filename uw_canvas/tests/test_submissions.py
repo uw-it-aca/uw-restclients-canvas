@@ -14,11 +14,11 @@ class CanvasTestSubmissions(TestCase):
         canvas = Submissions()
         submissions = canvas.get_submissions_by_course_and_assignment(
             862539, 2367793)
-        self.assertEquals(len(submissions), 4, "Submission Count")
+        self.assertEqual(len(submissions), 4, "Submission Count")
 
         submission = submissions[2]
-        self.assertEquals(len(submission.attachments), 1, "Attachment Count")
-        self.assertEquals(
+        self.assertEqual(len(submission.attachments), 1, "Attachment Count")
+        self.assertEqual(
             submission.attachments[0].url,
             "https://test.instructure.com/files/12345/download",
             "Attachment URL")
@@ -27,22 +27,22 @@ class CanvasTestSubmissions(TestCase):
         canvas = Submissions()
         submissions = canvas.get_submissions_multiple_assignments(
             False, "862539", students="all")
-        self.assertEquals(len(submissions), 4, "Submission Count")
+        self.assertEqual(len(submissions), 4, "Submission Count")
 
         sub = submissions[0]
-        self.assertEquals(
+        self.assertEqual(
             sub.submission_id, 12687216, "Has correct submission id")
-        self.assertEquals(
+        self.assertEqual(
             sub.grade_matches_current_submission, True,
             "Grades match current submission")
-        self.assertEquals(sub.graded_at.day, 13, "Graded at datetime")
-        self.assertEquals(sub.url, None, "Submitted url")
+        self.assertEqual(sub.graded_at.day, 13, "Graded at datetime")
+        self.assertEqual(sub.url, None, "Submitted url")
 
     def test_submission_by_sis_id(self):
         canvas = Submissions()
         submissions = canvas.get_submissions_multiple_assignments_by_sis_id(
             False, "2013-autumn-PHYS-248-A", students="all")
-        self.assertEquals(len(submissions), 3, "Submission Count")
+        self.assertEqual(len(submissions), 3, "Submission Count")
 
     @mock.patch.object(Submissions, '_get_resource_url')
     def test_get_submissions_multiple_assignments(self, mock_get):

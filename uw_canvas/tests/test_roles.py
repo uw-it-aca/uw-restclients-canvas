@@ -14,13 +14,13 @@ class CanvasTestRoles(TestCase):
 
         roles = canvas.get_roles_in_account(12345)
 
-        self.assertEquals(len(roles), 15, "Failed to follow Link header")
+        self.assertEqual(len(roles), 15, "Failed to follow Link header")
 
         role = roles[10]
 
-        self.assertEquals(role.base_role_type, "AccountMembership")
-        self.assertEquals(role.label, "Course Access")
-        self.assertEquals(
+        self.assertEqual(role.base_role_type, "AccountMembership")
+        self.assertEqual(role.label, "Course Access")
+        self.assertEqual(
             role.permissions.get('read_course_list').get('enabled'), True)
 
     def test_course_roles(self):
@@ -28,20 +28,20 @@ class CanvasTestRoles(TestCase):
 
         roles = canvas.get_effective_course_roles_in_account(12345)
 
-        self.assertEquals(len(roles), 5, "Course roles only")
+        self.assertEqual(len(roles), 5, "Course roles only")
 
         role = roles[0]
-        self.assertEquals(role.base_role_type, "TeacherEnrollment")
-        self.assertEquals(role.label, "Teacher")
+        self.assertEqual(role.base_role_type, "TeacherEnrollment")
+        self.assertEqual(role.label, "Teacher")
 
     def test_role(self):
         canvas = Roles()
 
         role = canvas.get_role(12345, 999)
 
-        self.assertEquals(role.role_id, 999)
-        self.assertEquals(role.label, "Course Access")
-        self.assertEquals(
+        self.assertEqual(role.role_id, 999)
+        self.assertEqual(role.label, "Course Access")
+        self.assertEqual(
             role.permissions.get('read_course_list').get('enabled'), True)
 
     def test_role_json_data(self):

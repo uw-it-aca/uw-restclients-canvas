@@ -48,10 +48,10 @@ class CanvasTestEnrollment(TestCase):
         self.assertEqual(enr.override_score, 80.0)
         self.assertEqual(enr.override_grade, None)
 
-        self.assertEquals(enr.sis_course_id, "2013-autumn-PHYS-248-A")
-        self.assertEquals(enr.sws_course_id(), "2013,autumn,PHYS,248/A")
-        self.assertEquals(enr.sis_section_id, "2013-autumn-PHYS-248-A--")
-        self.assertEquals(enr.sws_section_id(), "2013,autumn,PHYS,248/A")
+        self.assertEqual(enr.sis_course_id, "2013-autumn-PHYS-248-A")
+        self.assertEqual(enr.sws_course_id(), "2013,autumn,PHYS,248/A")
+        self.assertEqual(enr.sis_section_id, "2013-autumn-PHYS-248-A--")
+        self.assertEqual(enr.sws_section_id(), "2013,autumn,PHYS,248/A")
 
     # Expected values will have to change when the json files are updated
     def test_enrollments_by_regid(self):
@@ -60,37 +60,37 @@ class CanvasTestEnrollment(TestCase):
         enrollments = canvas.get_enrollments_for_regid(
             "9136CCB8F66711D5BE060004AC494FFE", include_courses=True)
 
-        self.assertEquals(len(enrollments), 2, "Has 2 canvas enrollments")
+        self.assertEqual(len(enrollments), 2, "Has 2 canvas enrollments")
 
         enrollment = enrollments[0]
-        self.assertEquals(enrollment.course_url,
-                          "https://test.canvas.edu/courses/149650")
-        self.assertEquals(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
-        self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
-        self.assertEquals(enrollment.sis_user_id,
-                          "9136CCB8F66711D5BE060004AC494FFE")
-        self.assertEquals(enrollment.course_name, "MECHANICS")
+        self.assertEqual(enrollment.course_url,
+                         "https://test.canvas.edu/courses/149650")
+        self.assertEqual(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
+        self.assertEqual(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
+        self.assertEqual(enrollment.sis_user_id,
+                         "9136CCB8F66711D5BE060004AC494FFE")
+        self.assertEqual(enrollment.course_name, "MECHANICS")
         self.assertIsNotNone(enrollment.course)
 
         stu_enrollment = enrollments[1]
-        self.assertEquals(
+        self.assertEqual(
             stu_enrollment.grade_html_url,
             "https://test.instructure.com/courses/862539/grades/12345")
-        self.assertEquals(stu_enrollment.current_score, 23.0, "Current score")
-        self.assertEquals(stu_enrollment.login_id, "javerage", "Login ID")
-        self.assertEquals(
+        self.assertEqual(stu_enrollment.current_score, 23.0, "Current score")
+        self.assertEqual(stu_enrollment.login_id, "javerage", "Login ID")
+        self.assertEqual(
             stu_enrollment.sis_user_id, "9136CCB8F66711D5BE060004AC494FFE",
             "SIS User ID")
-        self.assertEquals(stu_enrollment.name, "JAMES AVERAGE STUDENT", "Name")
-        self.assertEquals(
+        self.assertEqual(stu_enrollment.name, "JAMES AVERAGE STUDENT", "Name")
+        self.assertEqual(
             enrollment.sortable_name, "STUDENT, JAMES AVERAGE",
             "Sortable Name")
-        self.assertEquals(
+        self.assertEqual(
             str(stu_enrollment.last_activity_at), "2012-08-18 23:08:51-06:00",
             "Last activity datetime")
-        self.assertEquals(
+        self.assertEqual(
             stu_enrollment.total_activity_time, 100, "Total activity time")
-        self.assertEquals(
+        self.assertEqual(
             stu_enrollment.status, CanvasEnrollment.STATUS_ACTIVE, "Status")
 
     def test_pending_enrollments(self):
@@ -98,14 +98,14 @@ class CanvasTestEnrollment(TestCase):
 
         enrollments = canvas.get_enrollments_for_course("862539")
 
-        self.assertEquals(len(enrollments), 1, "Has 1 canvas enrollment")
+        self.assertEqual(len(enrollments), 1, "Has 1 canvas enrollment")
 
         enrollment = enrollments[0]
-        self.assertEquals(enrollment.name, "James Average", "Name")
-        self.assertEquals(
+        self.assertEqual(enrollment.name, "James Average", "Name")
+        self.assertEqual(
             enrollment.sortable_name, "Average, James", "Sortable Name")
-        self.assertEquals(enrollment.login_id, None)
-        self.assertEquals(
+        self.assertEqual(enrollment.login_id, None)
+        self.assertEqual(
             enrollment.status, CanvasEnrollment.STATUS_INVITED, "Status")
 
     @mock.patch.object(Enrollments, '_post_resource')

@@ -15,32 +15,32 @@ class CanvasTestAssignments(TestCase):
         canvas = Assignments()
         assignments = canvas.get_assignments("862539")
         assignment = assignments[0]
-        self.assertEquals(assignment.name, "Assignment 1", "Assignment name")
-        self.assertEquals(
+        self.assertEqual(assignment.name, "Assignment 1", "Assignment name")
+        self.assertEqual(
             assignment.published, True, "Assignment is published")
-        self.assertEquals(assignment.due_at.day, 1, "Due date")
-        self.assertEquals(assignment.grading_type, "points", "Grading type")
-        self.assertEquals(
+        self.assertEqual(assignment.due_at.day, 1, "Due date")
+        self.assertEqual(assignment.grading_type, "points", "Grading type")
+        self.assertEqual(
             assignment.grading_standard_id, None, "Grading Standard ID")
-        self.assertEquals(
+        self.assertEqual(
             assignment.turnitin_enabled, False, "turnitin enabled")
-        self.assertEquals(
+        self.assertEqual(
             assignment.vericite_enabled, True, "vericite enabled")
-        self.assertEquals(assignment.has_submissions, True, "has_submissions")
-        self.assertEquals(
+        self.assertEqual(assignment.has_submissions, True, "has_submissions")
+        self.assertEqual(
             assignment.submission_types, ['online_text_entry', 'online_url'])
 
     def test_assignment_by_course_sis_id(self):
         canvas = Assignments()
         assignments = canvas.get_assignments_by_sis_id(
             "2013-autumn-PHYS-248-A")
-        self.assertEquals(len(assignments), 2, "Assignment Count")
+        self.assertEqual(len(assignments), 2, "Assignment Count")
 
     def test_assignment_act_as(self):
         canvas = Assignments(as_user="730FA4DCAE3411D689DA0004AC494FFE")
         assignments = canvas.get_assignments_by_sis_id(
             "2013-autumn-PHYS-248-A")
-        self.assertEquals(len(assignments), 2, "Assignment Count")
+        self.assertEqual(len(assignments), 2, "Assignment Count")
 
     @mock.patch.object(Assignments, '_get_resource_url')
     def test_assignment_params(self, mock_get):
