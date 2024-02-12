@@ -17,11 +17,11 @@ class CanvasTestAccounts(TestCase):
         canvas = Canvas()
 
         account = canvas.get_account_by_sis_id('uwcourse:seattle:cse:cse')
-        self.assertEquals(account.account_id, 696969)
-        self.assertEquals(
+        self.assertEqual(account.account_id, 696969)
+        self.assertEqual(
             account.name, "Computer Science & Engineering", "Has proper name")
-        self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:cse')
-        self.assertEquals(account.parent_account_id, 987654)
+        self.assertEqual(account.sis_account_id, 'uwcourse:seattle:cse:cse')
+        self.assertEqual(account.parent_account_id, 987654)
 
     def test_sub_account(self):
         canvas = Canvas()
@@ -30,12 +30,12 @@ class CanvasTestAccounts(TestCase):
 
         account = accounts[1]
 
-        self.assertEquals(len(accounts), 3, "Too few accounts")
-        self.assertEquals(
+        self.assertEqual(len(accounts), 3, "Too few accounts")
+        self.assertEqual(
             account.name, "Comp Sci & Engr Accelerated Masters Prg",
             "Has proper name")
-        self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:csem')
-        self.assertEquals(account.parent_account_id, 54321)
+        self.assertEqual(account.sis_account_id, 'uwcourse:seattle:cse:csem')
+        self.assertEqual(account.parent_account_id, 54321)
 
     def test_all_sub_accounts(self):
         canvas = Canvas()
@@ -45,12 +45,12 @@ class CanvasTestAccounts(TestCase):
 
         account = accounts[1]
 
-        self.assertEquals(len(accounts), 3, "Too few accounts")
-        self.assertEquals(
+        self.assertEqual(len(accounts), 3, "Too few accounts")
+        self.assertEqual(
             account.name, "Comp Sci & Engr Accelerated Masters Prg",
             "Has proper name")
-        self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:csem')
-        self.assertEquals(account.parent_account_id, 54321)
+        self.assertEqual(account.sis_account_id, 'uwcourse:seattle:cse:csem')
+        self.assertEqual(account.parent_account_id, 54321)
 
     @mock.patch.object(Canvas, '_put_resource')
     def test_update_account(self, mock_update):

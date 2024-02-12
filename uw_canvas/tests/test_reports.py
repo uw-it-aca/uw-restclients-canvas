@@ -138,9 +138,9 @@ class CanvasTestReports(TestCase):
 
         report = Report(data=self.report_json_data)
         report = canvas.get_report_status(report)
-        self.assertEquals(report.report_id, 1)
-        self.assertEquals(report.status, "complete")
-        self.assertEquals(report.progress, "100")
+        self.assertEqual(report.report_id, 1)
+        self.assertEqual(report.status, "complete")
+        self.assertEqual(report.progress, "100")
 
     @mock.patch.object(Reports, '_get_report_file')
     def test_get_report_data(self, mock_get):
