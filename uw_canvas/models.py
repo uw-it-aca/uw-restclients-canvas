@@ -820,3 +820,34 @@ class DiscussionTopic(models.Model):
 class DiscussionEntry(models.Model):
     entry_id = models.IntegerField()
     user_id = models.IntegerField()
+
+
+class Collaboration(models.Model):
+    collaboration_id = models.IntegerField()
+    collaboration_type = models.CharField(max_length=120, null=True)
+    document_id = models.CharField(max_length=50, null=True)
+    user_id = models.IntegerField()
+    context_id = models.IntegerField()
+    context_type = models.CharField(max_length=20)
+    url = models.CharField(max_length=500, null=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    description = models.CharField(max_length=300, null=True)
+    title = models.CharField(max_length=120, null=True)
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Assignment, self).__init__(*args, **kwargs)
+
+        self.collaboration_id = data['id']
+        self.collaboration_type = data['collaboration_type']
+        self.document_id = data.get('document_id')
+        self.user_id = data['user_id']
+        self.context_id = data['context_id']
+        self.context_type = data['context_type']
+        self.url = data.get('url')
+        self.created_at = dateutil.parser.parse(data['created_at'])
+        self.updated_at = dateutil.parser.parse(data['updated_at'])
+        self.description = data.get('description')
+        self.title = data.get('title')
