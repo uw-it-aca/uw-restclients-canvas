@@ -851,3 +851,162 @@ class Collaboration(models.Model):
         self.updated_at = dateutil.parser.parse(data['updated_at'])
         self.description = data.get('description')
         self.title = data.get('title')
+
+
+class Alignment(models.Model):
+    alignment_type = models.CharField()
+    alignment_id = models.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Alignment, self).__init__(*args, **kwargs)
+
+        # The data looks like this: 'assignment_9130007'.  Split into the
+        # alignment type ('assignment' in this example) and ID.
+        match = re.match(r"([a-zA-Z]+)_([0-9]+)", data)
+        if match:
+            alignment_type, alignment_id = match.groups()
+        else:
+            alignment_type = None
+            alignment_id = None
+        
+        self.alignment_type = alignment_type
+        self.alignment_id = alignment_id
+
+
+class Rating(models.Model):
+    description = models.CharField()
+    points = models.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Rating, self).__init__(*args, **kwargs)
+
+        self.description = data['description']
+        self.points = data['points']
+        
+
+class Outcome(models.Model):
+    outcome_id = models.IntegerField()
+    context_id = models.IntegerField()
+    context_type = models.CharField()
+    vendor_guid = models.CharField()
+    display_name = models.CharField()
+    title = models.CharField()
+    url = models.CharField()
+    can_edit = models.BooleanField()
+    has_updateable_rubrics = models.BooleanField()
+    description = models.CharField()
+    friendly_description = models.CharField()
+    points_possible = models.IntegerField()
+    mastery_points = models.IntegerField()
+    calculation_method = models.CharField()
+    assessed = models.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        self.ratings = []
+        self.alignments = []
+        
+        data = kwargs.get("data")
+        if data is None:
+            return super(Outcome, self).__init__(*args, **kwargs)
+
+        self.outcome_id = data['id']
+        self.context_id = data['context_id']
+        self.context_type = data['context_type']
+        self.vendor_guid = data['vendor_guid']
+        self.display_name = data['display_name']
+        self.title = data['title']
+        self.url = data['url']
+        self.can_edit = data['can_edit']
+        self.has_updateable_rubrics = data['has_updateable_rubrics']
+        self.description = data['description']
+        self.friendly_description = data['friendly_description']
+        self.points_possible = data['points_possible']
+        self.mastery_points = data['mastery_points']
+        self.calculation_method = data['calculation_method']
+        self.assessed = data['assessed']
+
+        for rating in data['ratings']:
+            self.ratings.append(Rating(data=rating))
+
+        for alignment in data['alignments']:
+            self.alignments.append(Alignment(data=alignment))
+
+
+class OutcomeResult(models.Model):
+    result_id = models.IntegerField()
+    score = models.IntegerField()
+    submitted_or_assessed_at = models.DateTimeField()
+    user_id = models.IntegerField()
+    learning_outcome_id = models.IntegerField()
+    alignment_id = models.CharField()
+    percent = models.DecimalField()
+    mastery = models.BooleanField()
+    possible = models.IntegerField()
+    hide_points = models.BooleanField()
+    hidden = models.BooleanField()
+    assignment = models.CharField()
+    
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(OutcomeResult, self).__init__(*args, **kwargs)
+
+        self.result_id = data['id']
+        self.score = data["score"]
+        if ("submitted_or_assessed_at" in data
+            and data["submitted_or_assessed_at"] is not None):
+            self.submitted_or_assessed_at = \
+                dateutil.parser.parse(data["submitted_or_assessed_at"])  
+        self.percent = data["percent"]
+        self.mastery = data["mastery"]
+        self.possible = data["possible"]
+        self.hide_points = data["hide_points"]
+        self.hidden = data["hidden"]
+
+        if "links" in data:
+            links_data = data["links"]
+            self.user_id = links_data.get("user")
+            self.learning_outcome_id = links_data.get("learning_outcome")
+            self.alignment_id = links_data.get("alignment")
+            self.assignment = links_data.get("assignment")
+        
+
+class OutcomeGroup(models.Model):
+    outcome_group_id = models.IntegerField()
+    title = models.CharField()
+    vendor_guid = models.CharField()
+    url = models.CharField()
+    subgroups_url = models.CharField()
+    outcomes_url = models.CharField()
+    can_edit = models.BooleanField()
+    import_url = models.CharField()
+    context_id = models.IntegerField()
+    context_type = models.CharField()
+    description = models.CharField()
+    has_parent = models.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(OutcomeGroup, self).__init__(*args, **kwargs)    
+
+        self.outcome_group_id = data['id']
+        self.title = data['title']
+        self.vendor_guid = data['vendor_guid']
+        self.url = data['url']
+        self.subgroups_url = data['subgroups_url']
+        self.outcomes_url = data['outcomes_url']
+        self.can_edit = data['can_edit']
+        self.import_url = data['import_url']
+        self.context_id = data['context_id']
+        self.context_type = data['context_type']
+        self.description = data['description']
+
+        if 'parent_outcome_group' in data:
+            self.has_parent = True
+        else:
+            self.has_parent = False
