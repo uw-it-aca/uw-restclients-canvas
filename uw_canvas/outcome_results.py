@@ -1,10 +1,14 @@
+# Copyright 2024 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from uw_canvas import Canvas
 from uw_canvas.courses import COURSES_API
-from uw_canvas.models  import OutcomeResult
-from uw_canvas.models  import Outcome
-from uw_canvas.models  import OutcomeGroup
+from uw_canvas.models import OutcomeResult
+from uw_canvas.models import Outcome
+from uw_canvas.models import OutcomeGroup
 
 OUTCOMES_API = COURSES_API + "//outcome_results"
+
 
 class OutcomeResults(Canvas):
     def get_outcome_results_by_course(self, course_id, params={}):
@@ -26,13 +30,13 @@ class OutcomeResults(Canvas):
                 outcome_groups = []
                 for outcome_group in data['linked']['outcome_groups']:
                     outcome_groups.append(OutcomeGroup(data=outcome_group))
-        
+
         for outcome_result in data['outcome_results']:
             outcome_results.append(OutcomeResult(data=outcome_result))
 
         if 'linked' in data:
             if ('outcomes' in data['linked'] and
-                'outcome_groups' in data['linked']):
+                    'outcome_groups' in data['linked']):
                 return outcome_results, outcomes, outcome_groups
             elif ('outcomes' in data['linked'] and
                   'outcome_groups' not in data['linked']):
@@ -44,6 +48,3 @@ class OutcomeResults(Canvas):
                 return outcome_results
         else:
             return outcome_results
-
-    
-

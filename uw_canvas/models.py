@@ -870,7 +870,7 @@ class Alignment(models.Model):
         else:
             alignment_type = None
             alignment_id = None
-        
+
         self.alignment_type = alignment_type
         self.alignment_id = alignment_id
 
@@ -886,7 +886,7 @@ class Rating(models.Model):
 
         self.description = data['description']
         self.points = data['points']
-        
+
 
 class Outcome(models.Model):
     outcome_id = models.IntegerField()
@@ -908,7 +908,7 @@ class Outcome(models.Model):
     def __init__(self, *args, **kwargs):
         self.ratings = []
         self.alignments = []
-        
+
         data = kwargs.get("data")
         if data is None:
             return super(Outcome, self).__init__(*args, **kwargs)
@@ -949,7 +949,7 @@ class OutcomeResult(models.Model):
     hide_points = models.BooleanField()
     hidden = models.BooleanField()
     assignment = models.CharField()
-    
+
     def __init__(self, *args, **kwargs):
         data = kwargs.get("data")
         if data is None:
@@ -957,10 +957,10 @@ class OutcomeResult(models.Model):
 
         self.result_id = data['id']
         self.score = data["score"]
-        if ("submitted_or_assessed_at" in data
-            and data["submitted_or_assessed_at"] is not None):
+        if ("submitted_or_assessed_at" in data and
+                data["submitted_or_assessed_at"] is not None):
             self.submitted_or_assessed_at = \
-                dateutil.parser.parse(data["submitted_or_assessed_at"])  
+                dateutil.parser.parse(data["submitted_or_assessed_at"])
         self.percent = data["percent"]
         self.mastery = data["mastery"]
         self.possible = data["possible"]
@@ -973,7 +973,7 @@ class OutcomeResult(models.Model):
             self.learning_outcome_id = links_data.get("learning_outcome")
             self.alignment_id = links_data.get("alignment")
             self.assignment = links_data.get("assignment")
-        
+
 
 class OutcomeGroup(models.Model):
     outcome_group_id = models.IntegerField()
@@ -992,7 +992,7 @@ class OutcomeGroup(models.Model):
     def __init__(self, *args, **kwargs):
         data = kwargs.get("data")
         if data is None:
-            return super(OutcomeGroup, self).__init__(*args, **kwargs)    
+            return super(OutcomeGroup, self).__init__(*args, **kwargs)
 
         self.outcome_group_id = data['id']
         self.title = data['title']
