@@ -1,0 +1,358 @@
+{
+    "outcome_results": [
+        {
+            "id": 1063168,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1137203",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063169,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1137204",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1064431,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-26T18:51:31Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138011",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        },
+        {
+            "id": 1064432,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-26T18:51:31Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138012",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        },
+        {
+            "id": 1063171,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138023",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063170,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138024",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063160,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-03T22:52:49Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1137203",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063161,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-03T22:52:49Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1137204",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1064433,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-23T16:40:13Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1138011",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        },
+        {
+            "id": 1064434,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-23T16:40:13Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1138012",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        }
+    ],
+    "linked": {
+        "outcomes": [
+            {
+                "id": 1137203,
+                "context_id": 862539,
+                "context_type": "Course",
+                "vendor_guid": null,
+                "display_name": null,
+                "title": "Balances the use of different communication techniques in gathering information.",
+                "url": "/api/v1/outcomes/1137203",
+                "can_edit": true,
+                "has_updateable_rubrics": false,
+                "description": "<p>Begins with open-ended questions and uses at least three additional communication techniques in collecting the history: verbal facilitators, nonverbal facilitators, focused (directed) questions, closed ended questions, reflection, summary.</p>",
+                "friendly_description": null,
+                "points_possible": 1.0,
+                "mastery_points": 1.0,
+                "ratings": [
+                    {
+                        "description": "Milestone met",
+                        "points": 1.0
+                    },
+                    {
+                        "description": "Not yet met",
+                        "points": 0.0
+                    }
+                ],
+                "calculation_method": "latest",
+                "assessed": true,
+                "alignments": [
+                    "rubric_838531",
+                    "assignment_9130007"
+                ]
+            },
+            {
+                "id": 1137204,
+                "context_id": 862539,
+                "context_type": "Course",
+                "vendor_guid": null,
+                "display_name": null,
+                "title": "Demonstrates empathy at appropriate points in the encounter",
+                "url": "/api/v1/outcomes/1137204",
+                "can_edit": true,
+                "has_updateable_rubrics": false,
+                "description": "<p>Recognizes at least one positive or negative emotion or feeling and acknowledges it verbally.</p>",
+                "friendly_description": null,
+                "points_possible": 1.0,
+                "mastery_points": 1.0,
+                "ratings": [
+                    {
+                        "description": "Milestone met",
+                        "points": 1.0
+                    },
+                    {
+                        "description": "Not yet met",
+                        "points": 0.0
+                    }
+                ],
+                "calculation_method": "latest",
+                "assessed": true,
+                "alignments": [
+                    "rubric_838531",
+                    "assignment_9130007"
+                ]
+            },
+            {
+                "id": 1138011,
+                "context_id": 862539,
+                "context_type": "Course",
+                "vendor_guid": null,
+                "display_name": null,
+                "title": "Documentation: SOAP",
+                "url": "/api/v1/outcomes/1138011",
+                "can_edit": true,
+                "has_updateable_rubrics": false,
+                "description": "<p><span>Documents a patient's history and physical exam </span><span>accurately and completely; using standard organization; and with a clear timeline and comprehensive description of the chief concern.</span></p>",
+                "friendly_description": null,
+                "points_possible": 1.0,
+                "mastery_points": 1.0,
+                "ratings": [
+                    {
+                        "description": "Met",
+                        "points": 1.0
+                    },
+                    {
+                        "description": "Not yet met",
+                        "points": 0.0
+                    }
+                ],
+                "calculation_method": "latest",
+                "assessed": true,
+                "alignments": [
+                    "rubric_865458",
+                    "assignment_9292984",
+                    "assignment_9130006",
+                    "rubric_838530"
+                ]
+            },
+            {
+                "id": 1138012,
+                "context_id": 862539,
+                "context_type": "Course",
+                "vendor_guid": null,
+                "display_name": null,
+                "title": "Clinical Reasoning: SOAP",
+                "url": "/api/v1/outcomes/1138012",
+                "can_edit": true,
+                "has_updateable_rubrics": false,
+                "description": "<p>Develops a differential diagnosis for the patient's chief concern following the encounter. Writes an assessment outlining at least three possible causes of the patient's chief concern and justifies each with at least one piece of information from the patient's history or physical exam.</p>",
+                "friendly_description": null,
+                "points_possible": 2.0,
+                "mastery_points": 2.0,
+                "ratings": [
+                    {
+                        "description": "Met",
+                        "points": 2.0
+                    },
+                    {
+                        "description": "Not met",
+                        "points": 1.0
+                    }
+                ],
+                "calculation_method": "latest",
+                "assessed": true,
+                "alignments": [
+                    "rubric_865458",
+                    "assignment_9292984",
+                    "assignment_9130006",
+                    "rubric_838530"
+                ]
+            },
+            {
+                "id": 1138023,
+                "context_id": 862539,
+                "context_type": "Course",
+                "vendor_guid": null,
+                "display_name": null,
+                "title": "Gathers a detailed and accurate history, including a clear timeline and appropriately detailed description of the presenting concern.",
+                "url": "/api/v1/outcomes/1138023",
+                "can_edit": true,
+                "has_updateable_rubrics": false,
+                "description": null,
+                "friendly_description": null,
+                "points_possible": 1.0,
+                "mastery_points": 1.0,
+                "ratings": [
+                    {
+                        "description": "Milestone met",
+                        "points": 1.0
+                    },
+                    {
+                        "description": "Not yet met",
+                        "points": 0.0
+                    }
+                ],
+                "calculation_method": "latest",
+                "assessed": true,
+                "alignments": [
+                    "rubric_838531",
+                    "assignment_9130007"
+                ]
+            },
+            {
+                "id": 1138024,
+                "context_id": 862539,
+                "context_type": "Course",
+                "vendor_guid": null,
+                "display_name": null,
+                "title": "Builds rapport with a patient.",
+                "url": "/api/v1/outcomes/1138024",
+                "can_edit": true,
+                "has_updateable_rubrics": false,
+                "description": "<p>Greets the patient warmly and introduces self by name and role.&nbsp;</p>",
+                "friendly_description": null,
+                "points_possible": 2.0,
+                "mastery_points": 2.0,
+                "ratings": [
+                    {
+                        "description": "Milestone met",
+                        "points": 2.0
+                    },
+                    {
+                        "description": "Not yet met",
+                        "points": 1.0
+                    }
+                ],
+                "calculation_method": "latest",
+                "assessed": true,
+                "alignments": [
+                    "rubric_838531",
+                    "assignment_9130007"
+                ]
+            }
+        ]
+    }
+}

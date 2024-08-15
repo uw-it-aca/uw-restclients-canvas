@@ -14,35 +14,26 @@ class OutcomeResults(Canvas):
         https://canvas.instructure.com/doc/api/outcome_results.html#method.outcome_results.index
         """
         url = OUTCOMES_API.format(course_id)
-
-        outcome_results = []
         data = self._get_paged_resource(url, params=params,
                                         data_key='outcome_results')
 
-        if 'linked' in data:
-            if 'outcomes' in data['linked']:
-                outcomes = []
-                for outcome in data['linked']['outcomes']:
-                    outcomes.append(Outcome(data=outcome))
-            if 'outcome_groups' in data['linked']:
-                outcome_groups = []
-                for outcome_group in data['linked']['outcome_groups']:
-                    outcome_groups.append(OutcomeGroup(data=outcome_group))
-
+        outcome_results = []
         for outcome_result in data['outcome_results']:
             outcome_results.append(OutcomeResult(data=outcome_result))
 
+        ret = [outcome_results]
         if 'linked' in data:
-            if ('outcomes' in data['linked'] and
-                    'outcome_groups' in data['linked']):
-                return outcome_results, outcomes, outcome_groups
-            elif ('outcomes' in data['linked'] and
-                  'outcome_groups' not in data['linked']):
-                return outcome_results, outcomes
-            elif ('outcomes' not in data['linked'] and
-                  'outcome_groups' in data['linked']):
-                return outcome_results, outcome_groups
-            else:
-                return outcome_results
-        else:
-            return outcome_results
+            outcome_groups = []
+            outcomes = []
+
+            if 'outcomes' in data['linked']:
+                for outcome in data['linked']['outcomes']:
+                    outcomes.append(Outcome(data=outcome))
+                ret.append(outcomes)
+
+            if 'outcome_groups' in data['linked']:
+                for outcome_group in data['linked']['outcome_groups']:
+                    outcome_groups.append(OutcomeGroup(data=outcome_group))
+                ret.append(outcome_groups)
+
+        return outcome_results if (len(ret) == 1) else tuple(ret)
