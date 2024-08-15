@@ -3,11 +3,9 @@
 
 from uw_canvas import Canvas
 from uw_canvas.courses import COURSES_API
-from uw_canvas.models import OutcomeResult
-from uw_canvas.models import Outcome
-from uw_canvas.models import OutcomeGroup
+from uw_canvas.models import Outcome, OutcomeGroup, OutcomeResult
 
-OUTCOMES_API = COURSES_API + "//outcome_results"
+OUTCOMES_API = COURSES_API + "/outcome_results"
 
 
 class OutcomeResults(Canvas):
