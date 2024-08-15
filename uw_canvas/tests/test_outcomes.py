@@ -16,11 +16,41 @@ class CanvasTestOutcomes(TestCase):
         results = canvas.get_outcome_results_by_course("862539")
         self.assertEqual(len(results), 10)
 
-        res1 = results[0]
-        self.assertTrue(res1.mastery)
-        self.assertEqual(res1.score, 1.0)
-        self.assertEqual(res1.possible, 1.0)
-        self.assertEqual(res1.percent, 1.0)
-        self.assertTrue(res1.hide_points)
-        self.assertFalse(res1.hidden)
-        self.assertEqual(res1.user_id, "188885")
+        result = results[0]
+        self.assertTrue(result.mastery)
+        self.assertEqual(result.score, 1.0)
+        self.assertEqual(result.possible, 1.0)
+        self.assertEqual(result.percent, 1.0)
+        self.assertTrue(result.hide_points)
+        self.assertFalse(result.hidden)
+        self.assertEqual(result.user_id, "188885")
+
+    def test_get_outcomes_by_course(self):
+        canvas = OutcomeResults()
+        results, outcomes = canvas.get_outcome_results_by_course(
+            "862539", params={"include": ["outcomes"]})
+
+        self.assertEqual(len(outcomes), 6)
+
+        outcome = outcomes[0]
+        self.assertEqual(outcome.context_type, "Course")
+        self.assertIsNone(outcome.vendor_guid)
+        self.assertTrue(outcome.can_edit)
+        self.assertEqual(outcome.points_possible, 1.0)
+        self.assertEqual(outcome.mastery_points, 1.0)
+        self.assertEqual(outcome.calculation_method, "latest")
+        self.assertTrue(outcome.assessed)
+
+    def test_get_outcome_groups_by_course(self):
+        canvas = OutcomeResults()
+        results, groups = canvas.get_outcome_results_by_course(
+            "862539", params={"include": ["outcome_groups"]})
+
+        self.assertEqual(len(groups), 2)
+
+        group = groups[0]
+        self.assertEqual(group.title, "Term 2 Milestone OSCE")
+        self.assertIsNone(group.vendor_guid)
+        self.assertTrue(group.can_edit)
+        self.assertEqual(group.context_type, "Course")
+        self.assertIsNone(group.description)

@@ -1,0 +1,203 @@
+{
+    "outcome_results": [
+        {
+            "id": 1063168,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1137203",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063169,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1137204",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1064431,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-26T18:51:31Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138011",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        },
+        {
+            "id": 1064432,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-26T18:51:31Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138012",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        },
+        {
+            "id": 1063171,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138023",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063170,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-05T19:06:10Z",
+            "links": {
+                "user": "188885",
+                "learning_outcome": "1138024",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063160,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-03T22:52:49Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1137203",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1063161,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-05-03T22:52:49Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1137204",
+                "alignment": "assignment_9130007",
+                "assignment": "assignment_9130007"
+            }
+        },
+        {
+            "id": 1064433,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-23T16:40:13Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1138011",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        },
+        {
+            "id": 1064434,
+            "mastery": true,
+            "score": 1.0,
+            "possible": 1.0,
+            "percent": 1.0,
+            "hide_points": true,
+            "hidden": false,
+            "submitted_or_assessed_at": "2019-04-23T16:40:13Z",
+            "links": {
+                "user": "496168",
+                "learning_outcome": "1138012",
+                "alignment": "assignment_9130006",
+                "assignment": "assignment_9130006"
+            }
+        }
+    ],
+    "linked": {
+        "outcome_groups": [
+            {
+                "id": 438371,
+                "title": "Term 2 Milestone OSCE",
+                "vendor_guid": null,
+                "url": "/api/v1/courses/862539/outcome_groups/438371",
+                "subgroups_url": "/api/v1/courses/862539/outcome_groups/438371/subgroups",
+                "outcomes_url": "/api/v1/courses/862539/outcome_groups/438371/outcomes",
+                "can_edit": true,
+                "import_url": "/api/v1/courses/862539/outcome_groups/438371/import",
+                "parent_outcome_group": {
+                    "id": 406624,
+                    "title": "Foundations Of Clinical Medicine",
+                    "vendor_guid": null,
+                    "url": "/api/v1/courses/862539/outcome_groups/406624",
+                    "subgroups_url": "/api/v1/courses/862539/outcome_groups/406624/subgroups",
+                    "outcomes_url": "/api/v1/courses/862539/outcome_groups/406624/outcomes",
+                    "can_edit": true
+                },
+                "context_id": 862539,
+                "context_type": "Course",
+                "description": null
+            },
+            {
+                "id": 406624,
+                "title": "Foundations Of Clinical Medicine",
+                "vendor_guid": null,
+                "url": "/api/v1/courses/862539/outcome_groups/406624",
+                "subgroups_url": "/api/v1/courses/862539/outcome_groups/406624/subgroups",
+                "outcomes_url": "/api/v1/courses/862539/outcome_groups/406624/outcomes",
+                "can_edit": true,
+                "import_url": "/api/v1/courses/862539/outcome_groups/406624/import",
+                "context_id": 862539,
+                "context_type": "Course",
+                "description": null
+            }
+        ]
+    }
+}
