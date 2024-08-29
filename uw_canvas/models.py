@@ -929,11 +929,13 @@ class Outcome(models.Model):
         self.calculation_method = data['calculation_method']
         self.assessed = data['assessed']
 
-        for rating in data['ratings']:
-            self.ratings.append(Rating(data=rating))
+        if 'ratings' in data and data['ratings']:
+            for rating in data['ratings']:
+                self.ratings.append(Rating(data=rating))
 
-        for alignment in data['alignments']:
-            self.alignments.append(Alignment(data=alignment))
+        if 'alignments' in data and data['alignments']:
+            for alignment in data['alignments']:
+                self.alignments.append(Alignment(data=alignment))
 
 
 class OutcomeResult(models.Model):
@@ -1010,3 +1012,82 @@ class OutcomeGroup(models.Model):
             self.has_parent = True
         else:
             self.has_parent = False
+
+
+class Rubric(models.Model):
+    rubric_id = models.IntegerField()
+    points_possible = models.DecimalField()
+    title = models.CharField()
+    reusable = models.BooleanField()
+    public = models.BooleanField()
+    read_only = models.BooleanField()
+    free_form_criterion_comments = models.BooleanField()
+    hide_score_total = models.BooleanField()
+    
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Rubric, self).__init__(*args, **kwargs)
+
+        self.rubric_id = data['id']
+        self.points_possible = data['points_possible']
+        self.title = data['title']
+        self.reusable = data['reusable']
+        self.public = data['public']
+        self.read_only = data['read_only']
+        self.free_form_criterion_comments = data['free_form_criterion_comments']
+        self.hide_score_total = data['hide_score_total']
+
+        self.criteria = []
+        if 'data' in data and 'data' is not None:
+            for criterion in data['data']:
+                self.criteria.append(Criterion(data=criterion))
+
+
+class Criterion(models.Model):   
+    description = models.CharField()
+    points = models.DecimalField()
+    criterion_id = models.CharField()
+    criterion_use_range = models.BooleanField()
+    long_description = models.CharField()
+    learning_outcome_id = models.IntegerField()
+    mastery_points = models.DecimalField()
+    ignore_for_scoring = models.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Criterion, self).__init__(*args, **kwargs)
+        
+        self.description = data['description']
+        self.points = data['points']
+        self.criterion_id = data['id']
+        self.criterion_use_range = data['criterion_use_range']
+        self.long_description = data.get('long_description','')
+        self.learning_outcome_id = data.get('learning_outcome_id', 0)
+        self.mastery_points = data.get('mastery_points', 0)
+        self.ignore_for_scoring = data.get('ignore_for_scoring', False)
+
+        self.ratings = []
+        if 'ratings' in data and 'ratings' is not None:
+            for rating in data['ratings']:
+                self.ratings.append(Rating(data=rating))
+                 
+
+class Rating(models.Model):
+    description = models.CharField()
+    long_description = models.CharField()
+    points = models.DecimalField()
+    criterion_id = models.CharField()
+    rating_id = models.CharField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Rating, self).__init__(*args, **kwargs)
+
+        self.description = data.get('description','')
+        self.long_description = data.get('long_description', '')
+        self.points = data.get('points',0)
+        self.criterion_id = data.get('criterion_id','')
+        self.rating_id = data.get('id','')
