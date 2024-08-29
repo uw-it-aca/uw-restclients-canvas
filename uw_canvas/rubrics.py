@@ -1,3 +1,6 @@
+# Copyright 2024 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from uw_canvas import Canvas
 from uw_canvas.courses import COURSES_API
 from uw_canvas.models import Rubric
