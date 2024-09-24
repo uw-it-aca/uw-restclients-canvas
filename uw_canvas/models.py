@@ -14,15 +14,15 @@ class CanvasAccount(models.Model):
     root_account_id = models.CharField(max_length=30)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasAccount, self).__init__(*args, **kwargs)
 
-        self.account_id = data["id"]
-        self.sis_account_id = data.get("sis_account_id")
-        self.name = data["name"]
-        self.parent_account_id = data["parent_account_id"]
-        self.root_account_id = data["root_account_id"]
+        self.account_id = data['id']
+        self.sis_account_id = data.get('sis_account_id')
+        self.name = data['name']
+        self.parent_account_id = data['parent_account_id']
+        self.root_account_id = data['root_account_id']
 
 
 class CanvasSSOSettings(models.Model):
@@ -32,7 +32,7 @@ class CanvasSSOSettings(models.Model):
     unknown_user_url = models.CharField(max_length=500, null=True)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasSSOSettings, self).__init__(*args, **kwargs)
 
@@ -60,25 +60,25 @@ class CanvasRole(models.Model):
     def __init__(self, *args, **kwargs):
         self.permissions = {}
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasRole, self).__init__(*args, **kwargs)
 
-        self.role_id = data["id"]
-        self.label = data["label"]
-        self.base_role_type = data["base_role_type"]
-        self.workflow_state = data["workflow_state"]
-        self.permissions = data.get("permissions", {})
-        if "account" in data:
-            self.account = CanvasAccount(data=data["account"])
+        self.role_id = data['id']
+        self.label = data['label']
+        self.base_role_type = data['base_role_type']
+        self.workflow_state = data['workflow_state']
+        self.permissions = data.get('permissions', {})
+        if 'account' in data:
+            self.account = CanvasAccount(data=data['account'])
 
     def json_data(self):
         return {
-            "id": self.role_id,
-            "label": self.label,
-            "base_role_type": self.base_role_type,
-            "workflow_state": self.workflow_state,
-            "permissions": self.permissions,
+            'id': self.role_id,
+            'label': self.label,
+            'base_role_type': self.base_role_type,
+            'workflow_state': self.workflow_state,
+            'permissions': self.permissions,
         }
 
 
@@ -91,7 +91,7 @@ class CanvasTerm(models.Model):
     end_at = models.DateTimeField(null=True)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasTerm, self).__init__(*args, **kwargs)
 
@@ -108,12 +108,12 @@ class CanvasTerm(models.Model):
 
 class CanvasCourse(models.Model):
     RE_COURSE_SIS_ID = re.compile(
-        r"^\d{4}-"                           # year
-        r"(?:winter|spring|summer|autumn)-"  # quarter
-        r"[\w& ]+-"                          # curriculum
-        r"\d{3}-"                            # course number
-        r"[A-Z][A-Z0-9]?"                    # section id
-        r"(?:-[A-F0-9]{32})?$",              # ind. study instructor regid
+        r'^\d{4}-'                           # year
+        r'(?:winter|spring|summer|autumn)-'  # quarter
+        r'[\w& ]+-'                          # curriculum
+        r'\d{3}-'                            # course number
+        r'[A-Z][A-Z0-9]?'                    # section id
+        r'(?:-[A-F0-9]{32})?$',              # ind. study instructor regid
         re.VERBOSE)
 
     course_id = models.IntegerField()
@@ -134,35 +134,35 @@ class CanvasCourse(models.Model):
     def __init__(self, *args, **kwargs):
         self.students = []
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasCourse, self).__init__(*args, **kwargs)
 
-        self.course_id = data["id"]
-        self.sis_course_id = data.get("sis_course_id")
-        self.account_id = data["account_id"]
-        self.code = data["course_code"]
-        self.name = data["name"]
-        self.workflow_state = data["workflow_state"]
-        self.is_public = data["is_public"]
-        self.is_public_to_auth_users = data["is_public_to_auth_users"]
-        self.public_syllabus = data["public_syllabus"]
-        self.grading_standard_id = data.get("grading_standard_id")
+        self.course_id = data['id']
+        self.sis_course_id = data.get('sis_course_id')
+        self.account_id = data['account_id']
+        self.code = data['course_code']
+        self.name = data['name']
+        self.workflow_state = data['workflow_state']
+        self.is_public = data['is_public']
+        self.is_public_to_auth_users = data['is_public_to_auth_users']
+        self.public_syllabus = data['public_syllabus']
+        self.grading_standard_id = data.get('grading_standard_id')
         if 'created_at' in data and data['created_at']:
             self.created_at = dateutil.parser.parse(data['created_at'])
 
-        course_url = data["calendar"]["ics"]
-        course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
-        self.course_url = "{}courses/{}".format(course_url, data["id"])
+        course_url = data['calendar']['ics']
+        course_url = re.sub(r'(.*?[a-z]/).*', r'\1', course_url)
+        self.course_url = '{}courses/{}'.format(course_url, data['id'])
 
-        if "term" in data:
-            self.term = CanvasTerm(data=data["term"])
+        if 'term' in data:
+            self.term = CanvasTerm(data=data['term'])
 
-        if "syllabus_body" in data:
-            self.syllabus_body = data["syllabus_body"]
+        if 'syllabus_body' in data:
+            self.syllabus_body = data['syllabus_body']
 
     def is_unpublished(self):
-        return self.workflow_state.lower() == "unpublished"
+        return self.workflow_state.lower() == 'unpublished'
 
     def sws_course_id(self):
         if not self.is_academic_sis_id():
@@ -200,11 +200,11 @@ class CanvasCourse(models.Model):
 
 class CanvasSection(models.Model):
     RE_SECTION_SIS_ID = re.compile(
-        r"^\d{4}-"                                      # year
-        r"(?:winter|spring|summer|autumn)-"             # quarter
-        r"[\w& ]+-"                                     # curriculum
-        r"\d{3}-"                                       # course number
-        r"[A-Z](?:--|[A-Z0-9](--)?|-[A-F0-9]{32}--)$",  # section id|regid
+        r'^\d{4}-'                                      # year
+        r'(?:winter|spring|summer|autumn)-'             # quarter
+        r'[\w& ]+-'                                     # curriculum
+        r'\d{3}-'                                       # course number
+        r'[A-Z](?:--|[A-Z0-9](--)?|-[A-F0-9]{32}--)$',  # section id|regid
         re.VERBOSE)
 
     section_id = models.IntegerField()
@@ -216,17 +216,17 @@ class CanvasSection(models.Model):
     def __init__(self, *args, **kwargs):
         self.students = []
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasSection, self).__init__(*args, **kwargs)
 
-        self.section_id = data["id"]
-        self.sis_section_id = data.get("sis_section_id")
-        self.name = data["name"]
-        self.course_id = data["course_id"]
-        self.nonxlist_course_id = data.get("nonxlist_course_id")
+        self.section_id = data['id']
+        self.sis_section_id = data.get('sis_section_id')
+        self.name = data['name']
+        self.course_id = data['course_id']
+        self.nonxlist_course_id = data.get('nonxlist_course_id')
 
-        for student_data in data.get("students", []):
+        for student_data in data.get('students', []):
             self.students.append(CanvasUser(data=student_data))
 
     def sws_section_id(self):
@@ -266,33 +266,33 @@ class CanvasSection(models.Model):
 
 
 class CanvasEnrollment(models.Model):
-    STUDENT = "StudentEnrollment"
-    TEACHER = "TeacherEnrollment"
-    TA = "TaEnrollment"
-    OBSERVER = "ObserverEnrollment"
-    DESIGNER = "DesignerEnrollment"
-    GUEST_TEACHER = "Guest Teacher"
-    LIBRARIAN = "Librarian"
-    OTHER_FACULTY = "Other Faculty"
-    PROGRAM_STAFF = "Program Staff"
+    STUDENT = 'StudentEnrollment'
+    TEACHER = 'TeacherEnrollment'
+    TA = 'TaEnrollment'
+    OBSERVER = 'ObserverEnrollment'
+    DESIGNER = 'DesignerEnrollment'
+    GUEST_TEACHER = 'Guest Teacher'
+    LIBRARIAN = 'Librarian'
+    OTHER_FACULTY = 'Other Faculty'
+    PROGRAM_STAFF = 'Program Staff'
 
     ROLE_CHOICES = (
-        (STUDENT, "Student"),
-        (TEACHER, "Teacher"),
-        (TA, "TA"),
-        (OBSERVER, "Observer"),
-        (DESIGNER, "Designer"),
+        (STUDENT, 'Student'),
+        (TEACHER, 'Teacher'),
+        (TA, 'TA'),
+        (OBSERVER, 'Observer'),
+        (DESIGNER, 'Designer'),
     )
 
     CUSTOM_ROLES = [GUEST_TEACHER, LIBRARIAN, OTHER_FACULTY, PROGRAM_STAFF]
 
-    STATUS_ACTIVE = "active"
-    STATUS_INVITED = "invited"
-    STATUS_PENDING = "creation_pending"
-    STATUS_DELETED = "deleted"
-    STATUS_REJECTED = "rejected"
-    STATUS_COMPLETED = "completed"
-    STATUS_INACTIVE = "inactive"
+    STATUS_ACTIVE = 'active'
+    STATUS_INVITED = 'invited'
+    STATUS_PENDING = 'creation_pending'
+    STATUS_DELETED = 'deleted'
+    STATUS_REJECTED = 'rejected'
+    STATUS_COMPLETED = 'completed'
+    STATUS_INACTIVE = 'inactive'
 
     STATUS_CHOICES = (
         (STATUS_ACTIVE, STATUS_ACTIVE),
@@ -341,51 +341,51 @@ class CanvasEnrollment(models.Model):
     limit_privileges_to_course_section = models.NullBooleanField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasEnrollment, self).__init__(*args, **kwargs)
 
         self.course = None
-        self.user_id = data["user_id"]
-        self.course_id = data["course_id"]
-        self.section_id = data["course_section_id"]
-        self.sis_course_id = data.get("sis_course_id")
-        self.sis_section_id = data.get("sis_section_id")
-        self.sis_user_id = data.get("sis_user_id")
-        self.role = data["role"]
-        self.base_role_type = data["type"]
-        self.status = data["enrollment_state"]
-        self.html_url = data["html_url"]
+        self.user_id = data['user_id']
+        self.course_id = data['course_id']
+        self.section_id = data['course_section_id']
+        self.sis_course_id = data.get('sis_course_id')
+        self.sis_section_id = data.get('sis_section_id')
+        self.sis_user_id = data.get('sis_user_id')
+        self.role = data['role']
+        self.base_role_type = data['type']
+        self.status = data['enrollment_state']
+        self.html_url = data['html_url']
         self.course_url = self.get_course_url(self.html_url)
-        if data.get("created_at"):
-            self.created_at = dateutil.parser.parse(data["created_at"])
+        if data.get('created_at'):
+            self.created_at = dateutil.parser.parse(data['created_at'])
 
-        self.total_activity_time = data["total_activity_time"]
+        self.total_activity_time = data['total_activity_time']
         self.limit_privileges_to_course_section = data.get(
-            "limit_privileges_to_course_section", False)
-        if data["last_activity_at"] is not None:
+            'limit_privileges_to_course_section', False)
+        if data['last_activity_at'] is not None:
             self.last_activity_at = dateutil.parser.parse(
-                data["last_activity_at"])
+                data['last_activity_at'])
 
-        if "user" in data:
-            user_data = data["user"]
-            self.name = user_data.get("name")
-            self.sortable_name = user_data.get("sortable_name")
-            self.login_id = user_data.get("login_id")
+        if 'user' in data:
+            user_data = data['user']
+            self.name = user_data.get('name')
+            self.sortable_name = user_data.get('sortable_name')
+            self.login_id = user_data.get('login_id')
 
-        if "grades" in data:
-            gr_data = data["grades"]
-            self.current_score = gr_data.get("current_score")
-            self.current_grade = gr_data.get("current_grade")
-            self.final_score = gr_data.get("final_score")
-            self.final_grade = gr_data.get("final_grade")
-            self.unposted_current_score = gr_data.get("unposted_current_score")
-            self.unposted_current_grade = gr_data.get("unposted_current_grade")
-            self.unposted_final_score = gr_data.get("unposted_final_score")
-            self.unposted_final_grade = gr_data.get("unposted_final_grade")
-            self.override_score = gr_data.get("override_score")
-            self.override_grade = gr_data.get("override_grade")
-            self.grade_html_url = gr_data.get("html_url")
+        if 'grades' in data:
+            gr_data = data['grades']
+            self.current_score = gr_data.get('current_score')
+            self.current_grade = gr_data.get('current_grade')
+            self.final_score = gr_data.get('final_score')
+            self.final_grade = gr_data.get('final_grade')
+            self.unposted_current_score = gr_data.get('unposted_current_score')
+            self.unposted_current_grade = gr_data.get('unposted_current_grade')
+            self.unposted_final_score = gr_data.get('unposted_final_score')
+            self.unposted_final_grade = gr_data.get('unposted_final_grade')
+            self.override_score = gr_data.get('override_score')
+            self.override_grade = gr_data.get('override_grade')
+            self.grade_html_url = gr_data.get('html_url')
 
     def get_course_url(self, html_url):
         return re.sub(r'/users/\d+$', '', html_url)
@@ -406,26 +406,26 @@ class CanvasEnrollment(models.Model):
             return role
 
     def json_data(self):
-        return {"user_id": self.user_id,
-                "sis_user_id": self.sis_user_id,
-                "course_id": self.course_id,
-                "course_url": self.course_url,
-                "section_id": self.section_id,
-                "login_id": self.login_id,
-                "sis_user_id": self.sis_user_id,
-                "role": self.role,
-                "base_role_type": self.base_role_type,
-                "status": self.status,
-                "current_score": self.current_score,
-                "current_grade": self.current_grade,
-                "final_score": self.final_score,
-                "final_grade": self.final_grade,
-                "unposted_current_score": self.unposted_current_score,
-                "unposted_current_grade": self.unposted_current_grade,
-                "unposted_final_score": self.unposted_final_score,
-                "unposted_final_grade": self.unposted_final_grade,
-                "override_score": self.override_score,
-                "override_grade": self.override_grade}
+        return {'user_id': self.user_id,
+                'sis_user_id': self.sis_user_id,
+                'course_id': self.course_id,
+                'course_url': self.course_url,
+                'section_id': self.section_id,
+                'login_id': self.login_id,
+                'sis_user_id': self.sis_user_id,
+                'role': self.role,
+                'base_role_type': self.base_role_type,
+                'status': self.status,
+                'current_score': self.current_score,
+                'current_grade': self.current_grade,
+                'final_score': self.final_score,
+                'final_grade': self.final_grade,
+                'unposted_current_score': self.unposted_current_score,
+                'unposted_current_grade': self.unposted_current_grade,
+                'unposted_final_score': self.unposted_final_score,
+                'unposted_final_grade': self.unposted_final_grade,
+                'override_score': self.override_score,
+                'override_grade': self.override_grade}
 
 
 class Attachment(models.Model):
@@ -437,16 +437,16 @@ class Attachment(models.Model):
     url = models.CharField(max_length=500)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Attachment, self).__init__(*args, **kwargs)
 
-        self.attachment_id = data["id"]
-        self.filename = data["filename"]
-        self.display_name = data["display_name"]
-        self.content_type = data["content-type"]
-        self.size = data["size"]
-        self.url = data["url"]
+        self.attachment_id = data['id']
+        self.filename = data['filename']
+        self.display_name = data['display_name']
+        self.content_type = data['content-type']
+        self.size = data['size']
+        self.url = data['url']
 
 
 class Report(models.Model):
@@ -459,31 +459,31 @@ class Report(models.Model):
     attachment = models.ForeignKey(Attachment, null=True)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Report, self).__init__(*args, **kwargs)
 
-        self.account_id = data["account_id"]
-        self.report_id = data["id"]
-        self.type = data["report"]
-        self.url = data["file_url"]
-        self.status = data["status"]
-        self.progress = data["progress"]
-        self.parameters = data["parameters"]
+        self.account_id = data['account_id']
+        self.report_id = data['id']
+        self.type = data['report']
+        self.url = data['file_url']
+        self.status = data['status']
+        self.progress = data['progress']
+        self.parameters = data['parameters']
 
-        if "attachment" in data:
-            self.attachment = Attachment(data=data["attachment"])
+        if 'attachment' in data:
+            self.attachment = Attachment(data=data['attachment'])
 
 
 class ReportType(models.Model):
-    PROVISIONING = "provisioning_csv"
-    SIS_EXPORT = "sis_export_csv"
-    UNUSED_COURSES = "unused_courses_csv"
+    PROVISIONING = 'provisioning_csv'
+    SIS_EXPORT = 'sis_export_csv'
+    UNUSED_COURSES = 'unused_courses_csv'
 
     NAME_CHOICES = (
-        (PROVISIONING, "Provisioning"),
-        (SIS_EXPORT, "SIS Export"),
-        (UNUSED_COURSES, "Unused Courses")
+        (PROVISIONING, 'Provisioning'),
+        (SIS_EXPORT, 'SIS Export'),
+        (UNUSED_COURSES, 'Unused Courses')
     )
 
     name = models.CharField(max_length=500, choices=NAME_CHOICES)
@@ -493,35 +493,35 @@ class ReportType(models.Model):
         self.parameters = {}
         self.last_run = None
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(ReportType, self).__init__(*args, **kwargs)
 
-        self.name = data["report"]
-        self.title = data["title"]
-        self.parameters = data["parameters"]
-        if "last_run" in data and data["last_run"] is not None:
-            data["last_run"]["account_id"] = kwargs.get("account_id")
-            self.last_run = Report(data=data["last_run"])
+        self.name = data['report']
+        self.title = data['title']
+        self.parameters = data['parameters']
+        if 'last_run' in data and data['last_run'] is not None:
+            data['last_run']['account_id'] = kwargs.get('account_id')
+            self.last_run = Report(data=data['last_run'])
 
 
 class SISImport(models.Model):
-    CSV_IMPORT_TYPE = "instructure_csv"
+    CSV_IMPORT_TYPE = 'instructure_csv'
 
     import_id = models.IntegerField()
     workflow_state = models.CharField(max_length=100)
     progress = models.CharField(max_length=3)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(SISImport, self).__init__(*args, **kwargs)
 
-        self.import_id = data["id"]
-        self.workflow_state = data["workflow_state"]
-        self.progress = data.get("progress", "0")
-        self.processing_warnings = data.get("processing_warnings", [])
-        self.processing_errors = data.get("processing_errors", [])
+        self.import_id = data['id']
+        self.workflow_state = data['workflow_state']
+        self.progress = data.get('progress', '0')
+        self.processing_warnings = data.get('processing_warnings', [])
+        self.processing_errors = data.get('processing_errors', [])
 
 
 class CanvasUser(models.Model):
@@ -541,56 +541,56 @@ class CanvasUser(models.Model):
     def __init__(self, *args, **kwargs):
         self.enrollments = []
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasUser, self).__init__(*args, **kwargs)
 
-        self.user_id = data["id"]
-        self.name = data["name"]
-        self.short_name = data.get("short_name")
-        self.sortable_name = data.get("sortable_name")
-        self.login_id = data.get("login_id")
-        self.sis_user_id = data.get("sis_user_id")
-        self.email = data.get("email")
-        self.time_zone = data.get("time_zone")
-        self.locale = data.get("locale")
-        self.avatar_url = data.get("avatar_url")
-        self.bio = data.get("bio")
-        if "last_login" in data and data["last_login"] is not None:
-            self.last_login = dateutil.parser.parse(data["last_login"])
-        for enr_datum in data.get("enrollments", []):
+        self.user_id = data['id']
+        self.name = data['name']
+        self.short_name = data.get('short_name')
+        self.sortable_name = data.get('sortable_name')
+        self.login_id = data.get('login_id')
+        self.sis_user_id = data.get('sis_user_id')
+        self.email = data.get('email')
+        self.time_zone = data.get('time_zone')
+        self.locale = data.get('locale')
+        self.avatar_url = data.get('avatar_url')
+        self.bio = data.get('bio')
+        if 'last_login' in data and data['last_login'] is not None:
+            self.last_login = dateutil.parser.parse(data['last_login'])
+        for enr_datum in data.get('enrollments', []):
             self.enrollments.append(CanvasEnrollment(data=enr_datum))
 
     def json_data(self):
         return {
-            "id": self.user_id,
-            "name": self.name,
-            "sortable_name": self.sortable_name,
-            "short_name": self.short_name,
-            "sis_user_id": self.sis_user_id,
-            "login_id": self.login_id,
-            "avatar_url": self.avatar_url,
-            "enrollments": self.enrollments,
-            "email": self.email,
-            "locale": self.locale,
-            "last_login": self.last_login.isoformat() if (
+            'id': self.user_id,
+            'name': self.name,
+            'sortable_name': self.sortable_name,
+            'short_name': self.short_name,
+            'sis_user_id': self.sis_user_id,
+            'login_id': self.login_id,
+            'avatar_url': self.avatar_url,
+            'enrollments': self.enrollments,
+            'email': self.email,
+            'locale': self.locale,
+            'last_login': self.last_login.isoformat() if (
                 self.last_login is not None) else None,
-            "time_zone": self.time_zone,
-            "bio": self.bio,
+            'time_zone': self.time_zone,
+            'bio': self.bio,
         }
 
     def post_data(self):
-        return {"user": {"name": self.name,
-                         "short_name": self.short_name,
-                         "sortable_name": self.sortable_name,
-                         "time_zone": self.time_zone,
-                         "locale": self.locale},
-                "pseudonym": {"unique_id": self.login_id,
-                              "sis_user_id": self.sis_user_id,
-                              "send_confirmation": False},
-                "communication_channel": {"type": "email",
-                                          "address": self.email,
-                                          "skip_confirmation": True}}
+        return {'user': {'name': self.name,
+                         'short_name': self.short_name,
+                         'sortable_name': self.sortable_name,
+                         'time_zone': self.time_zone,
+                         'locale': self.locale},
+                'pseudonym': {'unique_id': self.login_id,
+                              'sis_user_id': self.sis_user_id,
+                              'send_confirmation': False},
+                'communication_channel': {'type': 'email',
+                                          'address': self.email,
+                                          'skip_confirmation': True}}
 
 
 class Login(models.Model):
@@ -601,19 +601,19 @@ class Login(models.Model):
     user_id = models.IntegerField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Login, self).__init__(*args, **kwargs)
 
-        self.login_id = data["id"]
-        self.account_id = data["account_id"]
-        self.sis_user_id = data.get("sis_user_id")
-        self.unique_id = data["unique_id"]
-        self.user_id = data["user_id"]
+        self.login_id = data['id']
+        self.account_id = data['account_id']
+        self.sis_user_id = data.get('sis_user_id')
+        self.unique_id = data['unique_id']
+        self.user_id = data['user_id']
 
     def put_data(self):
-        return {"login": {"unique_id": self.unique_id,
-                          "sis_user_id": self.sis_user_id}}
+        return {'login': {'unique_id': self.unique_id,
+                          'sis_user_id': self.sis_user_id}}
 
 
 class CanvasAdmin(models.Model):
@@ -622,13 +622,13 @@ class CanvasAdmin(models.Model):
     user = models.ForeignKey(CanvasUser)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(CanvasAdmin, self).__init__(*args, **kwargs)
 
-        self.admin_id = data["id"]
-        self.role = data["role"]
-        self.user = CanvasUser(data=data["user"])
+        self.admin_id = data['id']
+        self.role = data['role']
+        self.user = CanvasUser(data=data['user'])
 
 
 class Submission(models.Model):
@@ -653,35 +653,35 @@ class Submission(models.Model):
     def __init__(self, *args, **kwargs):
         self.attachments = []
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Submission, self).__init__(*args, **kwargs)
 
         self.submission_id = data['id']
         self.body = data['body']
         self.attempt = data['attempt']
-        if "submitted_at" in data and data["submitted_at"] is not None:
-            self.submitted_at = dateutil.parser.parse(data["submitted_at"])
-        self.assignment_id = data["assignment_id"]
-        self.workflow_state = data["workflow_state"]
-        self.preview_url = data["preview_url"]
-        self.late = data["late"]
-        self.grade = data["grade"]
-        self.score = data["score"]
+        if 'submitted_at' in data and data['submitted_at'] is not None:
+            self.submitted_at = dateutil.parser.parse(data['submitted_at'])
+        self.assignment_id = data['assignment_id']
+        self.workflow_state = data['workflow_state']
+        self.preview_url = data['preview_url']
+        self.late = data['late']
+        self.grade = data['grade']
+        self.score = data['score']
         self.grade_matches_current_submission = data.get(
-            "grade_matches_current_submission")
-        self.url = data["url"]
-        self.grader_id = data["grader_id"]
-        if "graded_at" in data and data["graded_at"] is not None:
-            self.graded_at = dateutil.parser.parse(data["graded_at"])
-        if "posted_at" in data and data["posted_at"] is not None:
-            self.posted_at = dateutil.parser.parse(data["posted_at"])
-        self.submission_type = data["submission_type"]
+            'grade_matches_current_submission')
+        self.url = data['url']
+        self.grader_id = data['grader_id']
+        if 'graded_at' in data and data['graded_at'] is not None:
+            self.graded_at = dateutil.parser.parse(data['graded_at'])
+        if 'posted_at' in data and data['posted_at'] is not None:
+            self.posted_at = dateutil.parser.parse(data['posted_at'])
+        self.submission_type = data['submission_type']
 
         # assignment_visible is not always present
-        self.assignment_visible = data.get("assignment_visible")
+        self.assignment_visible = data.get('assignment_visible')
 
-        for attachment_data in data.get("attachments", []):
+        for attachment_data in data.get('attachments', []):
             self.attachments.append(Attachment(data=attachment_data))
 
 
@@ -706,7 +706,7 @@ class Assignment(models.Model):
         self.submission_types = []
         self.external_tool_tag_attributes = {}
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Assignment, self).__init__(*args, **kwargs)
 
@@ -732,22 +732,22 @@ class Assignment(models.Model):
 
     def json_data(self):
         data = {
-            "id": self.assignment_id,
-            "course_id": self.course_id,
-            "integration_id": self.integration_id,
-            "integration_data": self.integration_data,
-            "points_possible": self.points_possible,
-            "grading_type": self.grading_type,
-            "grading_standard_id": self.grading_standard_id,
-            "position": self.position,
-            "name": self.name,
-            "published": self.published,
-            "html_url": self.html_url,
-            "submission_types": self.submission_types,
+            'id': self.assignment_id,
+            'course_id': self.course_id,
+            'integration_id': self.integration_id,
+            'integration_data': self.integration_data,
+            'points_possible': self.points_possible,
+            'grading_type': self.grading_type,
+            'grading_standard_id': self.grading_standard_id,
+            'position': self.position,
+            'name': self.name,
+            'published': self.published,
+            'html_url': self.html_url,
+            'submission_types': self.submission_types,
         }
 
-        if "external_tool" in self.submission_types:
-            data["external_tool_tag_attributes"] = (
+        if 'external_tool' in self.submission_types:
+            data['external_tool_tag_attributes'] = (
                 self.external_tool_tag_attributes)
 
         return data
@@ -761,22 +761,22 @@ class Quiz(models.Model):
     published = models.NullBooleanField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Quiz, self).__init__(*args, **kwargs)
 
-        self.quiz_id = data["id"]
-        self.title = data["title"]
-        self.html_url = data["html_url"]
-        self.published = data["published"]
-        self.points_possible = data["points_possible"]
-        if "due_at" in data and data["due_at"] is not None:
-            self.due_at = dateutil.parser.parse(data["due_at"])
+        self.quiz_id = data['id']
+        self.title = data['title']
+        self.html_url = data['html_url']
+        self.published = data['published']
+        self.points_possible = data['points_possible']
+        if 'due_at' in data and data['due_at'] is not None:
+            self.due_at = dateutil.parser.parse(data['due_at'])
 
 
 class GradingStandard(models.Model):
-    COURSE_CONTEXT = "Course"
-    ACCOUNT_CONTEXT = "Account"
+    COURSE_CONTEXT = 'Course'
+    ACCOUNT_CONTEXT = 'Account'
 
     CONTEXT_CHOICES = (
         (COURSE_CONTEXT, COURSE_CONTEXT),
@@ -790,23 +790,23 @@ class GradingStandard(models.Model):
     grading_scheme = models.TextField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(GradingStandard, self).__init__(*args, **kwargs)
 
-        self.grading_standard_id = data["id"]
-        self.title = data["title"]
-        self.context_type = data["context_type"]
-        self.context_id = data["context_id"]
-        self.grading_scheme = data["grading_scheme"]
+        self.grading_standard_id = data['id']
+        self.title = data['title']
+        self.context_type = data['context_type']
+        self.context_id = data['context_id']
+        self.grading_scheme = data['grading_scheme']
 
     def json_data(self):
         return {
-            "id": self.grading_standard_id,
-            "title": self.title,
-            "context_type": self.context_type,
-            "context_id": self.context_id,
-            "grading_scheme": self.grading_scheme,
+            'id': self.grading_standard_id,
+            'title': self.title,
+            'context_type': self.context_type,
+            'context_id': self.context_id,
+            'grading_scheme': self.grading_scheme,
         }
 
 
@@ -835,7 +835,7 @@ class Collaboration(models.Model):
     title = models.CharField(max_length=120, null=True)
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Assignment, self).__init__(*args, **kwargs)
 
@@ -857,13 +857,13 @@ class Alignment(models.Model):
     alignment_id = models.IntegerField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Alignment, self).__init__(*args, **kwargs)
 
         # The data looks like this: 'assignment_9130007'.  Split into the
         # alignment type ('assignment' in this example) and ID.
-        match = re.match(r"([a-zA-Z]+)_([0-9]+)", data)
+        match = re.match(r'([a-zA-Z]+)_([0-9]+)', data)
         if match:
             alignment_type, alignment_id = match.groups()
         else:
@@ -879,7 +879,7 @@ class Rating(models.Model):
     points = models.IntegerField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Rating, self).__init__(*args, **kwargs)
 
@@ -908,7 +908,7 @@ class Outcome(models.Model):
         self.ratings = []
         self.alignments = []
 
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Outcome, self).__init__(*args, **kwargs)
 
@@ -952,28 +952,28 @@ class OutcomeResult(models.Model):
     assignment = models.CharField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(OutcomeResult, self).__init__(*args, **kwargs)
 
         self.result_id = data['id']
-        self.score = data["score"]
-        if ("submitted_or_assessed_at" in data and
-                data["submitted_or_assessed_at"] is not None):
+        self.score = data['score']
+        if ('submitted_or_assessed_at' in data and
+                data['submitted_or_assessed_at'] is not None):
             self.submitted_or_assessed_at = \
-                dateutil.parser.parse(data["submitted_or_assessed_at"])
-        self.percent = data["percent"]
-        self.mastery = data["mastery"]
-        self.possible = data["possible"]
-        self.hide_points = data["hide_points"]
-        self.hidden = data["hidden"]
+                dateutil.parser.parse(data['submitted_or_assessed_at'])
+        self.percent = data['percent']
+        self.mastery = data['mastery']
+        self.possible = data['possible']
+        self.hide_points = data['hide_points']
+        self.hidden = data['hidden']
 
-        if "links" in data:
-            links_data = data["links"]
-            self.user_id = links_data.get("user")
-            self.learning_outcome_id = links_data.get("learning_outcome")
-            self.alignment_id = links_data.get("alignment")
-            self.assignment = links_data.get("assignment")
+        if 'links' in data:
+            links_data = data['links']
+            self.user_id = links_data.get('user')
+            self.learning_outcome_id = links_data.get('learning_outcome')
+            self.alignment_id = links_data.get('alignment')
+            self.assignment = links_data.get('assignment')
 
 
 class OutcomeGroup(models.Model):
@@ -991,7 +991,7 @@ class OutcomeGroup(models.Model):
     has_parent = models.BooleanField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(OutcomeGroup, self).__init__(*args, **kwargs)
 
@@ -1024,7 +1024,7 @@ class Rubric(models.Model):
     hide_score_total = models.BooleanField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Rubric, self).__init__(*args, **kwargs)
 
@@ -1039,9 +1039,9 @@ class Rubric(models.Model):
         self.hide_score_total = data['hide_score_total']
 
         self.criteria = []
-        if 'data' in data and 'data' is not None:
-            for criterion in data['data']:
-                self.criteria.append(Criterion(data=criterion))
+        criteria = data.get('data', [])
+        for criterion in criteria:
+            self.criteria.append(Criterion(data=criterion))
 
 
 class Criterion(models.Model):
@@ -1055,7 +1055,7 @@ class Criterion(models.Model):
     ignore_for_scoring = models.BooleanField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Criterion, self).__init__(*args, **kwargs)
 
@@ -1069,9 +1069,9 @@ class Criterion(models.Model):
         self.ignore_for_scoring = data.get('ignore_for_scoring', False)
 
         self.ratings = []
-        if 'ratings' in data and 'ratings' is not None:
-            for rating in data['ratings']:
-                self.ratings.append(Rating(data=rating))
+        ratings = data.get('ratings', [])
+        for rating in ratings:
+            self.ratings.append(Rating(data=rating))
 
 
 class Rating(models.Model):
@@ -1082,7 +1082,7 @@ class Rating(models.Model):
     rating_id = models.CharField()
 
     def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.get('data')
         if data is None:
             return super(Rating, self).__init__(*args, **kwargs)
 
