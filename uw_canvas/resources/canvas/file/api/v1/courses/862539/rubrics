@@ -1,0 +1,121 @@
+[
+  {
+    "id": 7777771,
+    "context_id": 862539,
+    "context_type": "Course",
+    "data": [
+      {
+        "id": "_1234",
+        "description": "Subjective: Condition & interval events",
+        "long_description": "States the condition needing followup &amp; reports events since last visit: how the subject felt, changes and adherence, monitoring results, etc.",
+        "points": 0,
+        "mastery_points": null,
+        "ignore_for_scoring": null,
+        "title": "Subjective: Condition & interval events",
+        "criterion_use_range": null,
+        "ratings": [
+          {
+            "description": "Full Marks",
+            "long_description": null,
+            "id": "blank",
+            "criterion_id": "_1234",
+            "points": 0
+          },
+          {
+            "description": "No Marks",
+            "long_description": null,
+            "id": "blank_2",
+            "criterion_id": "_1234",
+            "points": 0
+          }
+        ]
+      },
+      {
+        "id": "_1235",
+        "description": "Subjective: ROI",
+        "long_description": "Includes ROI items - positive and negative - relevant to the condition.",
+        "points": 0,
+        "mastery_points": null,
+        "ignore_for_scoring": null,
+        "title": "Subjective: ROI",
+        "criterion_use_range": null,
+        "ratings": [
+          {
+            "description": "Full Marks",
+            "long_description": null,
+            "id": "_239",
+            "criterion_id": "_1235",
+            "points": 0
+          },
+          {
+            "description": "No Marks",
+            "long_description": null,
+            "id": "_1185",
+            "criterion_id": "_1235",
+            "points": 0
+          }
+        ]
+      },
+      {
+        "id": "_1236",
+        "description": "Objective: Focused exam and pertinent labs",
+        "long_description": "Problem focused exam ONLY of systems relevant to visit.  May be brief for management visits.",
+        "points": 0,
+        "mastery_points": null,
+        "ignore_for_scoring": null,
+        "title": "Objective: Focused exam and pertinent labs",
+        "criterion_use_range": null,
+        "ratings": [
+          {
+            "description": "Full Marks",
+            "long_description": null,
+            "id": "_3533",
+            "criterion_id": "_1236",
+            "points": 0
+          },
+          {
+            "description": "No Marks",
+            "long_description": null,
+            "id": "_9907",
+            "criterion_id": "_1236",
+            "points": 0
+          }
+        ]
+      },
+      {
+        "id": "_1237",
+        "description": "Assessment:",
+        "long_description": "Starts with a summary statement followed by an assessment of how well the condition is managed.  Notes any goals or barriers identified today.",
+        "points": 0,
+        "mastery_points": null,
+        "ignore_for_scoring": null,
+        "title": "Assessment:",
+        "criterion_use_range": null,
+        "ratings": [
+          {
+            "description": "Full Marks",
+            "long_description": null,
+            "id": "_9415",
+            "criterion_id": "_1237",
+            "points": 0
+          },
+          {
+            "description": "No Marks",
+            "long_description": null,
+            "id": "_2839",
+            "criterion_id": "_1237",
+            "points": 0
+          }
+        ]
+      }
+    ],
+    "points_possible": 0,
+    "title": "Test Rubric",
+    "reusable": false,
+    "public": false,
+    "read_only": false,
+    "free_form_criterion_comments": true,
+    "hide_score_total": false,
+    "rating_order": "descending"
+  }
+]
