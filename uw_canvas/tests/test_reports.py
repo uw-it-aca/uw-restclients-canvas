@@ -82,11 +82,11 @@ class CanvasTestReports(TestCase):
 
         # With a term_id
         canvas.create_course_provisioning_report('12345',
-                                                 term_id='2013-spring')
+                                                 term_id=4567)
         mock_post.assert_called_with(
             '/api/v1/accounts/12345/reports/provisioning_csv',
             {'parameters': {'courses': True,
-                            'enrollment_term_id': '2013-spring'}})
+                            'enrollment_term_id': '4567'}})
 
     @mock.patch.object(Reports, '_post_resource')
     def test_create_enrollments_provisioning_report(self, mock_post):
@@ -123,10 +123,10 @@ class CanvasTestReports(TestCase):
     @mock.patch.object(Reports, '_post_resource')
     def test_create_unused_courses_report(self, mock_post):
         canvas = Reports()
-        canvas.create_unused_courses_report('12345', term_id='2015-summer')
+        canvas.create_unused_courses_report('12345', term_id=1234)
         mock_post.assert_called_with(
             '/api/v1/accounts/12345/reports/unused_courses_csv',
-            {'parameters': {'enrollment_term_id': '2015-summer'}})
+            {'parameters': {'enrollment_term_id': '1234'}})
 
     def test_get_report_status(self):
         canvas = Reports()
