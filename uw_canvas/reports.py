@@ -61,7 +61,7 @@ class Reports(Canvas):
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.create
         """
         if term_id is not None:
-            params["enrollment_term_id"] = term_id
+            params["enrollment_term_id"] = str(term_id)
 
         url = ACCOUNTS_API.format(account_id) + "/reports/{}".format(
             report_type)
