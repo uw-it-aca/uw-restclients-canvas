@@ -993,7 +993,7 @@ class OutcomeGroup(models.Model):
     def __init__(self, *args, **kwargs):
         data = kwargs.get('data')
         if data is None:
-            return super(OutcomeGroup, self).__init__(*args, **kwargs)
+            return super().__init__(*args, **kwargs)
 
         self.outcome_group_id = data['id']
         self.title = data['title']
@@ -1026,7 +1026,7 @@ class Rubric(models.Model):
     def __init__(self, *args, **kwargs):
         data = kwargs.get('data')
         if data is None:
-            return super(Rubric, self).__init__(*args, **kwargs)
+            return super().__init__(*args, **kwargs)
 
         self.rubric_id = data['id']
         self.points_possible = data['points_possible']
@@ -1057,7 +1057,7 @@ class Criterion(models.Model):
     def __init__(self, *args, **kwargs):
         data = kwargs.get('data')
         if data is None:
-            return super(Criterion, self).__init__(*args, **kwargs)
+            return super().__init__(*args, **kwargs)
 
         self.description = data['description']
         self.points = data['points']
@@ -1084,10 +1084,84 @@ class Rating(models.Model):
     def __init__(self, *args, **kwargs):
         data = kwargs.get('data')
         if data is None:
-            return super(Rating, self).__init__(*args, **kwargs)
+            return super().__init__(*args, **kwargs)
 
         self.description = data.get('description', '')
         self.long_description = data.get('long_description', '')
         self.points = data.get('points', 0)
         self.criterion_id = data.get('criterion_id', '')
         self.rating_id = data.get('id', '')
+
+
+class MediaObject(models.Model):
+    can_add_captions = models.BooleanField()
+    user_entered_title = models.CharField()
+    title = models.CharField()
+    media_id = models.CharField()
+    media_type = models.CharField()
+
+    def __init__(self, *args, **kwargs):
+        self.media_tracks = []
+        self.media_sources = []
+
+        data = kwargs.get('data')
+        if data is None:
+            return super().__init__(*args, **kwargs)
+
+        self.can_add_captions = data.get('can_add_captions', False)
+        self.user_entered_title = data.get('user_entered_title', '')
+        self.title = data.get('title', '')
+        self.media_id = data.get('media_id', '')
+        self.media_type = data.get('media_type', '')
+        for track in data.get('media_tracks', []):
+            self.media_tracks.append(MediaTrack(data=track))
+        for source in data.get('media_sources', []):
+            self.media_sources.append(MediaSource(data=source))
+
+
+class MediaTrack(models.Model):
+    kind = models.CharField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    url = models.CharField()
+    id = models.IntegerField()
+    locale = models.CharField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get('data')
+        if data is None:
+            return super().__init__(*args, **kwargs)
+
+        self.kind = data.get('kind', '')
+        self.created_at = dateutil.parser.parse(data['created_at'])
+        self.updated_at = dateutil.parser.parse(data['updated_at'])
+        self.url = data.get('url', '')
+        self.id = data.get('id')
+        self.locale = data.get('locale', '')
+
+
+class MediaSource(models.Model):
+    height = models.CharField()
+    width = models.CharField()
+    content_type = models.CharField()
+    container_format = models.CharField()
+    url = models.CharField()
+    bitrate = models.CharField()
+    size = models.CharField()
+    is_original = models.CharField()
+    file_ext = models.CharField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get('data')
+        if data is None:
+            return super().__init__(*args, **kwargs)
+
+        self.height = data.get('height', '')
+        self.width = data.get('width', '')
+        self.content_type = data.get('content_type', '')
+        self.container_format = data.get('containerFormat', '')
+        self.url = data.get('url', '')
+        self.bitrate = data.get('bitrate', '')
+        self.size = data.get('size', '')
+        self.is_original = data.get('isOriginal', '')
+        self.file_ext = data.get('fileExt', '')

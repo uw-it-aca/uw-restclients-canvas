@@ -1,0 +1,45 @@
+[
+    {
+        "can_add_captions": true,
+        "user_entered_title": "User Entered Title",
+        "title": "Test Title",
+        "media_id": "m-JYmy6TLsHkxcrhgYmqa7XW1HCH3wEYc",
+        "media_type": "video",
+        "media_tracks": [{
+        "kind": "captions",
+        "created_at": "2012-09-27T16:46:50-06:00",
+        "updated_at": "2012-09-27T16:46:50-06:00",
+        "url": "https://canvas.uw.edu/media_objects/0_r949z9lk/media_tracks/1",
+        "id": 1,
+        "locale": "af"
+        }, {
+        "kind": "subtitles",
+        "created_at": "2012-09-27T20:29:17-06:00",
+        "updated_at": "2012-09-27T20:29:17-06:00",
+        "url": "https://canvas.uw.edu/media_objects/0_r949z9lk/media_tracks/14",
+        "id": 14,
+        "locale": "cs"
+        }],
+        "media_sources": [{
+        "height": "240",
+        "width": "336",
+        "content_type": "video/mp4",
+        "containerFormat": "isom",
+        "url": "http://example.com/p/100/sp/10000/download/entry_id/0_r949z9lk/flavor/0_xdp3qrpc/ks/MjUxNjY4MjlhMTkxN2VmNTA0OGRkZjY2ODNjMjgxNTkwYWE3NGMyNHwxMDA7MTAwOzEzNDkyNzU5MDY7MDsxMzQ5MTg5NTA2LjUxOTk7O2Rvd25sb2FkOjBfcjk0OXo5bGs7/relocate/download.mp4",
+        "bitrate": "382",
+        "size": "204",
+        "isOriginal": "0",
+        "fileExt": "mp4"
+        }, {
+        "height": "252",
+        "width": "336",
+        "content_type": "video/x-flv",
+        "containerFormat": "flash video",
+        "url": "http://example.com/p/100/sp/10000/download/entry_id/0_r949z9lk/flavor/0_0f2x4odx/ks/NmY2M2Q2MDdhMjBlMzA2ZmRhMWZjZjAxNWUyOTg0MzA5MDI5NGE4ZXwxMDA7MTAwOzEzNDkyNzU5MDY7MDsxMzQ5MTg5NTA2LjI5MDM7O2Rvd25sb2FkOjBfcjk0OXo5bGs7/relocate/download.flv",
+        "bitrate": "797",
+        "size": "347",
+        "isOriginal": "1",
+        "fileExt": "flv"
+        }]
+    }
+]
