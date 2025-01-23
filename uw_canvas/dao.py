@@ -15,11 +15,21 @@ import re
 
 
 class Canvas_DAO(DAO):
+    def __init__(self, *args, **kwargs):
+        self.canvas_api_host = kwargs.get("canvas_api_host")
+        super(Canvas_DAO, self).__init__()
+
     def service_name(self):
         return "canvas"
 
     def service_mock_paths(self):
         return [abspath(os.path.join(dirname(__file__), "resources"))]
+
+    def get_service_setting(self, key, default=None):
+        if key == "HOST" and self.canvas_api_host:
+            return self.canvas_api_host
+
+        return super(Canvas_DAO, self).get_service_setting(key, default)
 
     def _custom_headers(self, method, url, headers, body):
         bearer_key = self.get_service_setting("OAUTH_BEARER", "")
