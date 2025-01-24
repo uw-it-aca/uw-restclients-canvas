@@ -4,7 +4,7 @@
 
 from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
-from uw_canvas import Canvas
+from uw_canvas import Canvas, Canvas_DAO
 import mock
 
 
@@ -63,6 +63,9 @@ class CanvasTestCanvas(TestCase):
             canvas._params(params),
             '?per_page=100&search_term=19th%20Century%20Poets')
 
-    def test_api_host(self):
+    @mock.patch.object(Canvas_DAO, '__init__')
+    def test_api_host(self, mock_dao):
+        mock_dao.return_value = None
+
         canvas = Canvas(canvas_api_host='canvas.test.edu')
-        # TODO.. assert dao called with
+        mock_dao.assert_called_with(canvas_api_host='canvas.test.edu')
