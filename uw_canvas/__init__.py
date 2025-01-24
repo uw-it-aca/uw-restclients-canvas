@@ -14,10 +14,8 @@ import re
 from restclients_core.exceptions import DataFailureException
 from uw_canvas.dao import Canvas_DAO
 
-
 DEFAULT_PAGINATION = 0
 MASQUERADING_USER = None
-DAO = Canvas_DAO()
 
 
 def deprecation(message):
@@ -36,7 +34,10 @@ class Canvas(object):
     Canvas
     """
 
-    def __init__(self, per_page=DEFAULT_PAGINATION, as_user=MASQUERADING_USER):
+    def __init__(self,
+                 per_page=DEFAULT_PAGINATION,
+                 as_user=MASQUERADING_USER,
+                 canvas_api_host=None):
         """
         Prepares for paginated responses
         """
@@ -45,6 +46,7 @@ class Canvas(object):
         self._re_canvas_id = re.compile(r'^\d{2,12}$')
         self._canvas_account_id = getattr(
             settings, 'RESTCLIENTS_CANVAS_ACCOUNT_ID', None)
+        self._DAO = Canvas_DAO(canvas_api_host=canvas_api_host)
 
     def get_courses_for_regid(self, regid):
         deprecation("Use uw_canvas.courses.get_courses_for_regid")
@@ -119,7 +121,7 @@ class Canvas(object):
         """
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
-        response = DAO.getURL(url, headers)
+        response = self._DAO.getURL(url, headers)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -187,7 +189,7 @@ class Canvas(object):
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
         url = url + self._params(params)
-        response = DAO.putURL(url, headers, json.dumps(body))
+        response = self._DAO.putURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 201 or
                 response.status == 204):
@@ -205,7 +207,7 @@ class Canvas(object):
                    'Accept': 'application/json',
                    'Connection': 'keep-alive'}
         url = url + self._params(params)
-        response = DAO.postURL(url, headers, json.dumps(body))
+        response = self._DAO.postURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 204):
             raise DataFailureException(url, response.status, response.data)
@@ -220,7 +222,7 @@ class Canvas(object):
         headers = {'Accept': 'application/json',
                    'Connection': 'keep-alive'}
         url = url + self._params(params)
-        response = DAO.deleteURL(url, headers)
+        response = self._DAO.deleteURL(url, headers)
 
         if not (response.status == 200 or response.status == 204):
             raise DataFailureException(url, response.status, response.data)
