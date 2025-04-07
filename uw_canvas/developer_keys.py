@@ -9,11 +9,12 @@ from restclients_core.exceptions import DataFailureException
 
 DEVELOPER_KEY_API = "/api/v1/developer_keys/{}"
 
+
 class DeveloperKeys(Canvas):
     def get_developer_keys(self, params={}):
         """
         Return developer key data for the canvas account.
-        Note: the endpoint to list keys is different from the endpoint for 
+        Note: the endpoint to list keys is different from the endpoint for
         PUT/POST/DELETE operations. Both are documented in the Canvas API docs:
         https://canvas.instructure.com/doc/api/developer_keys.html
         """
