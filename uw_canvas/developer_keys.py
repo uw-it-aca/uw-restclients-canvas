@@ -7,18 +7,16 @@ from uw_canvas.accounts import ACCOUNTS_API
 from restclients_core.exceptions import DataFailureException
 
 
-DEVELOPER_KEY_API = "/api/lti/developer_keys/{}/tool_configuration"
+DEVELOPER_KEY_API = "/api/v1/developer_keys/{}"
 
 
 class DeveloperKeys(Canvas):
     def get_developer_keys(self, params={}):
         """
         Return developer key data for the canvas account.
-
-        At time of writing, this is an undocumented API endpoint, but
-        was referenced in the Canvas User Community discussion:
-        https://community.canvaslms.com/t5/Canvas-Developers-Group/
-          API-functions-to-manage-Developer-Keys/m-p/544282
+        Note: the endpoint to list keys is different from the endpoint for
+        PUT/POST/DELETE operations. Both are documented in the Canvas API docs:
+        https://canvas.instructure.com/doc/api/developer_keys.html
         """
         url = ACCOUNTS_API.format(self._canvas_account_id) + "/developer_keys"
 
@@ -30,7 +28,6 @@ class DeveloperKeys(Canvas):
             return developer_keys
         except DataFailureException as err:
             if err.status == 404:
-                # log that api may be no longer supported?
                 return []
 
             raise

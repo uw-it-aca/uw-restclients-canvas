@@ -45,5 +45,5 @@ class CanvasTestDeveloperKeys(TestCase):
         canvas = DeveloperKeys()
         canvas.update_developer_key("8675309", self.json_data)
         mock_update.assert_called_with(
-            '/api/lti/developer_keys/8675309/tool_configuration',
+            '/api/v1/developer_keys/8675309',
             body=self.json_data)
