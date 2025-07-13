@@ -17,7 +17,7 @@ import re
 class Canvas_DAO(DAO):
     def __init__(self, *args, **kwargs):
         self.canvas_api_host = kwargs.get("canvas_api_host")
-        super(Canvas_DAO, self).__init__()
+        super().__init__()
 
     def service_name(self):
         return "canvas"
@@ -29,7 +29,7 @@ class Canvas_DAO(DAO):
         if key == "HOST" and self.canvas_api_host:
             return self.canvas_api_host
 
-        return super(Canvas_DAO, self).get_service_setting(key, default)
+        return super().get_service_setting(key, default)
 
     def _custom_headers(self, method, url, headers, body):
         bearer_key = self.get_service_setting("OAUTH_BEARER", "")
@@ -62,8 +62,16 @@ class CanvasFileDownloadLiveDAO(LiveDAO):
         # Ensure file url matches the hostname in settings,
         # to avoid mixing Canvas prod/test/beta hosts
         host = self.dao.get_service_setting("HOST")
-        url = re.sub(r'^https://[^/]+', host, url)
+        url = re.sub(r"^https://[^/]+", host, url)
         return url
+
+    def _get_retry(self):
+        return Retry(
+            total=int(self.dao.get_service_setting("FILE_RETRY", 1)),
+            connect=int(self.dao.get_service_setting("FILE_CONNECT", 0)),
+            read=int(self.dao.get_service_setting("FILE_READ", 0)),
+            redirect=int(self.dao.get_service_setting("FILE_REDIRECT", 1))
+        )
 
     def load(self, method, url, headers, body):
         url = self._fix_url_host(url)
@@ -82,4 +90,5 @@ class CanvasFileDownloadLiveDAO(LiveDAO):
             timeout=self._get_timeout(),
             maxsize=self._get_max_pool_size(),
             block=True,
-            retries=Retry(total=1, connect=0, read=0, redirect=1))
+            retries=self._get_retry()
+        )
