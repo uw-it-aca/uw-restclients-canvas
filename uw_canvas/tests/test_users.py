@@ -38,6 +38,7 @@ class CanvasTestUsers(TestCase):
         self.assertEqual(
             user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
             "Has correct sis id")
+        self.assertEqual(user.integration_id, "0012345", "Has integration_id")
         self.assertEqual(user.email, "testid99@foo.edu", "Has correct email")
 
         user = canvas.get_user_by_sis_id("DEB35E0A465242CF9C5CDBC108050EC0")
@@ -48,6 +49,7 @@ class CanvasTestUsers(TestCase):
         self.assertEqual(
             user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
             "Has correct sis id")
+        self.assertEqual(user.integration_id, "0012345", "Has integration_id")
         self.assertEqual(user.email, "testid99@foo.edu", "Has correct email")
         self.assertEqual(user.avatar_url, (
             "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0c"
@@ -80,6 +82,7 @@ class CanvasTestUsers(TestCase):
             'email': 'testid99@foo.edu',
             'enrollments': [],
             'id': 188885,
+            'integration_id': '0012345',
             'last_login': '2013-02-20T14:45:27+00:00',
             'locale': None,
             'login_id': 'testid99',
@@ -158,6 +161,7 @@ class CanvasTestUsers(TestCase):
         self.assertEqual(
             user.sis_user_id, "15AE3883B6EC44C349E04E5FE089ABEB",
             "SIS User ID")
+        self.assertEqual(user.integration_id, "0012345", "Integration ID")
         self.assertEqual(user.name, "JAMES AVERAGE", "Name")
         self.assertEqual(
             user.sortable_name, "AVERAGE, JAMES", "Sortable Name")
@@ -180,6 +184,8 @@ class CanvasTestUsers(TestCase):
         self.assertEqual(login.user_id, user_id, "Has correct user id")
         self.assertEqual(login.login_id, 100, "Has correct login_id")
         self.assertEqual(login.sis_user_id, sis_user_id, "Has correct sis id")
+        self.assertEqual(
+            login.integration_id, "0012345", "Has correct integration id")
         self.assertEqual(login.unique_id, "testid99", "Has correct unique id")
 
         logins = canvas.get_user_logins_by_sis_id(sis_user_id)
@@ -190,6 +196,7 @@ class CanvasTestUsers(TestCase):
         self.assertEqual(login.user_id, user_id, "Has correct user id")
         self.assertEqual(login.login_id, 100, "Has correct login_id")
         self.assertEqual(login.sis_user_id, sis_user_id, "Has correct sis id")
+        self.assertEqual(login.integration_id, None, "Has null integration id")
         self.assertEqual(login.unique_id, "testid99", "Has correct unique id")
 
     @mock.patch.object(Users, '_put_resource')

@@ -530,6 +530,7 @@ class CanvasUser(models.Model):
     short_name = models.CharField(max_length=100, null=True)
     sortable_name = models.CharField(max_length=100, null=True)
     sis_user_id = models.CharField(max_length=100, null=True)
+    integration_id = models.CharField(max_length=100, null=True)
     login_id = models.CharField(max_length=100, null=True)
     time_zone = models.CharField(max_length=100, null=True)
     locale = models.CharField(max_length=2, null=True)
@@ -551,6 +552,7 @@ class CanvasUser(models.Model):
         self.sortable_name = data.get('sortable_name')
         self.login_id = data.get('login_id')
         self.sis_user_id = data.get('sis_user_id')
+        self.integration_id = data.get('integration_id')
         self.email = data.get('email')
         self.time_zone = data.get('time_zone')
         self.locale = data.get('locale')
@@ -568,6 +570,7 @@ class CanvasUser(models.Model):
             'sortable_name': self.sortable_name,
             'short_name': self.short_name,
             'sis_user_id': self.sis_user_id,
+            'integration_id': self.integration_id,
             'login_id': self.login_id,
             'avatar_url': self.avatar_url,
             'enrollments': self.enrollments,
@@ -597,6 +600,7 @@ class Login(models.Model):
     login_id = models.IntegerField()
     account_id = models.IntegerField()
     sis_user_id = models.CharField(max_length=100, null=True)
+    integration_id = models.CharField(max_length=100, null=True)
     unique_id = models.CharField(max_length=100, null=True)
     user_id = models.IntegerField()
 
@@ -608,6 +612,7 @@ class Login(models.Model):
         self.login_id = data['id']
         self.account_id = data['account_id']
         self.sis_user_id = data.get('sis_user_id')
+        self.integration_id = data.get('integration_id')
         self.unique_id = data['unique_id']
         self.user_id = data['user_id']
 

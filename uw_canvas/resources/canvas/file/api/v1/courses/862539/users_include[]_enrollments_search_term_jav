@@ -3,7 +3,7 @@
   "sortable_name":"AVERAGE, JAMES",
   "short_name":"JAMES AVG",
   "sis_user_id":"15AE3883B6EC44C349E04E5FE089ABEB",
-  "integration_id":null,
+  "integration_id":"0012345",
   "sis_login_id":"javerage",
   "sis_import_id":"5110542",
   "login_id":"javerage",
