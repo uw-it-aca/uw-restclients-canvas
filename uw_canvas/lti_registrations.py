@@ -31,7 +31,7 @@ class LTIRegistrations(Canvas):
         try:
             payload_key = 'data'
             url = self.registration_url()
-            return self._get_resource(
+            return self._get_paged_resource(
                 url, params, payload_key).get(payload_key, [])
         except DataFailureException as err:
             if err.status == 404:
