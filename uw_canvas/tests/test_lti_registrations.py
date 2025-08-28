@@ -5,6 +5,7 @@
 from unittest import TestCase
 from uw_canvas.utilities import fdao_canvas_override
 from uw_canvas.lti_registrations import LTIRegistrations
+from restclients_core.exceptions import DataFailureException
 import mock
 
 
@@ -27,6 +28,17 @@ class CanvasTestLTIRegistrations(TestCase):
 
         self.assertEqual(len(regs), 2, "Correct tools length")
         self.assertEqual(regs[1]['name'], "LTI Two", "Name is Correct")
+
+    def test_get_lti_registration_by_id(self):
+        canvas = LTIRegistrations()
+
+        reg = canvas.get_registration_by_id(
+            1, params={'include': 'overlaid_configuration'})
+
+        self.assertEqual(reg.get('id'), 1, "Correct registration ID")
+
+        with self.assertRaises(DataFailureException):
+            canvas.get_registration_by_id(9999)
 
     @mock.patch.object(LTIRegistrations, '_put_resource')
     def test_update_lti_registration(self, mock_update):

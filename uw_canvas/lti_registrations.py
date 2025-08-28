@@ -28,40 +28,22 @@ class LTIRegistrations(Canvas):
         """
         Return all LTI registrations
         """
-        try:
-            payload_key = 'data'
-            url = self.registration_url()
-            return self._get_paged_resource(
-                url, params, payload_key).get(payload_key, [])
-        except DataFailureException as err:
-            if err.status == 404:
-                return []
+        payload_key = 'data'
+        url = self.registration_url()
+        return self._get_paged_resource(
+            url, params, payload_key).get(payload_key, [])
 
-            raise
-
-    def get_registration_by_id(self, registration_id):
+    def get_registration_by_id(self, registration_id, params={}):
         """
         Return LTI Registrations URL for a specific client id
         """
-        try:
-            url = self.registration_url(registration_id)
-            return self._get_resource(url)
-        except DataFailureException as err:
-            if err.status == 404:
-                return []
-
-            raise
+        url = self.registration_url(registration_id)
+        return self._get_resource(url, params=params)
 
     def update_registration(self, registration_id, json_data):
         """
         Update the LTI registration identified by registration_id
         with the given json data.
         """
-        try:
-            return self._put_resource(
-                self.registration_url(registration_id), body=json_data)
-        except DataFailureException as err:
-            if err.status == 404:
-                return []
-
-            raise
+        return self._put_resource(
+            self.registration_url(registration_id), body=json_data)
