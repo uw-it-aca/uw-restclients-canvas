@@ -1098,6 +1098,45 @@ class Rating(models.Model):
         self.rating_id = data.get('id', '')
 
 
+class File(models.Model):
+    file_id = models.IntegerField()
+    file_uuid = models.CharField()
+    folder_id =  models.IntegerField()
+    display_name = models.CharField()
+    filename = models.CharField()
+    content_type = models.CharField()
+    url = models.CharField()
+    size = models.IntegerField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    visibility_level = models.CharField()
+    thumbnail_url = models.CharField()
+    mime_class = models.CharField()
+    media_entry_id = models.CharField()
+    preview_url = models.CharField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get('data')
+        if data is None:
+            return super().__init__(*args, **kwargs)
+
+        self.file_id = data.get('id', '')
+        self.file_uuid = data.get('uuid', '')
+        self.folder_id = data.get('folder_id', '')
+        self.display_name = data.get('display_name', '')
+        self.filename = data.get('filename', '')
+        self.content_type = data.get('content-type', '')
+        self.url = data.get('url', '')
+        self.size = data.get('size', '')
+        self.created_at = dateutil.parser.parse(data['created_at'])
+        self.updated_at = dateutil.parser.parse(data['updated_at'])
+        self.visibility_level = data.get('visibility_level', '')
+        self.thumbnail_url = data.get('thumbnail_url', '')
+        self.mime_class = data.get('mime_class', '')
+        self.media_entry_id = data.get('media_entry_id', '')
+        self.preview_url = data.get('preview_url', '')
+
+
 class MediaObject(models.Model):
     can_add_captions = models.BooleanField()
     user_entered_title = models.CharField()
