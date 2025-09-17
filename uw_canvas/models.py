@@ -1101,7 +1101,7 @@ class Rating(models.Model):
 class File(models.Model):
     file_id = models.IntegerField()
     file_uuid = models.CharField()
-    folder_id =  models.IntegerField()
+    folder_id = models.IntegerField()
     display_name = models.CharField()
     filename = models.CharField()
     content_type = models.CharField()

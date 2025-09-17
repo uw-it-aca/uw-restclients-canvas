@@ -8,6 +8,7 @@ from uw_canvas.models import File
 
 COURSE_FILES_API = COURSES_API + "/files"
 
+
 class Files(Canvas):
     def get_course_files_by_sis_id(self, sis_id, params={}):
         """
@@ -15,7 +16,7 @@ class Files(Canvas):
 
         https://canvas.instructure.com/doc/api/files.html#method.files.api_index
         """
-        return self.get_course_files(self._sis_id(sis_id, "course"),params)
+        return self.get_course_files(self._sis_id(sis_id, "course"), params)
 
     def get_course_files(self, course_id, params={}):
         """
