@@ -72,6 +72,8 @@ class CanvasTestSISImport(TestCase):
         self.assertEqual(sis_import.progress, "100")
         self.assertEqual(sis_import.override_sis_stickiness, False)
         self.assertEqual(sis_import.clear_sis_stickiness, False)
+        self.assertIsNone(sis_import.post_url, None)
+        self.assertEqual(sis_import.post_headers, {})
 
     def _setup_sis_import(self):
         return SISImportModel(import_id=1)
