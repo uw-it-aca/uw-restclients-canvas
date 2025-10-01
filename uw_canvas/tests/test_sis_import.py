@@ -33,11 +33,12 @@ class CanvasTestSISImport(TestCase):
             }, 'a,b,c,d,e,f')
 
         # With extra params
-        canvas.import_str('a,b,c,d,e,f',
-                          params={'override_sis_stickiness': '1'})
+        canvas.import_str('a,b,c,d,e,f', params={
+            'override_sis_stickiness': '1', 'clear_sis_stickiness': '1'})
         mock_post.assert_called_with((
-            '/api/v1/accounts/12345/sis_imports.json?import_type='
-            'instructure_csv&override_sis_stickiness=1'), {
+            '/api/v1/accounts/12345/sis_imports.json?'
+            'clear_sis_stickiness=1&import_type=instructure_csv&'
+            'override_sis_stickiness=1'), {
                 'Content-Type': 'text/csv'
             }, 'a,b,c,d,e,f')
 
@@ -69,6 +70,8 @@ class CanvasTestSISImport(TestCase):
         self.assertEqual(sis_import.import_id, 1)
         self.assertEqual(sis_import.workflow_state, "imported")
         self.assertEqual(sis_import.progress, "100")
+        self.assertEqual(sis_import.override_sis_stickiness, False)
+        self.assertEqual(sis_import.clear_sis_stickiness, False)
 
     def _setup_sis_import(self):
         return SISImportModel(import_id=1)
