@@ -511,6 +511,8 @@ class SISImport(models.Model):
     import_id = models.IntegerField()
     workflow_state = models.CharField(max_length=100)
     progress = models.CharField(max_length=3)
+    override_sis_stickiness = models.BooleanField()
+    clear_sis_stickiness = models.BooleanField()
 
     def __init__(self, *args, **kwargs):
         data = kwargs.get('data')
@@ -520,6 +522,8 @@ class SISImport(models.Model):
         self.import_id = data['id']
         self.workflow_state = data['workflow_state']
         self.progress = data.get('progress', '0')
+        self.override_sis_stickiness = data['override_sis_stickiness']
+        self.clear_sis_stickiness = data['clear_sis_stickiness']
         self.processing_warnings = data.get('processing_warnings', [])
         self.processing_errors = data.get('processing_errors', [])
 
@@ -535,6 +539,7 @@ class CanvasUser(models.Model):
     time_zone = models.CharField(max_length=100, null=True)
     locale = models.CharField(max_length=2, null=True)
     email = models.CharField(max_length=100, null=True)
+    title = models.CharField(max_length=100, null=True)
     avatar_url = models.CharField(max_length=500, null=True)
     last_login = models.DateTimeField(null=True)
     bio = models.TextField(null=True)
@@ -556,6 +561,7 @@ class CanvasUser(models.Model):
         self.email = data.get('email')
         self.time_zone = data.get('time_zone')
         self.locale = data.get('locale')
+        self.title = data.get('title')
         self.avatar_url = data.get('avatar_url')
         self.bio = data.get('bio')
         if 'last_login' in data and data['last_login'] is not None:
