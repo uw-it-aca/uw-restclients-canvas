@@ -82,7 +82,10 @@ class SISImport(Canvas):
         if not (response.status == 200 or response.status == 204):
             raise DataFailureException(url, response.status, response.data)
 
-        return json.loads(response.data)
+        response_data = json.loads(response.data)
+        response_data["post_url"] = url
+        response_data["post_headers"] = headers
+        return response_data
 
     def _build_archive(self, dir_path):
         """

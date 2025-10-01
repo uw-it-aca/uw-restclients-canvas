@@ -513,6 +513,8 @@ class SISImport(models.Model):
     progress = models.CharField(max_length=3)
     override_sis_stickiness = models.BooleanField()
     clear_sis_stickiness = models.BooleanField()
+    post_url = models.CharField(max_length=100)
+    post_headers = models.CharField(max_length=500)
 
     def __init__(self, *args, **kwargs):
         data = kwargs.get('data')
@@ -526,6 +528,8 @@ class SISImport(models.Model):
         self.clear_sis_stickiness = data['clear_sis_stickiness']
         self.processing_warnings = data.get('processing_warnings', [])
         self.processing_errors = data.get('processing_errors', [])
+        self.post_url = data.get('post_url')
+        self.post_headers = data.get('post_headers', {})
 
 
 class CanvasUser(models.Model):
