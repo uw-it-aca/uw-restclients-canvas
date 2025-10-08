@@ -19,6 +19,23 @@ class TestCanvasDynamicHostnameLiveDAO(TestCase):
         self.assertEqual(dao.get_service_setting("HOST"), dynamic_host)
 
 
+class TestCanvasCustomHeaders(TestCase):
+    def test_default_headers(self):
+        dao = Canvas_DAO()
+        headers = dao._custom_headers('GET', '/', {}, None)
+        self.assertEqual(headers, {'User-Agent': 'UW-RestClients-Canvas/0.1'})
+
+    @override_settings(RESTCLIENTS_CANVAS_OAUTH_BEARER='TEST123',
+                       RESTCLIENTS_CANVAS_USER_AGENT='Test-User-Agent/1.0.1')
+    def test_custom_headers(self):
+        dao = Canvas_DAO()
+        headers = dao._custom_headers('GET', '/', {}, None)
+        self.assertEqual(headers, {
+            'Authorization': 'TEST123',
+            'User-Agent': 'Test-User-Agent/1.0.1'
+        })
+
+
 @override_settings(RESTCLIENTS_CANVAS_HOST='https://canvas.test.edu',
                    RESTCLIENTS_CANVAS_TIMEOUT='60',
                    RESTCLIENTS_CANVAS_POOL_SIZE='10',
