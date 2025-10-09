@@ -25,4 +25,7 @@ To use this client, you'll need these settings in your application or script:
     # Root account ID for this Canvas instance
     RESTCLIENTS_CANVAS_ACCOUNT_ID=
 
+    # Custom User Agent
+    RESTCLIENTS_CANVAS_USER_AGENT=
+
 See examples for usage.  Pull requests welcome.

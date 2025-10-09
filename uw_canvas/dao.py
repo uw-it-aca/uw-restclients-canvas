@@ -10,8 +10,12 @@ from commonconf import settings
 from urllib3 import PoolManager
 from urllib3.util.retry import Retry
 from os.path import abspath, dirname
+from importlib.metadata import version
 import os
 import re
+
+DEFAULT_USER_AGENT = (
+    f"UW-RestClients-Canvas/{version('uw-restclients-canvas')}")
 
 
 class Canvas_DAO(DAO):
@@ -32,8 +36,16 @@ class Canvas_DAO(DAO):
         return super().get_service_setting(key, default)
 
     def _custom_headers(self, method, url, headers, body):
+        custom_headers = {}
+
+        custom_headers["User-Agent"] = self.get_service_setting(
+            "USER_AGENT", DEFAULT_USER_AGENT)
+
         bearer_key = self.get_service_setting("OAUTH_BEARER", "")
-        return {"Authorization": "Bearer {}".format(bearer_key)}
+        if bearer_key:
+            custom_headers["Authorization"] = bearer_key
+
+        return custom_headers
 
     def _edit_mock_response(self, method, url, headers, body, response):
         if "POST" == method or "PUT" == method:
