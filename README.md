@@ -25,8 +25,11 @@ To use this client, you'll need these settings in your application or script:
     # Root account ID for this Canvas instance
     RESTCLIENTS_CANVAS_ACCOUNT_ID=
 
+    # Custom User Agent
+    RESTCLIENTS_CANVAS_USER_AGENT=
+
     # Path to a CA bundle for SSL verification (PEM format)
-    # If in doubt, inspect the endpoint certificate chain with something like 
+    # If in doubt, inspect the endpoint certificate chain with something like
     # `openssl s_client -connect canvas.test.edu:443 </dev/null`
     RESTCLIENTS_CA_BUNDLE=
 
