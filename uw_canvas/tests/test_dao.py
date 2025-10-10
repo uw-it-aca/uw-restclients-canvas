@@ -31,7 +31,7 @@ class TestCanvasCustomHeaders(TestCase):
         dao = Canvas_DAO()
         headers = dao._custom_headers('GET', '/', {}, None)
         self.assertEqual(headers, {
-            'Authorization': 'TEST123',
+            'Authorization': 'Bearer TEST123',
             'User-Agent': 'Test-User-Agent/1.0.1'
         })
 
