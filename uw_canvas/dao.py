@@ -14,9 +14,6 @@ from importlib.metadata import version
 import os
 import re
 
-DEFAULT_USER_AGENT = (
-    f"UW-RestClients-Canvas/{version('uw-restclients-canvas')}")
-
 
 class Canvas_DAO(DAO):
     def __init__(self, *args, **kwargs):
@@ -38,12 +35,18 @@ class Canvas_DAO(DAO):
     def _custom_headers(self, method, url, headers, body):
         custom_headers = {}
 
-        custom_headers["User-Agent"] = self.get_service_setting(
-            "USER_AGENT", DEFAULT_USER_AGENT)
+        user_agent = self.get_service_setting("USER_AGENT")
+        if not user_agent:
+            try:
+                app_version = version("uw-restclients-canvas")
+                user_agent = f"UW-RestClients-Canvas/{app_version}"
+            except Exception:
+                user_agent = "UW-RestClients-Canvas/0.1"
+        custom_headers["User-Agent"] = user_agent
 
-        bearer_key = self.get_service_setting("OAUTH_BEARER", "")
+        bearer_key = self.get_service_setting("OAUTH_BEARER")
         if bearer_key:
-            custom_headers["Authorization"] = bearer_key
+            custom_headers["Authorization"] = f"Bearer {bearer_key}"
 
         return custom_headers
 
