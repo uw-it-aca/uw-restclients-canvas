@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from restclients_core import models
@@ -530,6 +530,27 @@ class SISImport(models.Model):
         self.processing_errors = data.get('processing_errors', [])
         self.post_url = data.get('post_url')
         self.post_headers = data.get('post_headers', {})
+
+
+class SISImportError(models.Model):
+    CSV_IMPORT_TYPE = 'instructure_csv'
+
+    import_id = models.IntegerField()
+    import_file = models.CharField(max_length=100)
+    message = models.CharField(max_length=256)
+    row_info = models.CharField(max_length=1024)
+    row = models.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get('data')
+        if data is None:
+            return super(SISImport, self).__init__(*args, **kwargs)
+
+        self.import_id = data['sis_import_id']
+        self.import_file = data['file']
+        self.message = data['message']
+        self.row_info = data['row_info']
+        self.row = data['row']
 
 
 class CanvasUser(models.Model):

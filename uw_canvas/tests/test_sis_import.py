@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 
@@ -74,6 +74,20 @@ class CanvasTestSISImport(TestCase):
         self.assertEqual(sis_import.clear_sis_stickiness, False)
         self.assertIsNone(sis_import.post_url, None)
         self.assertEqual(sis_import.post_headers, {})
+
+    def test_get_imports(self):
+        canvas = SISImport()
+        sis_imports = canvas.get_imports()
+        self.assertEqual(len(sis_imports), 2)
+        self.assertEqual(sis_imports[0].import_id, 1)
+        self.assertEqual(sis_imports[1].import_id, 2)
+
+    def test_get_import_errors(self):
+        canvas = SISImport()
+        sis_errors = canvas.get_import_errors(self._setup_sis_import())
+        self.assertEqual(len(sis_errors), 2)
+        self.assertEqual(sis_errors[0].row, 601)
+        self.assertEqual(sis_errors[1].row, 580)
 
     def _setup_sis_import(self):
         return SISImportModel(import_id=1)
