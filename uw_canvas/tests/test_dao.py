@@ -62,3 +62,11 @@ class TestCanvasFileDownloadLiveDAO(TestCase):
         dao = CanvasFileDownload_DAO()._get_live_implementation()
         dao._get_retry()
         mock_retry.assert_called_with(total=2, connect=1, read=1, redirect=2)
+
+
+class TestCanvasFileDownloadCustomHeaders(TestCase):
+    @override_settings(RESTCLIENTS_CANVAS_OAUTH_BEARER='TEST123')
+    def test_custom_headers(self):
+        dao = CanvasFileDownload_DAO()
+        headers = dao._custom_headers('GET', '/', {}, None)
+        self.assertEqual(headers, {'Authorization': 'Bearer TEST123'})
