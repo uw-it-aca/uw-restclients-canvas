@@ -68,6 +68,15 @@ class CanvasFileDownload_DAO(DAO):
     def service_name(self):
         return "canvas"
 
+    def _custom_headers(self, method, url, headers, body):
+        custom_headers = {}
+
+        bearer_key = self.get_service_setting("OAUTH_BEARER")
+        if bearer_key:
+            custom_headers["Authorization"] = f"Bearer {bearer_key}"
+
+        return custom_headers
+
     def _get_live_implementation(self):
         return CanvasFileDownloadLiveDAO(self.service_name(), self)
 
