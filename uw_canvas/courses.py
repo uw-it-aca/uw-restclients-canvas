@@ -133,3 +133,45 @@ class Courses(Canvas):
         url = COURSES_API.format(course_id)
         response = self._delete_resource(url, params={"event": event})
         return True
+
+    def publish_course(self, course_id):
+        """
+        Publish the course identified by course_id.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.update
+        """
+        url = COURSES_API.format(course_id)
+        body = {"course": {"event": "offer"}}
+        response = self._put_resource(url, body)
+        return CanvasCourse(data=response)
+
+    def publish_course_by_sis_id(self, sis_course_id):
+        """
+        Publish the course identified by sis_course_id.
+        """
+        course = self.get_course_by_sis_id(sis_course_id)
+        if course is None:
+            return None
+        return self.publish_course(course.course_id)
+
+    def unpublish_course(self, course_id):
+        """
+        Unpublish the course identified by course_id.
+        Note: per the docs "A course cannot be unpublished if students have
+            received graded submissions."
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.update
+        """
+        url = COURSES_API.format(course_id)
+        body = {"course": {"event": "claim"}}
+        response = self._put_resource(url, body)
+        return CanvasCourse(data=response)
+
+    def unpublish_course_by_sis_id(self, sis_course_id):
+        """
+        Unpublish the course identified by sis_course_id.
+        """
+        course = self.get_course_by_sis_id(sis_course_id)
+        if course is None:
+            return None
+        return self.unpublish_course(course.course_id)

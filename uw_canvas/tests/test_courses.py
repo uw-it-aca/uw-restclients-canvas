@@ -195,3 +195,139 @@ class CanvasTestCourses(TestCase):
         canvas.delete_course(149650, event='conclude')
         mock_delete.assert_called_with(
             '/api/v1/courses/149650', params={'event': 'conclude'})
+
+    @mock.patch.object(Courses, '_put_resource')
+    def test_publish_course(self, mock_put):
+        mock_put.return_value = {
+            'id': 149650,
+            'account_id': 84378,
+            'course_code': 'PHYS 121',
+            'name': 'MECHANICS',
+            'workflow_state': 'available',
+            'is_public': False,
+            'is_public_to_auth_users': False,
+            'public_syllabus': False,
+            'calendar': {
+                'ics':
+                    'https://canvas.uw.edu/feeds/calendars/course_test.ics'
+                }
+        }
+        canvas = Courses()
+        canvas.publish_course(149650)
+        mock_put.assert_called_with(
+            '/api/v1/courses/149650',
+            {'course': {'event': 'offer'}})
+
+    @mock.patch.object(Courses, 'get_course_by_sis_id')
+    @mock.patch.object(Courses, 'publish_course')
+    def test_publish_course_by_sis_id(self, mock_publish, mock_get_course):
+        # Test successful publish
+        mock_course = CanvasCourse(data={
+            'id': 149650,
+            'account_id': 84378,
+            'course_code': 'PHYS 121',
+            'name': 'MECHANICS',
+            'workflow_state': 'unpublished',
+            'is_public': False,
+            'is_public_to_auth_users': False,
+            'public_syllabus': False,
+            'calendar': {
+                'ics':
+                    'https://canvas.uw.edu/feeds/calendars/course_test.ics'
+                }
+        })
+        mock_get_course.return_value = mock_course
+        mock_publish.return_value = CanvasCourse(data={
+            'id': 149650,
+            'account_id': 84378,
+            'course_code': 'PHYS 121',
+            'name': 'MECHANICS',
+            'workflow_state': 'available',
+            'is_public': False,
+            'is_public_to_auth_users': False,
+            'public_syllabus': False,
+            'calendar': {
+                'ics':
+                    'https://canvas.uw.edu/feeds/calendars/course_test.ics'
+                }
+        })
+
+        canvas = Courses()
+        result = canvas.publish_course_by_sis_id('2013-spring-PHYS-121-A')
+
+        mock_get_course.assert_called_with('2013-spring-PHYS-121-A')
+        mock_publish.assert_called_with(149650)
+        self.assertEqual(result.workflow_state, 'available')
+
+        # Test course not found
+        mock_get_course.return_value = None
+        result = canvas.publish_course_by_sis_id('nonexistent-course')
+        self.assertIsNone(result)
+
+    @mock.patch.object(Courses, '_put_resource')
+    def test_unpublish_course(self, mock_put):
+        mock_put.return_value = {
+            'id': 149650,
+            'account_id': 84378,
+            'course_code': 'PHYS 121',
+            'name': 'MECHANICS',
+            'workflow_state': 'unpublished',
+            'is_public': False,
+            'is_public_to_auth_users': False,
+            'public_syllabus': False,
+            'calendar': {
+                'ics':
+                    'https://canvas.uw.edu/feeds/calendars/course_test.ics'
+                }
+        }
+        canvas = Courses()
+        canvas.unpublish_course(149650)
+        mock_put.assert_called_with(
+            '/api/v1/courses/149650',
+            {'course': {'event': 'claim'}})
+
+    @mock.patch.object(Courses, 'get_course_by_sis_id')
+    @mock.patch.object(Courses, 'unpublish_course')
+    def test_unpublish_course_by_sis_id(self, mock_unpublish, mock_get_course):
+        # Test successful unpublish
+        mock_course = CanvasCourse(data={
+            'id': 149650,
+            'account_id': 84378,
+            'course_code': 'PHYS 121',
+            'name': 'MECHANICS',
+            'workflow_state': 'available',
+            'is_public': False,
+            'is_public_to_auth_users': False,
+            'public_syllabus': False,
+            'calendar': {
+                'ics':
+                    'https://canvas.uw.edu/feeds/calendars/course_test.ics'
+                }
+        })
+        mock_get_course.return_value = mock_course
+        mock_unpublish.return_value = CanvasCourse(data={
+            'id': 149650,
+            'account_id': 84378,
+            'course_code': 'PHYS 121',
+            'name': 'MECHANICS',
+            'workflow_state': 'unpublished',
+            'is_public': False,
+            'is_public_to_auth_users': False,
+            'public_syllabus': False,
+            'calendar': {
+                'ics':
+                    'https://canvas.uw.edu/feeds/calendars/course_test.ics'
+                }
+        })
+
+        canvas = Courses()
+        result = canvas.unpublish_course_by_sis_id('2013-spring-PHYS-121-A')
+
+        mock_get_course.assert_called_with('2013-spring-PHYS-121-A')
+        mock_unpublish.assert_called_with(149650)
+        self.assertEqual(result.workflow_state, 'unpublished')
+
+        # Test course not found
+        mock_get_course.return_value = None
+        result = canvas.unpublish_course_by_sis_id('nonexistent-course')
+        self.assertIsNone(result)
