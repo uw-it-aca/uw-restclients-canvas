@@ -152,7 +152,7 @@ class Courses(Canvas):
         course = self.get_course_by_sis_id(sis_course_id)
         if course is None:
             return None
-        return self.publish_course(course.id)
+        return self.publish_course(course.course_id)
 
     def unpublish_course(self, course_id):
         """
@@ -174,4 +174,4 @@ class Courses(Canvas):
         course = self.get_course_by_sis_id(sis_course_id)
         if course is None:
             return None
-        return self.unpublish_course(course.id)
+        return self.unpublish_course(course.course_id)
