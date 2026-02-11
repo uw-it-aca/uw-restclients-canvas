@@ -208,12 +208,19 @@ class CanvasTestUsers(TestCase):
 
         login = logins[0]
         login.unique_id = "testid99new"
-        login.sis_user_id = ""
+        login.sis_user_id = "A1B2C3"
+        login.integration_id = None
 
         canvas.update_user_login(login, account_id=12345)
         mock_update.assert_called_with(
-            '/api/v1/accounts/12345/logins/100',
-            {'login': {'sis_user_id': '', 'unique_id': 'testid99new'}})
+            '/api/v1/accounts/12345/logins/100', {
+                'login': {
+                    'sis_user_id': 'A1B2C3',
+                    'unique_id': 'testid99new',
+                    'integration_id': None,
+                }
+            }
+        )
 
         with override_settings(RESTCLIENTS_CANVAS_ACCOUNT_ID=None):
             canvas = Users()
