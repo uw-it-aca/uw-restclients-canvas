@@ -649,7 +649,8 @@ class Login(models.Model):
 
     def put_data(self):
         return {'login': {'unique_id': self.unique_id,
-                          'sis_user_id': self.sis_user_id}}
+                          'sis_user_id': self.sis_user_id,
+                          'integration_id': self.integration_id}}
 
 
 class CanvasAdmin(models.Model):
