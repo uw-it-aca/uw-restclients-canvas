@@ -207,9 +207,9 @@ class CanvasTestUsers(TestCase):
         logins = canvas.get_user_logins(user_id)
 
         login = logins[0]
-        login.unique_id = "testid99new"
-        login.sis_user_id = "A1B2C3"
-        login.integration_id = None
+        login.unique_id = 'testid99new'
+        login.sis_user_id = 'A1B2C3'
+        login.integration_id = ''
 
         canvas.update_user_login(login, account_id=12345)
         mock_update.assert_called_with(
@@ -217,7 +217,22 @@ class CanvasTestUsers(TestCase):
                 'login': {
                     'sis_user_id': 'A1B2C3',
                     'unique_id': 'testid99new',
-                    'integration_id': None,
+                    'integration_id': '',
+                }
+            }
+        )
+
+        login.unique_id = 'testid99new'
+        login.sis_user_id = ''
+        login.integration_id = '1111111'
+
+        canvas.update_user_login(login, account_id=12345)
+        mock_update.assert_called_with(
+            '/api/v1/accounts/12345/logins/100', {
+                'login': {
+                    'sis_user_id': '',
+                    'unique_id': 'testid99new',
+                    'integration_id': '1111111',
                 }
             }
         )
